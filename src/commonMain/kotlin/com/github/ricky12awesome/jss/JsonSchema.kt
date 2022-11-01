@@ -5,147 +5,145 @@ import com.github.ricky12awesome.jss.internal.createJsonSchema
 import kotlinx.serialization.*
 import kotlinx.serialization.descriptors.*
 import kotlinx.serialization.json.*
-import kotlin.reflect.KClass
-import kotlin.reflect.KFunction
-import kotlin.reflect.KProperty
+import kotlin.reflect.typeOf
 
 /**
  * Global Json object for basic serialization. uses Stable Configuration.
  */
 val globalJson by lazy {
-  Json {
-    prettyPrintIndent = "  "
-    prettyPrint = true
-    ignoreUnknownKeys = true
-    isLenient = true
-    coerceInputValues = true
-    encodeDefaults = true
-  }
+    Json {
+        prettyPrintIndent = "  "
+        prettyPrint = true
+        ignoreUnknownKeys = true
+        isLenient = true
+        coerceInputValues = true
+        encodeDefaults = true
+    }
 }
 
 /**
  * Represents the type of a json type
  */
 enum class JsonType(jsonType: String) {
-  /**
-   * Represents the json array type
-   */
-  ARRAY("array"),
+    /**
+     * Represents the json array type
+     */
+    ARRAY("array"),
 
-  /**
-   * Represents the json number type
-   */
-  NUMBER("number"),
+    /**
+     * Represents the json number type
+     */
+    NUMBER("number"),
 
-  /**
-   * Represents the string type
-   */
-  STRING("string"),
+    /**
+     * Represents the string type
+     */
+    STRING("string"),
 
-  /**
-   * Represents the boolean type
-   */
-  BOOLEAN("boolean"),
+    /**
+     * Represents the boolean type
+     */
+    BOOLEAN("boolean"),
 
-  /**
-   * Represents the object type, this is used for serializing normal classes
-   */
-  OBJECT("object"),
+    /**
+     * Represents the object type, this is used for serializing normal classes
+     */
+    OBJECT("object"),
 
-  /**
-   * Represents the object type, this is used for serializing sealed classes
-   */
-  OBJECT_SEALED("object"),
+    /**
+     * Represents the object type, this is used for serializing sealed classes
+     */
+    OBJECT_SEALED("object"),
 
-  /**
-   * Represents the object type, this is used for serializing maps
-   */
-  OBJECT_MAP("object");
+    /**
+     * Represents the object type, this is used for serializing maps
+     */
+    OBJECT_MAP("object");
 
-  val json = JsonPrimitive(jsonType)
+    val json = JsonPrimitive(jsonType)
 
-  override fun toString(): String = json.content
+    override fun toString(): String = json.content
 }
 
 @Target()
 annotation class JsonSchema {
-  /**
-   * Description of this property
-   */
-  @SerialInfo
-  @Repeatable
-  @Retention(AnnotationRetention.BINARY)
-  @Target(AnnotationTarget.PROPERTY, AnnotationTarget.FIELD)
-  annotation class Description(val lines: Array<out String>)
+    /**
+     * Description of this property
+     */
+    @SerialInfo
+    @Repeatable
+    @Retention(AnnotationRetention.BINARY)
+    @Target(AnnotationTarget.PROPERTY, AnnotationTarget.FIELD)
+    annotation class Description(val lines: Array<out String>)
 
-  /**
-   * Enum-like values for non-enum string
-   */
-  @SerialInfo
-  @Retention(AnnotationRetention.BINARY)
-  @Target(AnnotationTarget.PROPERTY, AnnotationTarget.FIELD)
-  annotation class StringEnum(val values: Array<out String>)
+    /**
+     * Enum-like values for non-enum string
+     */
+    @SerialInfo
+    @Retention(AnnotationRetention.BINARY)
+    @Target(AnnotationTarget.PROPERTY, AnnotationTarget.FIELD)
+    annotation class StringEnum(val values: Array<out String>)
 
-  /**
-   * Minimum and Maximum values using whole numbers
-   *
-   * Only works when [SerialKind] is any of
-   * [PrimitiveKind.BYTE], [PrimitiveKind.SHORT], [PrimitiveKind.INT], [PrimitiveKind.LONG]
-   */
-  @SerialInfo
-  @Retention(AnnotationRetention.BINARY)
-  @Target(AnnotationTarget.PROPERTY, AnnotationTarget.FIELD)
-  annotation class IntRange(val min: Long, val max: Long)
+    /**
+     * Minimum and Maximum values using whole numbers
+     *
+     * Only works when [SerialKind] is any of
+     * [PrimitiveKind.BYTE], [PrimitiveKind.SHORT], [PrimitiveKind.INT], [PrimitiveKind.LONG]
+     */
+    @SerialInfo
+    @Retention(AnnotationRetention.BINARY)
+    @Target(AnnotationTarget.PROPERTY, AnnotationTarget.FIELD)
+    annotation class IntRange(val min: Long, val max: Long)
 
-  /**
-   * Minimum and Maximum values using floating point numbers
-   *
-   * Only works when [SerialKind] is [PrimitiveKind.FLOAT] or [PrimitiveKind.DOUBLE]
-   */
-  @SerialInfo
-  @Retention(AnnotationRetention.BINARY)
-  @Target(AnnotationTarget.PROPERTY, AnnotationTarget.FIELD)
-  annotation class FloatRange(val min: Double, val max: Double)
+    /**
+     * Minimum and Maximum values using floating point numbers
+     *
+     * Only works when [SerialKind] is [PrimitiveKind.FLOAT] or [PrimitiveKind.DOUBLE]
+     */
+    @SerialInfo
+    @Retention(AnnotationRetention.BINARY)
+    @Target(AnnotationTarget.PROPERTY, AnnotationTarget.FIELD)
+    annotation class FloatRange(val min: Double, val max: Double)
 
-  /**
-   * [pattern] to use on this property
-   *
-   * Only works when [SerialKind] is [PrimitiveKind.STRING]
-   */
-  @SerialInfo
-  @Retention(AnnotationRetention.BINARY)
-  @Target(AnnotationTarget.PROPERTY, AnnotationTarget.FIELD)
-  annotation class Pattern(val pattern: String)
+    /**
+     * [pattern] to use on this property
+     *
+     * Only works when [SerialKind] is [PrimitiveKind.STRING]
+     */
+    @SerialInfo
+    @Retention(AnnotationRetention.BINARY)
+    @Target(AnnotationTarget.PROPERTY, AnnotationTarget.FIELD)
+    annotation class Pattern(val pattern: String)
 
-  /**
-   * Should this property be a definition and be referenced using [id]?
-   *
-   * @param id The id for this definition, this will be referenced by '#/definitions/$[id]'
-   */
-  @SerialInfo
-  @Retention(AnnotationRetention.BINARY)
-  @Target(AnnotationTarget.CLASS, AnnotationTarget.PROPERTY, AnnotationTarget.FIELD)
-  annotation class Definition(val id: String)
+    /**
+     * Should this property be a definition and be referenced using [id]?
+     *
+     * @param id The id for this definition, this will be referenced by '#/definitions/$[id]'
+     */
+    @SerialInfo
+    @Retention(AnnotationRetention.BINARY)
+    @Target(AnnotationTarget.CLASS, AnnotationTarget.PROPERTY, AnnotationTarget.FIELD)
+    annotation class Definition(val id: String)
 
-  /**
-   * This property will not create definitions
-   */
-  @SerialInfo
-  @Retention(AnnotationRetention.BINARY)
-  @Target(AnnotationTarget.CLASS, AnnotationTarget.PROPERTY, AnnotationTarget.FIELD)
-  annotation class NoDefinition
+    /**
+     * This property will not create definitions
+     */
+    @SerialInfo
+    @Retention(AnnotationRetention.BINARY)
+    @Target(AnnotationTarget.CLASS, AnnotationTarget.PROPERTY, AnnotationTarget.FIELD)
+    annotation class NoDefinition
 }
 
 /**
  * Will be removed in 0.8.0
  */
 @Deprecated(
-  message = "Use encodeWithSchema instead",
-  replaceWith = ReplaceWith("this.encodeWithSchema(serializer, value, url)"),
-  level = DeprecationLevel.ERROR
+    message = "Use encodeWithSchema instead",
+    replaceWith = ReplaceWith("this.encodeWithSchema(serializer, value, url)"),
+    level = DeprecationLevel.ERROR
 )
 fun <T> Json.stringifyWithSchema(serializer: SerializationStrategy<T>, value: T, url: String): String {
-  return encodeWithSchema(serializer,value, url)
+    return encodeWithSchema(serializer, value, url)
 }
 
 /**
@@ -155,19 +153,19 @@ fun <T> Json.stringifyWithSchema(serializer: SerializationStrategy<T>, value: T,
  * This is so when you serialize your [value] it will use [url] as it's Json Schema for code completion.
  */
 fun <T> Json.encodeWithSchema(serializer: SerializationStrategy<T>, value: T, url: String): String {
-  val json = encodeToJsonElement(serializer, value) as JsonObject
-  val append = mapOf("\$schema" to JsonPrimitive(url))
+    val json = encodeToJsonElement(serializer, value) as JsonObject
+    val append = mapOf("\$schema" to JsonPrimitive(url))
 
-  return encodeToString(JsonObject.serializer(), JsonObject(append + json))
+    return encodeToString(JsonObject.serializer(), JsonObject(append + json))
 }
 
 /**
  * Will be removed in 0.8.0
  */
 @Deprecated(
-  message = "Use encodeToSchema instead",
-  replaceWith = ReplaceWith("this.encodeToSchema(descriptor)"),
-  level = DeprecationLevel.ERROR
+    message = "Use encodeToSchema instead",
+    replaceWith = ReplaceWith("this.encodeToSchema(descriptor)"),
+    level = DeprecationLevel.ERROR
 )
 fun Json.stringifyToSchema(descriptor: SerialDescriptor): String = encodeToSchema(descriptor)
 
@@ -177,16 +175,19 @@ fun Json.stringifyToSchema(descriptor: SerialDescriptor): String = encodeToSchem
  * @param generateDefinitions Should this generate definitions by default
  */
 fun Json.encodeToSchema(descriptor: SerialDescriptor, generateDefinitions: Boolean = true): String {
-  return encodeToString(JsonObject.serializer(), buildJsonSchema(descriptor, generateDefinitions))
+    return encodeToString(
+        JsonObject.serializer(),
+        buildJsonSchema(descriptor, serializersModule.getPolymorphicDescriptors(descriptor), generateDefinitions)
+    )
 }
 
 /**
  * Will be removed in 0.8.0
  */
 @Deprecated(
-  message = "Use encodeToSchema instead",
-  replaceWith = ReplaceWith("this.encodeToSchema(serializer)"),
-  level = DeprecationLevel.ERROR
+    message = "Use encodeToSchema instead",
+    replaceWith = ReplaceWith("this.encodeToSchema(serializer)"),
+    level = DeprecationLevel.ERROR
 )
 fun Json.stringifyToSchema(serializer: SerializationStrategy<*>): String = encodeToSchema(serializer)
 
@@ -198,7 +199,14 @@ fun Json.stringifyToSchema(serializer: SerializationStrategy<*>): String = encod
  * @param generateDefinitions Should this generate definitions by default
  */
 fun Json.encodeToSchema(serializer: SerializationStrategy<*>, generateDefinitions: Boolean = true): String {
-  return encodeToSchema(serializer.descriptor, generateDefinitions)
+    return encodeToSchema(serializer.descriptor, generateDefinitions)
+}
+
+@OptIn(ExperimentalStdlibApi::class)
+inline fun <reified T : Any> Json.encodeToSchema(generateDefinitions: Boolean = true): String {
+    val serializer = serializersModule.serializer(typeOf<T>())
+    val descriptor = serializer.descriptor
+    return encodeToSchema(descriptor, generateDefinitions)
 }
 
 /**
@@ -206,13 +214,17 @@ fun Json.encodeToSchema(serializer: SerializationStrategy<*>, generateDefinition
  *
  * @param autoDefinitions automatically generate definitions by default
  */
-fun buildJsonSchema(descriptor: SerialDescriptor, autoDefinitions: Boolean = false): JsonObject {
-  val prepend = mapOf("\$schema" to JsonPrimitive("http://json-schema.org/draft-07/schema"))
-  val definitions = JsonSchemaDefinitions(autoDefinitions)
-  val root = descriptor.createJsonSchema(descriptor.annotations, definitions)
-  val append = mapOf("definitions" to definitions.getDefinitionsAsJsonObject())
+fun buildJsonSchema(
+    descriptor: SerialDescriptor,
+    polymorphicDescriptors: List<SerialDescriptor> = emptyList(),
+    autoDefinitions: Boolean = false
+): JsonObject {
+    val prepend = mapOf("\$schema" to JsonPrimitive("http://json-schema.org/draft-07/schema"))
+    val definitions = JsonSchemaDefinitions(autoDefinitions)
+    val root = descriptor.createJsonSchema(descriptor.annotations, definitions, polymorphicDescriptors)
+    val append = mapOf("definitions" to definitions.getDefinitionsAsJsonObject())
 
-  return JsonObject(prepend + root + append)
+    return JsonObject(prepend + root + append)
 }
 
 /**
@@ -221,6 +233,10 @@ fun buildJsonSchema(descriptor: SerialDescriptor, autoDefinitions: Boolean = fal
  *
  * @param generateDefinitions Should this generate definitions by default
  */
-fun buildJsonSchema(serializer: SerializationStrategy<*>, generateDefinitions: Boolean = true): JsonObject {
-  return buildJsonSchema(serializer.descriptor, generateDefinitions)
+fun buildJsonSchema(
+    serializer: SerializationStrategy<*>,
+    polymorphicDescriptors: List<SerialDescriptor> = emptyList(),
+    generateDefinitions: Boolean = true
+): JsonObject {
+    return buildJsonSchema(serializer.descriptor, polymorphicDescriptors, generateDefinitions)
 }
