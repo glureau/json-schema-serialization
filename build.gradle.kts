@@ -1,9 +1,9 @@
 import org.jetbrains.kotlin.konan.properties.loadProperties
 
 plugins {
-  kotlin("multiplatform") version "1.4.20"
-  kotlin("plugin.serialization") version "1.4.20"
-  id("org.jetbrains.dokka") version "1.4.10.2"
+  kotlin("multiplatform") version "1.7.20"
+  kotlin("plugin.serialization") version "1.7.20"
+  id("org.jetbrains.dokka") version "1.7.20"
   `maven-publish`
 }
 
@@ -104,9 +104,7 @@ kotlin {
     }
 
     all {
-      languageSettings.useExperimentalAnnotation("kotlin.RequiresOptIn")
-      languageSettings.useExperimentalAnnotation("kotlinx.serialization.ExperimentalSerializationApi")
-      languageSettings.enableLanguageFeature("InlineClasses")
+      languageSettings.optIn("kotlinx.serialization.ExperimentalSerializationApi")
     }
   }
 }
