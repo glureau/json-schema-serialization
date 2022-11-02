@@ -1,3 +1,11 @@
+The original repos may not be maintained anymore (see https://github.com/Ricky12Awesome/json-schema-serialization/issues/13) 
+
+
+This fork is an attempt to update to Kotlin 1.7.20 and handle polymorphism.
+
+
+------
+
 [![Download](https://api.bintray.com/packages/ricky12awesome/github/json-schema-serialization/images/download.svg)](https://bintray.com/ricky12awesome/github/json-schema-serialization/_latestVersion)
 [![Jitpack](https://jitpack.io/v/Ricky12Awesome/json-schema-serialization.svg)](https://jitpack.io/#Ricky12Awesome/json-schema-serialization)
 [![Build Status](https://travis-ci.org/Ricky12Awesome/json-schema-serialization.svg?branch=master)](https://travis-ci.org/Ricky12Awesome/json-schema-serialization)
