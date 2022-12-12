@@ -96,10 +96,10 @@
           "name": "json-schema-serialization-macosx64-0.8.0-metadata.jar",
           "url": "json-schema-serialization-macosx64-0.8.0-metadata.jar",
           "size": 261,
-          "sha512": "b6aa52232d6a99cea56370a35d412eb7abd78deee8cf756a375a4d34936ff37798c8771be66671fe00c7f46fe059de28a8dbed16ac70df81b59496ee35e1a1d5",
-          "sha256": "2631d1ffa2cb13bd9dc2bb46a465545d6c47939677942446f8c3064d6a80a6bf",
-          "sha1": "c4e43e2bdb623a9aeb3321048d406af34c423a7e",
-          "md5": "a0cca562559daebe5baea1db387da052"
+          "sha512": "69138ce8586186538bb6e5af148a35d6840bddf8c72000da4b0b1ac4c79d0bf923c51304eabc58948b8f6b1059219f938661ad6dcb2b026d2df9bf6efd0dc922",
+          "sha256": "02d9c060552969f042d8d1ce824ddbf76e5078919ac0898ffff31eae6110fb54",
+          "sha1": "3079a46d9f0983dc4d2ed34b0e582a4057e188dc",
+          "md5": "aae16a51daae8c5aa449f7f7cb88490c"
         }
       ]
     }

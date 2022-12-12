@@ -96,10 +96,10 @@
           "name": "json-schema-serialization-iosarm64-0.8.0-metadata.jar",
           "url": "json-schema-serialization-iosarm64-0.8.0-metadata.jar",
           "size": 261,
-          "sha512": "ec2c4305bbab0b5668962ed43129218f7acd8aaaf1598627ef890933ee20a73499600d1bdecc5f9e222d4abbc0483c68bb904bb0fe3e841500bb217cec52ad79",
-          "sha256": "110109b9fcc4a7457ae56ef63a93ae559ddbc8358cea80b6fe2c7bac8e636380",
-          "sha1": "a2a8f39986040357b8e49a0808070b9a79cb8a22",
-          "md5": "48e318997888ea24270812a51f62c162"
+          "sha512": "813c60952dcd2a6d8b07478691753c77974e47ec39e99584b149dc4d962711bc4299a49f7136502d28b6da100f46e7b647db86e4c79084c3e46aeb03ae062eaf",
+          "sha256": "68e1bb4bf118e593da8606ea496e051c5d732c1590cc81bd22e11b03e1495361",
+          "sha1": "2891626fbd7f3bba6b6fc1469be732198b509139",
+          "md5": "c8ef61d26718fed907e1f981867844ae"
         }
       ]
     }
