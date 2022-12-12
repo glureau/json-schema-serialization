@@ -7,6 +7,7 @@ import kotlinx.serialization.builtins.MapSerializer
 import kotlinx.serialization.builtins.serializer
 import kotlinx.serialization.json.*
 import kotlinx.serialization.serializer
+import kotlin.jvm.JvmInline
 import kotlin.properties.ReadOnlyProperty
 import kotlin.reflect.KProperty
 
@@ -83,7 +84,8 @@ sealed class PropertyType<T, B : PropertyBuilder<T>>(val builder: () -> B) {
     }
 }
 
-inline class DefinitionReference(val id: String) {
+@JvmInline
+value class DefinitionReference(val id: String) {
     val url get() = JsonPrimitive("#/definitions/$id")
 }
 

@@ -2,7 +2,6 @@ package com.github.ricky12awesome.jss.internal
 
 import com.github.ricky12awesome.jss.JsonSchema
 import com.github.ricky12awesome.jss.JsonSchema.*
-import com.github.ricky12awesome.jss.JsonSchema.IntRange
 import com.github.ricky12awesome.jss.JsonType
 import kotlinx.serialization.descriptors.*
 import kotlinx.serialization.json.JsonArray
@@ -23,6 +22,7 @@ internal val SerialKind.jsonType: JsonType
         PolymorphicKind.OPEN -> JsonType.OBJECT_SEALED
         PrimitiveKind.BYTE, PrimitiveKind.SHORT, PrimitiveKind.INT, PrimitiveKind.LONG,
         PrimitiveKind.FLOAT, PrimitiveKind.DOUBLE -> JsonType.NUMBER
+
         PrimitiveKind.STRING, PrimitiveKind.CHAR, SerialKind.ENUM -> JsonType.STRING
         PrimitiveKind.BOOLEAN -> JsonType.BOOLEAN
         else -> JsonType.OBJECT
@@ -115,7 +115,8 @@ internal fun SerialDescriptor.jsonSchemaObjectSealed(
     }
 
     polymorphicDescriptors.forEachIndexed { index, child ->
-        val schema = child.createJsonSchema(getElementAnnotations(index), definitions, polymorphicDescriptors)
+        // TODO: annotations
+        val schema = child.createJsonSchema(emptyList(), definitions, polymorphicDescriptors)
         val newSchema = schema.mapValues { (name, element) ->
             if (element is JsonObject && name == "properties") {
                 val prependProps = mutableMapOf<String, JsonElement>()
@@ -191,7 +192,7 @@ internal fun SerialDescriptor.jsonSchemaNumber(
             PrimitiveKind.BYTE, PrimitiveKind.SHORT, PrimitiveKind.INT, PrimitiveKind.LONG -> {
                 // Warning, Kotlin 1.7.20 will prefer Kotlin IntRange instead of the one from JsonSchema if the import
                 //  is not explicit (=> using import with * will break the build here, asking for a wrong min() call)
-                annotations.lastOfInstance<IntRange>()
+                annotations.lastOfInstance<JsonSchema.IntRange>()
                     ?.let { it.min as Number to it.max as Number }
             }
 
