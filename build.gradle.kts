@@ -40,12 +40,13 @@ kotlin {
   mingwX64()
   linuxX64()
   macosX64()
+  ios()
 
   sourceSets {
     val commonMain by getting {
       dependencies {
         implementation(kotlin("reflect"))
-        implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.0.1")
+        implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.4.0")
       }
     }
 
