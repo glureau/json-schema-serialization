@@ -4,6 +4,12 @@ The original repos may not be maintained anymore (see https://github.com/Ricky12
 This fork is an attempt to update to Kotlin 1.7.20 and handle polymorphism.
 
 
+Until we reach a stable state, you can use the library from our maven repository, just add this line in your gradle repositories:
+
+```maven(url = "https://raw.githubusercontent.com/glureau/json-schema-serialization/mvn-repo")```
+
+and you can use the latest version available (see [all versions](https://github.com/glureau/json-schema-serialization/tree/mvn-repo/com/github/Ricky12Awesome/json-schema-serialization)).
+
 ------
 
 [![Download](https://api.bintray.com/packages/ricky12awesome/github/json-schema-serialization/images/download.svg)](https://bintray.com/ricky12awesome/github/json-schema-serialization/_latestVersion)
