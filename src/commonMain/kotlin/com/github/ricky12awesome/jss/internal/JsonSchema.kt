@@ -84,7 +84,12 @@ internal fun SerialDescriptor.jsonSchemaObjectSealed(
 
     properties["type"] = buildJson {
         it["type"] = JsonType.STRING.json
-        it["enum"] = value.elementNames + polymorphicDescriptors.map { it.serialName }
+        val elementNames = value.elementNames + polymorphicDescriptors.map { it.serialName }
+        require(elementNames.isNotEmpty()) {
+            "$serialName of type SEALED doesn't have registered definitions. " +
+                    "Have you defined implementations with @Serializable annotation?"
+        }
+        it["enum"] = elementNames
     }
 
     required += JsonPrimitive("type")
