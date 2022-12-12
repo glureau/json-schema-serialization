@@ -1,0 +1,205 @@
+{
+  "formatVersion": "1.1",
+  "component": {
+    "url": "../../json-schema-serialization/0.8.0/json-schema-serialization-0.8.0.module",
+    "group": "com.github.Ricky12Awesome",
+    "module": "json-schema-serialization",
+    "version": "0.8.0",
+    "attributes": {
+      "org.gradle.status": "release"
+    }
+  },
+  "createdBy": {
+    "gradle": {
+      "version": "7.1.1"
+    }
+  },
+  "variants": [
+    {
+      "name": "jsLegacyApiElements-published",
+      "attributes": {
+        "org.gradle.category": "library",
+        "org.gradle.usage": "kotlin-api",
+        "org.jetbrains.kotlin.js.compiler": "legacy",
+        "org.jetbrains.kotlin.platform.type": "js"
+      },
+      "dependencies": [
+        {
+          "group": "org.jetbrains.kotlin",
+          "module": "kotlin-stdlib-js",
+          "version": {
+            "requires": "1.7.20"
+          }
+        },
+        {
+          "group": "org.jetbrains.kotlin",
+          "module": "kotlin-stdlib-common",
+          "version": {
+            "requires": "1.7.20"
+          }
+        }
+      ],
+      "files": [
+        {
+          "name": "json-schema-serialization-jslegacy-0.8.0.jar",
+          "url": "json-schema-serialization-js-0.8.0.jar",
+          "size": 108138,
+          "sha512": "a8712286159cd530fb251f536a8633e8f1427f379b7eea9fc2c2ac913714e038b140a4bbda70d53a33a65faaaaf3fdd571de54259a35c849182a7a61420b7087",
+          "sha256": "bfff8972f73e1760f26599fe2a13167909d904aac5b72e638a418771d70e846e",
+          "sha1": "567437e3a795412e52fef55e2f95a67a17abce86",
+          "md5": "3bc79c0e73ec1b782ebc4ad4a98464d3"
+        }
+      ]
+    },
+    {
+      "name": "jsLegacyRuntimeElements-published",
+      "attributes": {
+        "org.gradle.category": "library",
+        "org.gradle.usage": "kotlin-runtime",
+        "org.jetbrains.kotlin.js.compiler": "legacy",
+        "org.jetbrains.kotlin.platform.type": "js"
+      },
+      "dependencies": [
+        {
+          "group": "org.jetbrains.kotlin",
+          "module": "kotlin-stdlib-js",
+          "version": {
+            "requires": "1.7.20"
+          }
+        },
+        {
+          "group": "org.jetbrains.kotlin",
+          "module": "kotlin-stdlib-common",
+          "version": {
+            "requires": "1.7.20"
+          }
+        },
+        {
+          "group": "org.jetbrains.kotlin",
+          "module": "kotlin-reflect",
+          "version": {
+            "requires": "1.7.20"
+          }
+        },
+        {
+          "group": "org.jetbrains.kotlinx",
+          "module": "kotlinx-serialization-json",
+          "version": {
+            "requires": "1.4.0"
+          }
+        }
+      ],
+      "files": [
+        {
+          "name": "json-schema-serialization-jslegacy-0.8.0.jar",
+          "url": "json-schema-serialization-js-0.8.0.jar",
+          "size": 108138,
+          "sha512": "a8712286159cd530fb251f536a8633e8f1427f379b7eea9fc2c2ac913714e038b140a4bbda70d53a33a65faaaaf3fdd571de54259a35c849182a7a61420b7087",
+          "sha256": "bfff8972f73e1760f26599fe2a13167909d904aac5b72e638a418771d70e846e",
+          "sha1": "567437e3a795412e52fef55e2f95a67a17abce86",
+          "md5": "3bc79c0e73ec1b782ebc4ad4a98464d3"
+        }
+      ]
+    },
+    {
+      "name": "jsIrApiElements-published",
+      "attributes": {
+        "org.gradle.category": "library",
+        "org.gradle.usage": "kotlin-api",
+        "org.jetbrains.kotlin.js.compiler": "ir",
+        "org.jetbrains.kotlin.platform.type": "js"
+      },
+      "dependencies": [
+        {
+          "group": "org.jetbrains.kotlin",
+          "module": "kotlin-stdlib-js",
+          "version": {
+            "requires": "1.7.20"
+          }
+        },
+        {
+          "group": "org.jetbrains.kotlin",
+          "module": "kotlin-stdlib-common",
+          "version": {
+            "requires": "1.7.20"
+          }
+        },
+        {
+          "group": "org.jetbrains.kotlin",
+          "module": "kotlin-reflect",
+          "version": {
+            "requires": "1.7.20"
+          }
+        },
+        {
+          "group": "org.jetbrains.kotlinx",
+          "module": "kotlinx-serialization-json",
+          "version": {
+            "requires": "1.4.0"
+          }
+        }
+      ],
+      "files": [
+        {
+          "name": "json-schema-serialization-jsir-0.8.0.klib",
+          "url": "json-schema-serialization-js-0.8.0.klib",
+          "size": 67437,
+          "sha512": "89d96a0b56c8ae7d6f72362daa7d3fbc271681fb564443c315931af18215b399e93f3a1d39ecbc2a4f4ffd4a71067b97e18e209ded70d048b9673219e9047c53",
+          "sha256": "50eef47125326e625cc386907d07ea56f4b4e7a92548c3e0fcb60ff5491383f0",
+          "sha1": "7c996eae7f652c1716b8c2afa5c2ae4d5c3454d0",
+          "md5": "c005c336732e954ef4dcf1e2f265b469"
+        }
+      ]
+    },
+    {
+      "name": "jsIrRuntimeElements-published",
+      "attributes": {
+        "org.gradle.category": "library",
+        "org.gradle.usage": "kotlin-runtime",
+        "org.jetbrains.kotlin.js.compiler": "ir",
+        "org.jetbrains.kotlin.platform.type": "js"
+      },
+      "dependencies": [
+        {
+          "group": "org.jetbrains.kotlin",
+          "module": "kotlin-stdlib-js",
+          "version": {
+            "requires": "1.7.20"
+          }
+        },
+        {
+          "group": "org.jetbrains.kotlin",
+          "module": "kotlin-stdlib-common",
+          "version": {
+            "requires": "1.7.20"
+          }
+        },
+        {
+          "group": "org.jetbrains.kotlin",
+          "module": "kotlin-reflect",
+          "version": {
+            "requires": "1.7.20"
+          }
+        },
+        {
+          "group": "org.jetbrains.kotlinx",
+          "module": "kotlinx-serialization-json",
+          "version": {
+            "requires": "1.4.0"
+          }
+        }
+      ],
+      "files": [
+        {
+          "name": "json-schema-serialization-jsir-0.8.0.klib",
+          "url": "json-schema-serialization-js-0.8.0.klib",
+          "size": 67437,
+          "sha512": "89d96a0b56c8ae7d6f72362daa7d3fbc271681fb564443c315931af18215b399e93f3a1d39ecbc2a4f4ffd4a71067b97e18e209ded70d048b9673219e9047c53",
+          "sha256": "50eef47125326e625cc386907d07ea56f4b4e7a92548c3e0fcb60ff5491383f0",
+          "sha1": "7c996eae7f652c1716b8c2afa5c2ae4d5c3454d0",
+          "md5": "c005c336732e954ef4dcf1e2f265b469"
+        }
+      ]
+    }
+  ]
+}
