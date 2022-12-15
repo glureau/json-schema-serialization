@@ -1,3 +1,4 @@
+import org.gradle.internal.impldep.org.junit.experimental.categories.Categories.CategoryFilter.include
 import org.jetbrains.kotlin.konan.properties.loadProperties
 
 plugins {
@@ -5,11 +6,12 @@ plugins {
   kotlin("plugin.serialization") version "1.7.20"
   id("org.jetbrains.dokka") version "1.7.20"
   `maven-publish`
+  id("org.ajoberstar.git-publish") version "3.0.1"
+  id("org.ajoberstar.grgit") version "4.1.1"
 }
 
 repositories {
   mavenCentral()
-  jcenter()
 }
 
 kotlin {
@@ -41,6 +43,7 @@ kotlin {
   linuxX64()
   macosX64()
   ios()
+  iosSimulatorArm64()
 
   sourceSets {
     val commonMain by getting {
@@ -104,30 +107,59 @@ kotlin {
       dependsOn(nativeTest)
     }
 
+
+    val iosMain by getting
+    val iosTest by getting
+
+    val iosSimulatorArm64Main by getting {
+      dependsOn(iosMain)
+    }
+
+    val iosSimulatorArm64Test by getting {
+      dependsOn(iosTest)
+    }
+
     all {
       languageSettings.optIn("kotlinx.serialization.ExperimentalSerializationApi")
     }
   }
 }
 
-publishing {
-  val key = System.getenv("BINTRAY_API_KEY")
-  val user = "ricky12awesome"
-
-  repositories {
-    mavenLocal()
-
-    if (key != null) {
-      maven {
-        name = "bintray"
-        url = uri("https://api.bintray.com/maven/$user/github/json-schema-serialization/;publish=0;override=1")
-
-        credentials {
-          username = user
-          password = key
-        }
-      }
-    }
-  }
+val gitUser = System.getenv("GIT_USER")
+val gitPassword = System.getenv("GIT_PASSWORD")
+if (gitUser != null && gitPassword != null) {
+  System.setProperty("org.ajoberstar.grgit.auth.username", gitUser)
+  System.setProperty("org.ajoberstar.grgit.auth.password", gitPassword)
 }
 
+tasks.create<Delete>("cleanMavenLocalArtifacts") {
+  delete = setOf("$buildDir/mvn-repo/")
+}
+
+tasks.create<Sync>("copyMavenLocalArtifacts") {
+  group = "publishing"
+  dependsOn("publishToMavenLocal")
+
+  val userHome = System.getProperty("user.home")
+  val groupDir = project.group.toString().replace('.', '/')
+  val localRepository = "$userHome/.m2/repository/$groupDir/"
+
+  println("localRepository=$localRepository")
+  from(localRepository) {
+    include("*/${project.version}/**")
+  }
+
+  into("$buildDir/mvn-repo/$groupDir/")
+}
+
+gitPublish {
+  repoUri.set("git@github.com:glureau/json-schema-serialization.git")
+  branch.set("mvn-repo")
+  contents.from("$buildDir/mvn-repo")
+  preserve { include("**") }
+  val head = grgit.head()
+  println("COMMIT: ${head.abbreviatedId}: ${project.version} : ${head.fullMessage}")
+  commitMessage.set("${head.abbreviatedId}: ${project.version} : ${head.fullMessage}")
+}
+tasks["copyMavenLocalArtifacts"].dependsOn("cleanMavenLocalArtifacts")
+tasks["gitPublishPush"].dependsOn("copyMavenLocalArtifacts")
