@@ -48,11 +48,11 @@
         {
           "name": "json-schema-serialization-metadata-0.8.0.jar",
           "url": "json-schema-serialization-0.8.0.jar",
-          "size": 12156,
-          "sha512": "6cc2b46cb8af4208eacc71fda65adbe605b2b9d7d3b4255d0029d51f9eb5cc525a35de8bb943e5b1d34e3c2034a18291c05b1ff48f2624f0f99a134811df3914",
-          "sha256": "60b9296b516887650b86cacc7c19ba61921f7dd63d2dd6849155d347059bae6e",
-          "sha1": "02d8cd6537984bae2cfc1ea236de388448982a29",
-          "md5": "96911dc78a5185cfeb0291577a674ca5"
+          "size": 12165,
+          "sha512": "0e5d08f0177afb4c11ee52c98d215d91d12e7e96b1552949b90497d1cf83e00b9a016980f1e85fb996db903e3a986256a74d7d54c86fe452994fe1a5d91fced0",
+          "sha256": "93f5cc977b9f4a9539edff30e9196ec680e20df28c998acb3e3f544d847cd910",
+          "sha1": "896c93b4a5ed489e77a85722f84c1ce9e9b8c7c2",
+          "md5": "eaa989da5486f8fbf67371193cb40842"
         }
       ]
     },
@@ -85,6 +85,38 @@
         "url": "../../json-schema-serialization-iosarm64/0.8.0/json-schema-serialization-iosarm64-0.8.0.module",
         "group": "com.github.Ricky12Awesome",
         "module": "json-schema-serialization-iosarm64",
+        "version": "0.8.0"
+      }
+    },
+    {
+      "name": "iosSimulatorArm64ApiElements-published",
+      "attributes": {
+        "artifactType": "org.jetbrains.kotlin.klib",
+        "org.gradle.category": "library",
+        "org.gradle.usage": "kotlin-api",
+        "org.jetbrains.kotlin.native.target": "ios_simulator_arm64",
+        "org.jetbrains.kotlin.platform.type": "native"
+      },
+      "available-at": {
+        "url": "../../json-schema-serialization-iossimulatorarm64/0.8.0/json-schema-serialization-iossimulatorarm64-0.8.0.module",
+        "group": "com.github.Ricky12Awesome",
+        "module": "json-schema-serialization-iossimulatorarm64",
+        "version": "0.8.0"
+      }
+    },
+    {
+      "name": "iosSimulatorArm64MetadataElements-published",
+      "attributes": {
+        "artifactType": "org.jetbrains.kotlin.klib",
+        "org.gradle.category": "library",
+        "org.gradle.usage": "kotlin-metadata",
+        "org.jetbrains.kotlin.native.target": "ios_simulator_arm64",
+        "org.jetbrains.kotlin.platform.type": "native"
+      },
+      "available-at": {
+        "url": "../../json-schema-serialization-iossimulatorarm64/0.8.0/json-schema-serialization-iossimulatorarm64-0.8.0.module",
+        "group": "com.github.Ricky12Awesome",
+        "module": "json-schema-serialization-iossimulatorarm64",
         "version": "0.8.0"
       }
     },
