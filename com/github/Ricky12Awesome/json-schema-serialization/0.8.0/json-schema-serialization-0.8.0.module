@@ -48,13 +48,71 @@
         {
           "name": "json-schema-serialization-metadata-0.8.0.jar",
           "url": "json-schema-serialization-0.8.0.jar",
-          "size": 12165,
-          "sha512": "0e5d08f0177afb4c11ee52c98d215d91d12e7e96b1552949b90497d1cf83e00b9a016980f1e85fb996db903e3a986256a74d7d54c86fe452994fe1a5d91fced0",
-          "sha256": "93f5cc977b9f4a9539edff30e9196ec680e20df28c998acb3e3f544d847cd910",
-          "sha1": "896c93b4a5ed489e77a85722f84c1ce9e9b8c7c2",
-          "md5": "eaa989da5486f8fbf67371193cb40842"
+          "size": 12193,
+          "sha512": "c1c62832a6ef2972d1b2ead715d342f7b4376b4eaf6864fcbc541f0ed96bc58dcff6b8e7f7dcce5393fed6a3f243fa64ab225b1f02f75cf6813b365f61b8f2e9",
+          "sha256": "c99cbca186a12e3556d0d02e1ea8fba56593e34959abff131fb8a8d0d970a7c4",
+          "sha1": "b2c1e824ed3042192bfeb4876654919496a71de9",
+          "md5": "df8e30170d846fa103fc297ecd2e8618"
         }
       ]
+    },
+    {
+      "name": "debugApiElements-published",
+      "attributes": {
+        "com.android.build.api.attributes.BuildTypeAttr": "debug",
+        "org.gradle.category": "library",
+        "org.gradle.usage": "java-api",
+        "org.jetbrains.kotlin.platform.type": "androidJvm"
+      },
+      "available-at": {
+        "url": "../../json-schema-serialization-android-debug/0.8.0/json-schema-serialization-android-debug-0.8.0.module",
+        "group": "com.github.Ricky12Awesome",
+        "module": "json-schema-serialization-android-debug",
+        "version": "0.8.0"
+      }
+    },
+    {
+      "name": "debugRuntimeElements-published",
+      "attributes": {
+        "com.android.build.api.attributes.BuildTypeAttr": "debug",
+        "org.gradle.category": "library",
+        "org.gradle.usage": "java-runtime",
+        "org.jetbrains.kotlin.platform.type": "androidJvm"
+      },
+      "available-at": {
+        "url": "../../json-schema-serialization-android-debug/0.8.0/json-schema-serialization-android-debug-0.8.0.module",
+        "group": "com.github.Ricky12Awesome",
+        "module": "json-schema-serialization-android-debug",
+        "version": "0.8.0"
+      }
+    },
+    {
+      "name": "releaseApiElements-published",
+      "attributes": {
+        "org.gradle.category": "library",
+        "org.gradle.usage": "java-api",
+        "org.jetbrains.kotlin.platform.type": "androidJvm"
+      },
+      "available-at": {
+        "url": "../../json-schema-serialization-android/0.8.0/json-schema-serialization-android-0.8.0.module",
+        "group": "com.github.Ricky12Awesome",
+        "module": "json-schema-serialization-android",
+        "version": "0.8.0"
+      }
+    },
+    {
+      "name": "releaseRuntimeElements-published",
+      "attributes": {
+        "org.gradle.category": "library",
+        "org.gradle.usage": "java-runtime",
+        "org.jetbrains.kotlin.platform.type": "androidJvm"
+      },
+      "available-at": {
+        "url": "../../json-schema-serialization-android/0.8.0/json-schema-serialization-android-0.8.0.module",
+        "group": "com.github.Ricky12Awesome",
+        "module": "json-schema-serialization-android",
+        "version": "0.8.0"
+      }
     },
     {
       "name": "iosArm64ApiElements-published",
