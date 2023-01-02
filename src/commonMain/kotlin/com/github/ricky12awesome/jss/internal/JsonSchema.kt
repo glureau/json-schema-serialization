@@ -231,16 +231,25 @@ internal fun SerialDescriptor.createJsonSchema(
     polymorphicDescriptors: List<SerialDescriptor> = emptyList()
 ): JsonObject {
     val combinedAnnotations = annotations + this.annotations
-    val key = JsonSchemaDefinitions.Key(this, combinedAnnotations)
-
-    return when (kind.jsonType) {
-        JsonType.NUMBER -> definitions.get(key) { jsonSchemaNumber(combinedAnnotations) }
-        JsonType.STRING -> definitions.get(key) { jsonSchemaString(combinedAnnotations) }
-        JsonType.BOOLEAN -> definitions.get(key) { jsonSchemaBoolean(combinedAnnotations) }
-        JsonType.ARRAY -> definitions.get(key) { jsonSchemaArray(combinedAnnotations, definitions) }
-        JsonType.OBJECT -> definitions.get(key) { jsonSchemaObject(definitions) }
-        JsonType.OBJECT_MAP -> definitions.get(key) { jsonSchemaObjectMap(definitions) }
-        JsonType.OBJECT_SEALED -> definitions.get(key) { jsonSchemaObjectSealed(definitions, polymorphicDescriptors) }
+    var targetDescriptor = this
+    if (this.isInline) {
+        // Inline class has always 1 elementDescriptors
+        targetDescriptor = this.elementDescriptors.first()
+    }
+    val key = JsonSchemaDefinitions.Key(targetDescriptor, combinedAnnotations)
+    return when (targetDescriptor.kind.jsonType) {
+        JsonType.NUMBER -> definitions.get(key) { targetDescriptor.jsonSchemaNumber(combinedAnnotations) }
+        JsonType.STRING -> definitions.get(key) { targetDescriptor.jsonSchemaString(combinedAnnotations) }
+        JsonType.BOOLEAN -> definitions.get(key) { targetDescriptor.jsonSchemaBoolean(combinedAnnotations) }
+        JsonType.ARRAY -> definitions.get(key) { targetDescriptor.jsonSchemaArray(combinedAnnotations, definitions) }
+        JsonType.OBJECT -> definitions.get(key) { targetDescriptor.jsonSchemaObject(definitions) }
+        JsonType.OBJECT_MAP -> definitions.get(key) { targetDescriptor.jsonSchemaObjectMap(definitions) }
+        JsonType.OBJECT_SEALED -> definitions.get(key) {
+            targetDescriptor.jsonSchemaObjectSealed(
+                definitions,
+                polymorphicDescriptors
+            )
+        }
     }
 }
 

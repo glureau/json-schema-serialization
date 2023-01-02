@@ -15,7 +15,6 @@ import kotlinx.serialization.serializer
 import kotlin.jvm.JvmInline
 import kotlin.test.DefaultAsserter.assertEquals
 import kotlin.test.Test
-import kotlin.test.assertContentEquals
 
 @Serializable
 data class SimpleType(
@@ -24,7 +23,16 @@ data class SimpleType(
     val myNullableString: String?,
     val myNullableStringWithDefaultVal: String? = "defaultVal",
     val myNullableStringWithDefaultNull: String? = null,
+    val myProtectedString: ProtectedString,
 )
+
+@JvmInline
+@Serializable
+value class ProtectedString(val value: String) {
+    override fun toString(): String {
+        return "PROTECTED"
+    }
+}
 
 @Serializable
 data class Config(
@@ -103,8 +111,9 @@ class Tests {
     }
 
     @Test
-    fun another_one() {
-        assertEquals("no message", json.encodeToSchema(SimpleType.serializer(), false), """
+    fun check_SimpleType() {
+        assertEquals(
+            "no message", json.encodeToSchema(SimpleType.serializer(), false), """
             {
               "${"$"}schema": "http://json-schema.org/draft-07/schema",
               "additionalProperties": false,
@@ -150,17 +159,39 @@ class Tests {
                       "type": "string"
                     }
                   ]
+                },
+                "myProtectedString": {
+                  "additionalProperties": false,
+                  "type": "string"
                 }
               },
               "required": [
                 "myString",
-                "myNullableString"
+                "myNullableString",
+                "myProtectedString"
               ],
               "definitions": {
               }
             }
-        """.trimIndent())
+        """.trimIndent()
+        )
     }
+
+    @Test
+    fun check_ProtectedString() {
+        assertEquals(
+            "no message", json.encodeToSchema(ProtectedString.serializer(), false), """
+            {
+              "${"$"}schema": "http://json-schema.org/draft-07/schema",
+              "additionalProperties": false,
+              "type": "string",
+              "definitions": {
+              }
+            }
+        """.trimIndent()
+        )
+    }
+
 
     @Test
     fun annotated_schema_interface() {
