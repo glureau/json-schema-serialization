@@ -3,7 +3,6 @@ package com.github.ricky12awesome.jss.internal
 import com.github.ricky12awesome.jss.JsonSchema
 import com.github.ricky12awesome.jss.JsonSchema.*
 import com.github.ricky12awesome.jss.JsonType
-import com.github.ricky12awesome.jss.internal.JsonObjectBuilder
 import kotlinx.serialization.descriptors.*
 import kotlinx.serialization.json.*
 
@@ -32,8 +31,7 @@ internal inline fun <reified T> List<Annotation>.lastOfInstance(): T? {
 
 @PublishedApi
 internal fun SerialDescriptor.jsonSchemaObject(
-    definitions: JsonSchemaDefinitions,
-    additionalProperties: Boolean
+    definitions: JsonSchemaDefinitions
 ): JsonObject {
     val properties = mutableMapOf<String, JsonElement>()
     val required = mutableListOf<JsonPrimitive>()
@@ -42,7 +40,7 @@ internal fun SerialDescriptor.jsonSchemaObject(
         val name = getElementName(index)
         val annotations = getElementAnnotations(index)
 
-        properties[name] = child.createJsonSchema(annotations, definitions, additionalProperties = false)
+        properties[name] = child.createJsonSchema(annotations, definitions)
 
         if (!isElementOptional(index)) {
             required += JsonPrimitive(name)
@@ -70,8 +68,7 @@ internal fun SerialDescriptor.jsonSchemaObjectMap(definitions: JsonSchemaDefinit
 
         it["additionalProperties"] = value.createJsonSchema(
             getElementAnnotations(1),
-            definitions,
-            additionalProperties = false
+            definitions
         )
     }, additionalProperties = false)
 }
@@ -109,8 +106,7 @@ internal fun SerialDescriptor.jsonSchemaObjectSealed(
         val schema = child.createJsonSchema(
             value.getElementAnnotations(index),
             definitions,
-            polymorphicDescriptors,
-            false
+            polymorphicDescriptors
         )
         val newSchema = schema.mapValues { (name, element) ->
             if (element is JsonObject && name == "properties") {
@@ -131,7 +127,7 @@ internal fun SerialDescriptor.jsonSchemaObjectSealed(
 
     polymorphicDescriptors.forEachIndexed { index, child ->
         // TODO: annotations
-        val schema = child.createJsonSchema(emptyList(), definitions, polymorphicDescriptors, false)
+        val schema = child.createJsonSchema(emptyList(), definitions, polymorphicDescriptors)
         val newSchema = schema.mapValues { (name, element) ->
             if (element is JsonObject && name == "properties") {
                 val prependProps = mutableMapOf<String, JsonElement>()
@@ -172,7 +168,7 @@ internal fun SerialDescriptor.jsonSchemaArray(
     return jsonSchemaElement(annotations, extra = {
         val type = getElementDescriptor(0)
 
-        it["items"] = type.createJsonSchema(getElementAnnotations(0), definitions, additionalProperties = false)
+        it["items"] = type.createJsonSchema(getElementAnnotations(0), definitions)
     }, additionalProperties = false)
 }
 
@@ -191,7 +187,7 @@ internal fun SerialDescriptor.jsonSchemaString(
         if (enum.isNotEmpty()) {
             it["enum"] = enum.toList()
         }
-    }, additionalProperties = false)
+    })
 }
 
 @PublishedApi
@@ -232,8 +228,7 @@ internal fun SerialDescriptor.jsonSchemaBoolean(
 internal fun SerialDescriptor.createJsonSchema(
     annotations: List<Annotation>,
     definitions: JsonSchemaDefinitions,
-    polymorphicDescriptors: List<SerialDescriptor> = emptyList(),
-    additionalProperties: Boolean
+    polymorphicDescriptors: List<SerialDescriptor> = emptyList()
 ): JsonObject {
     val combinedAnnotations = annotations + this.annotations
     val key = JsonSchemaDefinitions.Key(this, combinedAnnotations)
@@ -243,9 +238,21 @@ internal fun SerialDescriptor.createJsonSchema(
         JsonType.STRING -> definitions.get(key) { jsonSchemaString(combinedAnnotations) }
         JsonType.BOOLEAN -> definitions.get(key) { jsonSchemaBoolean(combinedAnnotations) }
         JsonType.ARRAY -> definitions.get(key) { jsonSchemaArray(combinedAnnotations, definitions) }
-        JsonType.OBJECT -> definitions.get(key) { jsonSchemaObject(definitions, additionalProperties) }
+        JsonType.OBJECT -> definitions.get(key) { jsonSchemaObject(definitions) }
         JsonType.OBJECT_MAP -> definitions.get(key) { jsonSchemaObjectMap(definitions) }
         JsonType.OBJECT_SEALED -> definitions.get(key) { jsonSchemaObjectSealed(definitions, polymorphicDescriptors) }
+    }
+}
+
+@PublishedApi
+internal fun JsonObjectBuilder.addNullableType(type: JsonPrimitive) {
+    this["oneOf"] = buildJsonArray {
+        add(buildJson {
+            it["type"] = "null"
+        })
+        add(buildJson {
+            it["type"] = type
+        })
     }
 }
 
@@ -259,14 +266,7 @@ internal fun JsonObjectBuilder.applyJsonSchemaDefaults(
 ) {
     this["additionalProperties"] = additionalProperties
     if (descriptor.isNullable && !skipNullCheck) {
-        this["oneOf"] = buildJsonArray {
-            add(buildJson {
-                it["type"] = "null"
-            })
-            add(buildJson {
-                it["type"] = descriptor.jsonLiteral
-            })
-        }
+        addNullableType(descriptor.jsonLiteral)
     } else {
         if (!skipTypeCheck) {
             this["type"] = descriptor.jsonLiteral

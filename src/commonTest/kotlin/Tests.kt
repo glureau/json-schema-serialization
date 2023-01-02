@@ -13,7 +13,18 @@ import kotlinx.serialization.modules.polymorphic
 import kotlinx.serialization.modules.subclass
 import kotlinx.serialization.serializer
 import kotlin.jvm.JvmInline
+import kotlin.test.DefaultAsserter.assertEquals
 import kotlin.test.Test
+import kotlin.test.assertContentEquals
+
+@Serializable
+data class SimpleType(
+    val myString: String,
+    val myStringWithDefaultVal: String = "defaultVal",
+    val myNullableString: String?,
+    val myNullableStringWithDefaultVal: String? = "defaultVal",
+    val myNullableStringWithDefaultNull: String? = null,
+)
 
 @Serializable
 data class Config(
@@ -71,15 +82,16 @@ data class Theme(
     @Definition("ThemeColor") val accent: ThemeColor = ThemeColor.HSL(0, 0.0, 0.8),
     @Description(arrayOf("Background color for this theme."))
     @Definition("ThemeColor") val background: ThemeColor = ThemeColor.HEX("#242424"),
-    val foo:Foo = Foo.Baz
+    val foo: Foo = Foo.Baz
 )
 
 @Serializable
 sealed interface Foo {
     @Serializable
-    object Bar: Foo
+    object Bar : Foo
+
     @Serializable
-    object Baz: Foo
+    object Baz : Foo
 }
 
 class Tests {
@@ -88,6 +100,66 @@ class Tests {
     @Test
     fun annotated_schema() {
         println(json.encodeToSchema(Config.serializer(), false))
+    }
+
+    @Test
+    fun another_one() {
+        assertEquals("no message", json.encodeToSchema(SimpleType.serializer(), false), """
+            {
+              "${"$"}schema": "http://json-schema.org/draft-07/schema",
+              "additionalProperties": false,
+              "type": "object",
+              "properties": {
+                "myString": {
+                  "additionalProperties": false,
+                  "type": "string"
+                },
+                "myStringWithDefaultVal": {
+                  "additionalProperties": false,
+                  "type": "string"
+                },
+                "myNullableString": {
+                  "additionalProperties": false,
+                  "oneOf": [
+                    {
+                      "type": "null"
+                    },
+                    {
+                      "type": "string"
+                    }
+                  ]
+                },
+                "myNullableStringWithDefaultVal": {
+                  "additionalProperties": false,
+                  "oneOf": [
+                    {
+                      "type": "null"
+                    },
+                    {
+                      "type": "string"
+                    }
+                  ]
+                },
+                "myNullableStringWithDefaultNull": {
+                  "additionalProperties": false,
+                  "oneOf": [
+                    {
+                      "type": "null"
+                    },
+                    {
+                      "type": "string"
+                    }
+                  ]
+                }
+              },
+              "required": [
+                "myString",
+                "myNullableString"
+              ],
+              "definitions": {
+              }
+            }
+        """.trimIndent())
     }
 
     @Test

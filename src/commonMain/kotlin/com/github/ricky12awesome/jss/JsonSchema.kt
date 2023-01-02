@@ -209,7 +209,7 @@ fun buildJsonSchema(
         "additionalProperties" to JsonPrimitive(additionalProperties)
     )
     val definitions = JsonSchemaDefinitions(autoDefinitions)
-    val root = descriptor.createJsonSchema(descriptor.annotations, definitions, polymorphicDescriptors, additionalProperties)
+    val root = descriptor.createJsonSchema(descriptor.annotations, definitions, polymorphicDescriptors)
     val append = mapOf("definitions" to definitions.getDefinitionsAsJsonObject())
 
     return JsonObject(prepend + root + append)
