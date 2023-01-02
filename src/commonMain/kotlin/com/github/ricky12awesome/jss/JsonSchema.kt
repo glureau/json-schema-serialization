@@ -174,10 +174,19 @@ fun Json.stringifyToSchema(descriptor: SerialDescriptor): String = encodeToSchem
  *
  * @param generateDefinitions Should this generate definitions by default
  */
-fun Json.encodeToSchema(descriptor: SerialDescriptor, generateDefinitions: Boolean = true): String {
+fun Json.encodeToSchema(
+    descriptor: SerialDescriptor,
+    generateDefinitions: Boolean = true,
+    additionalProperties: Boolean = false
+): String {
     return encodeToString(
         JsonObject.serializer(),
-        buildJsonSchema(descriptor, serializersModule.getPolymorphicDescriptors(descriptor), generateDefinitions)
+        buildJsonSchema(
+            descriptor,
+            serializersModule.getPolymorphicDescriptors(descriptor),
+            generateDefinitions,
+            additionalProperties
+        )
     )
 }
 
@@ -203,10 +212,17 @@ fun Json.encodeToSchema(serializer: SerializationStrategy<*>, generateDefinition
 }
 
 @OptIn(ExperimentalStdlibApi::class)
-inline fun <reified T : Any> Json.encodeToSchema(generateDefinitions: Boolean = true): String {
+inline fun <reified T : Any> Json.encodeToSchema(
+    generateDefinitions: Boolean = true,
+    additionalProperties: Boolean = false,
+): String {
     val serializer = serializersModule.serializer(typeOf<T>())
     val descriptor = serializer.descriptor
-    return encodeToSchema(descriptor, generateDefinitions)
+    return encodeToSchema(
+        descriptor = descriptor,
+        generateDefinitions = generateDefinitions,
+        additionalProperties = additionalProperties
+    )
 }
 
 /**
@@ -217,9 +233,13 @@ inline fun <reified T : Any> Json.encodeToSchema(generateDefinitions: Boolean = 
 fun buildJsonSchema(
     descriptor: SerialDescriptor,
     polymorphicDescriptors: List<SerialDescriptor> = emptyList(),
-    autoDefinitions: Boolean = false
+    autoDefinitions: Boolean = false,
+    additionalProperties: Boolean = false,
 ): JsonObject {
-    val prepend = mapOf("\$schema" to JsonPrimitive("http://json-schema.org/draft-07/schema"))
+    val prepend = mapOf(
+        "\$schema" to JsonPrimitive("http://json-schema.org/draft-07/schema"),
+        "additionalProperties" to JsonPrimitive(additionalProperties)
+    )
     val definitions = JsonSchemaDefinitions(autoDefinitions)
     val root = descriptor.createJsonSchema(descriptor.annotations, definitions, polymorphicDescriptors)
     val append = mapOf("definitions" to definitions.getDefinitionsAsJsonObject())
@@ -236,7 +256,8 @@ fun buildJsonSchema(
 fun buildJsonSchema(
     serializer: SerializationStrategy<*>,
     polymorphicDescriptors: List<SerialDescriptor> = emptyList(),
-    generateDefinitions: Boolean = true
+    generateDefinitions: Boolean = true,
+    additionalProperties: Boolean = false
 ): JsonObject {
-    return buildJsonSchema(serializer.descriptor, polymorphicDescriptors, generateDefinitions)
+    return buildJsonSchema(serializer.descriptor, polymorphicDescriptors, generateDefinitions, additionalProperties)
 }

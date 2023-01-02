@@ -101,7 +101,7 @@ class Tests {
         val json = Json(globalJson) {
             serializersModule = Json.serializersModule + module
         }
-        println(json.encodeToSchema<ColorSpaceWithHue>(false))
+        println(json.encodeToSchema<ColorSpaceWithHue>(false, true))
     }
 
     @Test
