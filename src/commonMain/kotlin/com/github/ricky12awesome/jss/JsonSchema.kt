@@ -135,18 +135,6 @@ annotation class JsonSchema {
 }
 
 /**
- * Will be removed in 0.8.0
- */
-@Deprecated(
-    message = "Use encodeWithSchema instead",
-    replaceWith = ReplaceWith("this.encodeWithSchema(serializer, value, url)"),
-    level = DeprecationLevel.ERROR
-)
-fun <T> Json.stringifyWithSchema(serializer: SerializationStrategy<T>, value: T, url: String): String {
-    return encodeWithSchema(serializer, value, url)
-}
-
-/**
  * Adds a `$schema` property with the provided [url] that points to the Json Schema,
  * this can be a File location or a HTTP URL
  *
@@ -158,16 +146,6 @@ fun <T> Json.encodeWithSchema(serializer: SerializationStrategy<T>, value: T, ur
 
     return encodeToString(JsonObject.serializer(), JsonObject(append + json))
 }
-
-/**
- * Will be removed in 0.8.0
- */
-@Deprecated(
-    message = "Use encodeToSchema instead",
-    replaceWith = ReplaceWith("this.encodeToSchema(descriptor)"),
-    level = DeprecationLevel.ERROR
-)
-fun Json.stringifyToSchema(descriptor: SerialDescriptor): String = encodeToSchema(descriptor)
 
 /**
  * Stringifies the provided [descriptor] with [buildJsonSchema]
@@ -189,16 +167,6 @@ fun Json.encodeToSchema(
         )
     )
 }
-
-/**
- * Will be removed in 0.8.0
- */
-@Deprecated(
-    message = "Use encodeToSchema instead",
-    replaceWith = ReplaceWith("this.encodeToSchema(serializer)"),
-    level = DeprecationLevel.ERROR
-)
-fun Json.stringifyToSchema(serializer: SerializationStrategy<*>): String = encodeToSchema(serializer)
 
 /**
  * Stringifies the provided [serializer] with [buildJsonSchema], same as doing
