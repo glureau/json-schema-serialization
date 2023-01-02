@@ -1,8 +1,6 @@
-import org.gradle.internal.impldep.org.junit.experimental.categories.Categories.CategoryFilter.include
-import org.jetbrains.kotlin.konan.properties.loadProperties
-
 plugins {
   kotlin("multiplatform") version "1.7.20"
+  id("com.android.library") version "7.0.1"
   kotlin("plugin.serialization") version "1.7.20"
   id("org.jetbrains.dokka") version "1.7.20"
   `maven-publish`
@@ -12,6 +10,18 @@ plugins {
 
 repositories {
   mavenCentral()
+  google()
+}
+
+android {
+  buildToolsVersion = "33.0.1"
+  compileSdk = 33
+  sourceSets["main"].manifest.srcFile("src/androidMain/AndroidManifest.xml")
+
+  defaultConfig {
+    minSdk = 21
+    targetSdk = 33
+  }
 }
 
 kotlin {
@@ -44,6 +54,7 @@ kotlin {
   macosX64()
   ios()
   iosSimulatorArm64()
+  android { publishLibraryVariants("release", "debug") }
 
   sourceSets {
     val commonMain by getting {
@@ -116,6 +127,7 @@ kotlin {
     }
 
     val iosSimulatorArm64Test by getting {
+      dependsOn(iosMain)
       dependsOn(iosTest)
     }
 
