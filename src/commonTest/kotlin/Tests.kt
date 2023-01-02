@@ -167,6 +167,7 @@ class Tests {
               },
               "required": [
                 "myString",
+                "myStringWithDefaultVal",
                 "myNullableString",
                 "myProtectedString"
               ],

@@ -42,7 +42,10 @@ internal fun SerialDescriptor.jsonSchemaObject(
 
         properties[name] = child.createJsonSchema(annotations, definitions)
 
-        if (!isElementOptional(index)) {
+        // If it's not nullable, it's a default value, and it's safer to mark it as required if used with 'encodeDefaults = true'
+        // Also we don't know if it's enabled or not, so we may want to expose an option instead.
+        val elementDescriptor = getElementDescriptor(index)
+        if (!(elementDescriptor.isNullable && isElementOptional(index))) {
             required += JsonPrimitive(name)
         }
     }
