@@ -1,0 +1,107 @@
+{
+  "formatVersion": "1.1",
+  "component": {
+    "url": "../../json-schema-serialization/0.8.4/json-schema-serialization-0.8.4.module",
+    "group": "com.github.Ricky12Awesome",
+    "module": "json-schema-serialization",
+    "version": "0.8.4",
+    "attributes": {
+      "org.gradle.status": "release"
+    }
+  },
+  "createdBy": {
+    "gradle": {
+      "version": "7.1.1"
+    }
+  },
+  "variants": [
+    {
+      "name": "macosX64ApiElements-published",
+      "attributes": {
+        "artifactType": "org.jetbrains.kotlin.klib",
+        "org.gradle.category": "library",
+        "org.gradle.usage": "kotlin-api",
+        "org.jetbrains.kotlin.native.target": "macos_x64",
+        "org.jetbrains.kotlin.platform.type": "native"
+      },
+      "dependencies": [
+        {
+          "group": "org.jetbrains.kotlin",
+          "module": "kotlin-stdlib-common",
+          "version": {
+            "requires": "1.7.20"
+          }
+        },
+        {
+          "group": "org.jetbrains.kotlin",
+          "module": "kotlin-reflect",
+          "version": {
+            "requires": "1.7.20"
+          }
+        },
+        {
+          "group": "org.jetbrains.kotlinx",
+          "module": "kotlinx-serialization-json",
+          "version": {
+            "requires": "1.4.0"
+          }
+        }
+      ],
+      "files": [
+        {
+          "name": "json-schema-serialization.klib",
+          "url": "json-schema-serialization-macosx64-0.8.4.klib",
+          "size": 71283,
+          "sha512": "d83795e1e5b7c75e947b2becf72e4411ab0853549caef9606e8507f895a9c0a18c7006eadeb0e00837ca9f4cd19ccff682757c3f7a01cc4734c129fae2bda874",
+          "sha256": "a44f61873cd6f430fa2dbcc3997bf9196d40119bc14e29e295c6857199761e1e",
+          "sha1": "dd2808f7ae841a8a633707b6e4d92bd9107746a0",
+          "md5": "cf31a058c087f2ded85122c24944774d"
+        }
+      ]
+    },
+    {
+      "name": "macosX64MetadataElements-published",
+      "attributes": {
+        "artifactType": "org.jetbrains.kotlin.klib",
+        "org.gradle.category": "library",
+        "org.gradle.usage": "kotlin-metadata",
+        "org.jetbrains.kotlin.native.target": "macos_x64",
+        "org.jetbrains.kotlin.platform.type": "native"
+      },
+      "dependencies": [
+        {
+          "group": "org.jetbrains.kotlin",
+          "module": "kotlin-stdlib-common",
+          "version": {
+            "requires": "1.7.20"
+          }
+        },
+        {
+          "group": "org.jetbrains.kotlin",
+          "module": "kotlin-reflect",
+          "version": {
+            "requires": "1.7.20"
+          }
+        },
+        {
+          "group": "org.jetbrains.kotlinx",
+          "module": "kotlinx-serialization-json",
+          "version": {
+            "requires": "1.4.0"
+          }
+        }
+      ],
+      "files": [
+        {
+          "name": "json-schema-serialization-macosx64-0.8.4-metadata.jar",
+          "url": "json-schema-serialization-macosx64-0.8.4-metadata.jar",
+          "size": 261,
+          "sha512": "3a82a21f071dcf3218cbd1e8c0f0246f43d585fbb366e737ca7cd64ba066a09313d6b84dc6226707555a09bdba5a7f3f16e1b92e30a005ad24edfd9190a1e6e2",
+          "sha256": "76edb1a7e0b2ff73150809b4a16807434aebbcca5e2653794e27c70107d146c7",
+          "sha1": "d5fe1e939a2950be543f7333c9c334f8b726d065",
+          "md5": "06950f64be9cc7800a91c14ad33f945b"
+        }
+      ]
+    }
+  ]
+}
