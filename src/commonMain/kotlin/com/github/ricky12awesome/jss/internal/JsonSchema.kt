@@ -259,11 +259,13 @@ internal fun JsonObjectBuilder.applyJsonSchemaDefaults(
 ) {
     this["additionalProperties"] = additionalProperties
     if (descriptor.isNullable && !skipNullCheck) {
-        this["if"] = buildJson {
-            it["type"] = descriptor.jsonLiteral
-        }
-        this["else"] = buildJson {
-            it["type"] = "null"
+        this["oneOf"] = buildJsonArray {
+            add(buildJson {
+                it["type"] = "null"
+            })
+            add(buildJson {
+                it["type"] = descriptor.jsonLiteral
+            })
         }
     } else {
         if (!skipTypeCheck) {
