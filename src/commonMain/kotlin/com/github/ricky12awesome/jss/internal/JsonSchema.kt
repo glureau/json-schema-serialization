@@ -3,11 +3,9 @@ package com.github.ricky12awesome.jss.internal
 import com.github.ricky12awesome.jss.JsonSchema
 import com.github.ricky12awesome.jss.JsonSchema.*
 import com.github.ricky12awesome.jss.JsonType
+import com.github.ricky12awesome.jss.internal.JsonObjectBuilder
 import kotlinx.serialization.descriptors.*
-import kotlinx.serialization.json.JsonArray
-import kotlinx.serialization.json.JsonElement
-import kotlinx.serialization.json.JsonObject
-import kotlinx.serialization.json.JsonPrimitive
+import kotlinx.serialization.json.*
 
 @PublishedApi
 internal inline val SerialDescriptor.jsonLiteral
@@ -33,7 +31,10 @@ internal inline fun <reified T> List<Annotation>.lastOfInstance(): T? {
 }
 
 @PublishedApi
-internal fun SerialDescriptor.jsonSchemaObject(definitions: JsonSchemaDefinitions): JsonObject {
+internal fun SerialDescriptor.jsonSchemaObject(
+    definitions: JsonSchemaDefinitions,
+    additionalProperties: Boolean
+): JsonObject {
     val properties = mutableMapOf<String, JsonElement>()
     val required = mutableListOf<JsonPrimitive>()
 
@@ -41,14 +42,14 @@ internal fun SerialDescriptor.jsonSchemaObject(definitions: JsonSchemaDefinition
         val name = getElementName(index)
         val annotations = getElementAnnotations(index)
 
-        properties[name] = child.createJsonSchema(annotations, definitions)
+        properties[name] = child.createJsonSchema(annotations, definitions, additionalProperties = false)
 
         if (!isElementOptional(index)) {
             required += JsonPrimitive(name)
         }
     }
 
-    return jsonSchemaElement(annotations) {
+    return jsonSchemaElement(annotations, extra = {
         if (properties.isNotEmpty()) {
             it["properties"] = JsonObject(properties)
         }
@@ -56,19 +57,23 @@ internal fun SerialDescriptor.jsonSchemaObject(definitions: JsonSchemaDefinition
         if (required.isNotEmpty()) {
             it["required"] = JsonArray(required)
         }
-    }
+    }, additionalProperties = false)
 }
 
 internal fun SerialDescriptor.jsonSchemaObjectMap(definitions: JsonSchemaDefinitions): JsonObject {
-    return jsonSchemaElement(annotations, skipNullCheck = false) {
+    return jsonSchemaElement(annotations, skipNullCheck = false, extra = {
         val (key, value) = elementDescriptors.toList()
 
         require(key.kind == PrimitiveKind.STRING) {
             "cannot have non string keys in maps"
         }
 
-        it["additionalProperties"] = value.createJsonSchema(getElementAnnotations(1), definitions)
-    }
+        it["additionalProperties"] = value.createJsonSchema(
+            getElementAnnotations(1),
+            definitions,
+            additionalProperties = false
+        )
+    }, additionalProperties = false)
 }
 
 @PublishedApi
@@ -101,7 +106,12 @@ internal fun SerialDescriptor.jsonSchemaObjectSealed(
     }
 
     value.elementDescriptors.forEachIndexed { index, child ->
-        val schema = child.createJsonSchema(value.getElementAnnotations(index), definitions, polymorphicDescriptors)
+        val schema = child.createJsonSchema(
+            value.getElementAnnotations(index),
+            definitions,
+            polymorphicDescriptors,
+            false
+        )
         val newSchema = schema.mapValues { (name, element) ->
             if (element is JsonObject && name == "properties") {
                 val prependProps = mutableMapOf<String, JsonElement>()
@@ -121,7 +131,7 @@ internal fun SerialDescriptor.jsonSchemaObjectSealed(
 
     polymorphicDescriptors.forEachIndexed { index, child ->
         // TODO: annotations
-        val schema = child.createJsonSchema(emptyList(), definitions, polymorphicDescriptors)
+        val schema = child.createJsonSchema(emptyList(), definitions, polymorphicDescriptors, false)
         val newSchema = schema.mapValues { (name, element) ->
             if (element is JsonObject && name == "properties") {
                 val prependProps = mutableMapOf<String, JsonElement>()
@@ -139,7 +149,7 @@ internal fun SerialDescriptor.jsonSchemaObjectSealed(
         anyOf += JsonObject(newSchema)
     }
 
-    return jsonSchemaElement(annotations, skipNullCheck = true, skipTypeCheck = true) {
+    return jsonSchemaElement(annotations, skipNullCheck = true, skipTypeCheck = true, extra = {
         if (properties.isNotEmpty()) {
             it["properties"] = JsonObject(properties)
         }
@@ -151,7 +161,7 @@ internal fun SerialDescriptor.jsonSchemaObjectSealed(
         if (required.isNotEmpty()) {
             it["required"] = JsonArray(required)
         }
-    }
+    }, additionalProperties = false)
 }
 
 @PublishedApi
@@ -159,18 +169,18 @@ internal fun SerialDescriptor.jsonSchemaArray(
     annotations: List<Annotation> = listOf(),
     definitions: JsonSchemaDefinitions
 ): JsonObject {
-    return jsonSchemaElement(annotations) {
+    return jsonSchemaElement(annotations, extra = {
         val type = getElementDescriptor(0)
 
-        it["items"] = type.createJsonSchema(getElementAnnotations(0), definitions)
-    }
+        it["items"] = type.createJsonSchema(getElementAnnotations(0), definitions, additionalProperties = false)
+    }, additionalProperties = false)
 }
 
 @PublishedApi
 internal fun SerialDescriptor.jsonSchemaString(
     annotations: List<Annotation> = listOf()
 ): JsonObject {
-    return jsonSchemaElement(annotations) {
+    return jsonSchemaElement(annotations, extra = {
         val pattern = annotations.lastOfInstance<Pattern>()?.pattern ?: ""
         val enum = annotations.lastOfInstance<StringEnum>()?.values ?: arrayOf()
 
@@ -181,14 +191,14 @@ internal fun SerialDescriptor.jsonSchemaString(
         if (enum.isNotEmpty()) {
             it["enum"] = enum.toList()
         }
-    }
+    }, additionalProperties = false)
 }
 
 @PublishedApi
 internal fun SerialDescriptor.jsonSchemaNumber(
     annotations: List<Annotation> = listOf()
 ): JsonObject {
-    return jsonSchemaElement(annotations) {
+    return jsonSchemaElement(annotations, extra = {
         val value = when (kind) {
             PrimitiveKind.FLOAT, PrimitiveKind.DOUBLE -> annotations
                 .lastOfInstance<FloatRange>()
@@ -208,21 +218,22 @@ internal fun SerialDescriptor.jsonSchemaNumber(
             it["minimum"] = min
             it["maximum"] = max
         }
-    }
+    }, additionalProperties = false)
 }
 
 @PublishedApi
 internal fun SerialDescriptor.jsonSchemaBoolean(
     annotations: List<Annotation> = listOf()
 ): JsonObject {
-    return jsonSchemaElement(annotations)
+    return jsonSchemaElement(annotations, additionalProperties = false)
 }
 
 @PublishedApi
 internal fun SerialDescriptor.createJsonSchema(
     annotations: List<Annotation>,
     definitions: JsonSchemaDefinitions,
-    polymorphicDescriptors: List<SerialDescriptor> = emptyList()
+    polymorphicDescriptors: List<SerialDescriptor> = emptyList(),
+    additionalProperties: Boolean
 ): JsonObject {
     val combinedAnnotations = annotations + this.annotations
     val key = JsonSchemaDefinitions.Key(this, combinedAnnotations)
@@ -232,7 +243,7 @@ internal fun SerialDescriptor.createJsonSchema(
         JsonType.STRING -> definitions.get(key) { jsonSchemaString(combinedAnnotations) }
         JsonType.BOOLEAN -> definitions.get(key) { jsonSchemaBoolean(combinedAnnotations) }
         JsonType.ARRAY -> definitions.get(key) { jsonSchemaArray(combinedAnnotations, definitions) }
-        JsonType.OBJECT -> definitions.get(key) { jsonSchemaObject(definitions) }
+        JsonType.OBJECT -> definitions.get(key) { jsonSchemaObject(definitions, additionalProperties) }
         JsonType.OBJECT_MAP -> definitions.get(key) { jsonSchemaObjectMap(definitions) }
         JsonType.OBJECT_SEALED -> definitions.get(key) { jsonSchemaObjectSealed(definitions, polymorphicDescriptors) }
     }
@@ -243,8 +254,10 @@ internal fun JsonObjectBuilder.applyJsonSchemaDefaults(
     descriptor: SerialDescriptor,
     annotations: List<Annotation>,
     skipNullCheck: Boolean = false,
-    skipTypeCheck: Boolean = false
+    skipTypeCheck: Boolean = false,
+    additionalProperties: Boolean = false,
 ) {
+    this["additionalProperties"] = additionalProperties
     if (descriptor.isNullable && !skipNullCheck) {
         this["if"] = buildJson {
             it["type"] = descriptor.jsonLiteral
@@ -280,11 +293,12 @@ internal inline fun SerialDescriptor.jsonSchemaElement(
     skipNullCheck: Boolean = false,
     skipTypeCheck: Boolean = false,
     applyDefaults: Boolean = true,
-    extra: (JsonObjectBuilder) -> Unit = {}
+    extra: (JsonObjectBuilder) -> Unit = {},
+    additionalProperties: Boolean = false
 ): JsonObject {
     return buildJson {
         if (applyDefaults) {
-            it.applyJsonSchemaDefaults(this, annotations, skipNullCheck, skipTypeCheck)
+            it.applyJsonSchemaDefaults(this, annotations, skipNullCheck, skipTypeCheck, additionalProperties)
         }
 
         it.apply(extra)
@@ -301,6 +315,7 @@ internal class JsonObjectBuilder(
     operator fun set(key: String, value: Iterable<String>) = set(key, JsonArray(value.map(::JsonPrimitive)))
     operator fun set(key: String, value: String?) = set(key, JsonPrimitive(value))
     operator fun set(key: String, value: Number?) = set(key, JsonPrimitive(value))
+    operator fun set(key: String, value: Boolean?) = set(key, JsonPrimitive(value))
 }
 
 internal class JsonSchemaDefinitions(private val isEnabled: Boolean = true) {
@@ -333,9 +348,9 @@ internal class JsonSchemaDefinitions(private val isEnabled: Boolean = true) {
     operator fun get(key: Key): JsonObject {
         val id = getId(key)
 
-        return key.descriptor.jsonSchemaElement(key.annotations, skipNullCheck = true, skipTypeCheck = true) {
+        return key.descriptor.jsonSchemaElement(key.annotations, skipNullCheck = true, skipTypeCheck = true, extra = {
             it["\$ref"] = "#/definitions/$id"
-        }
+        }, additionalProperties = false)
     }
 
     fun get(key: Key, create: () -> JsonObject): JsonObject {
