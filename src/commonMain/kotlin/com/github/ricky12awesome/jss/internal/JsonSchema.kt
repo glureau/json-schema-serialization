@@ -63,7 +63,9 @@ internal fun Json.jsonSchemaObject(
     // Or better, determine if that class is supported by a serializer.
     // Also, we may want to support JsonClassDiscriminator... (different discriminator depending on the depth)
     if (exposeClassDiscriminator) {
-        properties[this.configuration.classDiscriminator] = JsonPrimitive(serialDescriptor.serialName)
+        properties[this.configuration.classDiscriminator] = JsonObject(
+            mapOf("const" to JsonPrimitive(serialDescriptor.serialName))
+        )
         required += JsonPrimitive(this.configuration.classDiscriminator)
     }
 
@@ -135,8 +137,7 @@ internal fun Json.jsonSchemaObjectSealed(
             serialDescriptor = child,
             annotations = value.getElementAnnotations(index),
             definitions = definitions,
-            exposeClassDiscriminator = exposeClassDiscriminator,
-            polymorphicDescriptors = polymorphicDescriptors
+            exposeClassDiscriminator = exposeClassDiscriminator
         )
         val newSchema = schema.mapValues { (name, element) ->
             if (element is JsonObject && name == "properties") {
@@ -161,8 +162,7 @@ internal fun Json.jsonSchemaObjectSealed(
             serialDescriptor = child,
             annotations = emptyList(), //value.getElementAnnotations(index),
             definitions = definitions,
-            exposeClassDiscriminator = exposeClassDiscriminator,
-            polymorphicDescriptors = polymorphicDescriptors
+            exposeClassDiscriminator = exposeClassDiscriminator
         )
         val newSchema = schema.mapValues { (name, element) ->
             if (element is JsonObject && name == "properties") {
@@ -283,16 +283,16 @@ internal fun Json.createJsonSchema(
     annotations: List<Annotation>,
     definitions: JsonSchemaDefinitions,
     exposeClassDiscriminator: Boolean,
-    polymorphicDescriptors: List<SerialDescriptor> = emptyList(),
 ): JsonObject {
     val combinedAnnotations = annotations + serialDescriptor.annotations
     var targetDescriptor = serialDescriptor
 
-    if (serialDescriptor.kind == SerialKind.CONTEXTUAL) {
-        targetDescriptor = serializersModule.getContextual(targetDescriptor.capturedKClass as KClass<*>)!!.descriptor
-    } else if (serialDescriptor.isInline) {
+    if (serialDescriptor.isInline) {
         // Inline class has always 1 elementDescriptors
         targetDescriptor = serialDescriptor.elementDescriptors.first()
+    }
+    if (targetDescriptor.kind == SerialKind.CONTEXTUAL) {
+        targetDescriptor = serializersModule.getContextual(targetDescriptor.capturedKClass as KClass<*>)!!.descriptor
     }
 
     val key = JsonSchemaDefinitions.Key(targetDescriptor, combinedAnnotations)
