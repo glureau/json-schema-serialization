@@ -24,7 +24,8 @@ class InstantTest {
               "properties": {
                 "createdAt": {
                   "additionalProperties": false,
-                  "type": "date-time"
+                  "type": "string",
+                  "format": "date-time"
                 }
               },
               "required": [

@@ -238,8 +238,7 @@ internal fun SerialDescriptor.jsonSchemaString(
         }
 
         if (this.serialName == "Instant") { // kotlinx.datetime
-            // override "string" type here...
-            it["type"] = "date-time"
+            it["format"] = "date-time"
         }
     })
 }
