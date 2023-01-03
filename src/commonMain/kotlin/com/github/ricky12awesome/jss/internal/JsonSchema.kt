@@ -116,11 +116,12 @@ internal fun Json.jsonSchemaObjectSealed(
 
     properties["type"] = buildJson {
         it["type"] = JsonType.STRING.json
-        val elementNames = value.elementNames + polymorphicDescriptors.map { it.serialName }
+        var elementNames: List<String?> = value.elementNames + polymorphicDescriptors.map { it.serialName }
         require(elementNames.isNotEmpty()) {
             "${serialDescriptor.serialName} of type SEALED doesn't have registered definitions. " +
                     "Have you defined implementations with @Serializable annotation?"
         }
+        if (serialDescriptor.isNullable) elementNames += null
         it["enum"] = elementNames
     }
 
@@ -234,7 +235,9 @@ internal fun SerialDescriptor.jsonSchemaString(
         }
 
         if (enum.isNotEmpty()) {
-            it["enum"] = enum.toList()
+            var entries: List<String?> = enum.toList()
+            if (isNullable) entries += null
+            it["enum"] = entries
         }
 
         if (this.serialName == "Instant") { // kotlinx.datetime
