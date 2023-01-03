@@ -4,8 +4,6 @@ import kotlinx.serialization.json.JsonObject
 import kotlin.test.Test
 
 class SchemaDslTest {
-    val json = globalJson
-
     @Test
     @ExperimentalJsonSchemaDSL
     fun schema_dsl() {
@@ -47,6 +45,6 @@ class SchemaDslTest {
             }
         }
 
-        println(json.encodeToString(JsonObject.serializer(), schema))
+        println(globalJson.encodeToString(JsonObject.serializer(), schema))
     }
 }

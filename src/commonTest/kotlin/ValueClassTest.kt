@@ -14,12 +14,10 @@ private value class ProtectedString(val value: String) {
 }
 
 class ValueClassTest {
-    val json = globalJson
-
     @Test
     fun check_ProtectedString() {
         assertEquals(
-            "no message", json.encodeToSchema(ProtectedString.serializer(), false), """
+            "no message", globalJson.encodeToSchema(ProtectedString.serializer(), false), """
             {
               "${"$"}schema": "http://json-schema.org/draft-07/schema",
               "additionalProperties": false,

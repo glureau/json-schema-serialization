@@ -5,7 +5,7 @@ import kotlin.test.DefaultAsserter.assertEquals
 import kotlin.test.Test
 
 
-class NullableDefaultTests {
+class NullableDefaultTest {
 
     @Serializable
     data class SimpleType(
