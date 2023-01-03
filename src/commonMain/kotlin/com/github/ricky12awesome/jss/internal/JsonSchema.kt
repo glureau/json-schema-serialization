@@ -44,10 +44,10 @@ internal fun Json.jsonSchemaObject(
         val annotations = serialDescriptor.getElementAnnotations(index)
 
         properties[name] = createJsonSchema(
-            child,
-            annotations,
-            definitions,
-            exposeClassDiscriminator
+            serialDescriptor = child,
+            annotations = annotations,
+            definitions = definitions,
+            exposeClassDiscriminator = false // Temporary trick for my needs :'( , only 1st level is impacted.
         )
 
         // If it's not nullable, it's a default value, and it's safer to mark it as required if used with 'encodeDefaults = true'
@@ -58,6 +58,9 @@ internal fun Json.jsonSchemaObject(
         }
     }
 
+    // We should check if the class extends a class/interface annotated to know if this is probably required.
+    // Or better, determine if that class is supported by a serializer.
+    // Also we may want to support JsonClassDiscriminator... (different discriminator depending on the depth)
     if (exposeClassDiscriminator) {
         properties[this.configuration.classDiscriminator] = JsonType.STRING.json
     }

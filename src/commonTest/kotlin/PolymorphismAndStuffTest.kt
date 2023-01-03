@@ -85,6 +85,10 @@ private sealed interface Foo {
     object Baz : Foo
 }
 
+@Serializable
+@SerialName("Bim")
+object Bim
+
 // Stuff: because many other details are still in this class for now...
 class PolymorphismAndStuffTest {
     val json = Json(globalJson) {
@@ -100,6 +104,25 @@ class PolymorphismAndStuffTest {
     fun serialName() {
         assertEquals(
             json.encodeToSchema(Foo.Baz.serializer(), false, exposeClassDiscriminator = true),
+            """
+                {
+                  "${"$"}schema": "http://json-schema.org/draft-07/schema",
+                  "additionalProperties": false,
+                  "type": "object",
+                  "properties": {
+                    "classDiscriminator": "string"
+                  },
+                  "definitions": {
+                  }
+                }
+            """.trimIndent()
+        )
+    }
+
+    @Test
+    fun serialName2() {
+        assertEquals(
+            json.encodeToSchema(Bim.serializer(), false, exposeClassDiscriminator = true),
             """
                 {
                   "${"$"}schema": "http://json-schema.org/draft-07/schema",
