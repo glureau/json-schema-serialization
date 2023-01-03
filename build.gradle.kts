@@ -71,6 +71,13 @@ kotlin {
       }
     }
 
+    val androidMain by getting
+    val androidTest by getting {
+      dependencies {
+        implementation(kotlin("test-junit"))
+      }
+    }
+
     val jvmMain by getting
     val jvmTest by getting {
       dependencies {
