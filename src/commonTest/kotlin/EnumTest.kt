@@ -12,15 +12,15 @@ class EnumTest {
 
     @Serializable
     public data class Address(
-        val country: Country,
+        val country: Country?,
         val details: String,
     )
 
     @Test
-    fun check_ProtectedString() {
-        println(globalJson.encodeToSchema(Address.serializer(), false,))
+    fun check() {
+        println(globalJson.encodeToSchema(Address.serializer(), false))
         assertEquals(
-            globalJson.encodeToSchema(Address.serializer(), false,), """
+            globalJson.encodeToSchema(Address.serializer(), false), """
             {
               "${"$"}schema": "http://json-schema.org/draft-07/schema",
               "additionalProperties": false,
@@ -28,9 +28,16 @@ class EnumTest {
               "properties": {
                 "country": {
                   "additionalProperties": false,
-                  "type": "string",
-                  "enum": [
-                    "France"
+                  "oneOf": [
+                    {
+                      "type": "null"
+                    },
+                    {
+                      "type": "string",
+                      "enum": [
+                        "France"
+                      ]
+                    }
                   ]
                 },
                 "details": {

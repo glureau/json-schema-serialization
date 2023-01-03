@@ -116,12 +116,11 @@ internal fun Json.jsonSchemaObjectSealed(
 
     properties["type"] = buildJson {
         it["type"] = JsonType.STRING.json
-        var elementNames: List<String?> = value.elementNames + polymorphicDescriptors.map { it.serialName }
+        val elementNames = value.elementNames + polymorphicDescriptors.map { it.serialName }
         require(elementNames.isNotEmpty()) {
             "${serialDescriptor.serialName} of type SEALED doesn't have registered definitions. " +
                     "Have you defined implementations with @Serializable annotation?"
         }
-        if (serialDescriptor.isNullable) elementNames += null
         it["enum"] = elementNames
     }
 
@@ -235,9 +234,7 @@ internal fun SerialDescriptor.jsonSchemaString(
         }
 
         if (enum.isNotEmpty()) {
-            var entries: List<String?> = enum.toList()
-            if (isNullable) entries += null
-            it["enum"] = entries
+            it["enum"] = enum.toList()
         }
 
         if (this.serialName == "Instant") { // kotlinx.datetime
@@ -339,18 +336,6 @@ internal fun Json.createJsonSchema(
 }
 
 @PublishedApi
-internal fun JsonObjectBuilder.addNullableType(type: JsonPrimitive) {
-    this["oneOf"] = buildJsonArray {
-        add(buildJson {
-            it["type"] = "null"
-        })
-        add(buildJson {
-            it["type"] = type
-        })
-    }
-}
-
-@PublishedApi
 internal fun JsonObjectBuilder.applyJsonSchemaDefaults(
     descriptor: SerialDescriptor,
     annotations: List<Annotation>,
@@ -360,16 +345,27 @@ internal fun JsonObjectBuilder.applyJsonSchemaDefaults(
 ) {
     this["additionalProperties"] = additionalProperties
     if (descriptor.isNullable && !skipNullCheck) {
-        addNullableType(descriptor.jsonLiteral)
+        this["oneOf"] = buildJsonArray {
+            add(buildJson {
+                it["type"] = "null"
+            })
+            add(buildJson {
+                it["type"] = descriptor.jsonLiteral
+                if (descriptor.kind == SerialKind.ENUM) {
+                    it["enum"] = descriptor.elementNames
+                }
+            })
+        }
+
     } else {
         if (!skipTypeCheck) {
             this["type"] = descriptor.jsonLiteral
         }
+        if (descriptor.kind == SerialKind.ENUM) {
+            this["enum"] = descriptor.elementNames
+        }
     }
 
-    if (descriptor.kind == SerialKind.ENUM) {
-        this["enum"] = descriptor.elementNames
-    }
 
     if (annotations.isNotEmpty()) {
         val description = annotations
