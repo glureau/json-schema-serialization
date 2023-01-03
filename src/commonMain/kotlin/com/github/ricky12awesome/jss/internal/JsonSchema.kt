@@ -63,6 +63,7 @@ internal fun Json.jsonSchemaObject(
     // Also we may want to support JsonClassDiscriminator... (different discriminator depending on the depth)
     if (exposeClassDiscriminator) {
         properties[this.configuration.classDiscriminator] = JsonType.STRING.json
+        required += JsonPrimitive(this.configuration.classDiscriminator)
     }
 
     return serialDescriptor.jsonSchemaElement(serialDescriptor.annotations, extra = {
