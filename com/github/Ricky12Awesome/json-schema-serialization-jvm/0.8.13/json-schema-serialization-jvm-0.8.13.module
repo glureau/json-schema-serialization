@@ -1,0 +1,105 @@
+{
+  "formatVersion": "1.1",
+  "component": {
+    "url": "../../json-schema-serialization/0.8.13/json-schema-serialization-0.8.13.module",
+    "group": "com.github.Ricky12Awesome",
+    "module": "json-schema-serialization",
+    "version": "0.8.13",
+    "attributes": {
+      "org.gradle.status": "release"
+    }
+  },
+  "createdBy": {
+    "gradle": {
+      "version": "7.1.1"
+    }
+  },
+  "variants": [
+    {
+      "name": "jvmApiElements-published",
+      "attributes": {
+        "org.gradle.category": "library",
+        "org.gradle.libraryelements": "jar",
+        "org.gradle.usage": "java-api",
+        "org.jetbrains.kotlin.platform.type": "jvm"
+      },
+      "dependencies": [
+        {
+          "group": "org.jetbrains.kotlin",
+          "module": "kotlin-stdlib-jdk8",
+          "version": {
+            "requires": "1.7.20"
+          }
+        },
+        {
+          "group": "org.jetbrains.kotlin",
+          "module": "kotlin-stdlib-common",
+          "version": {
+            "requires": "1.7.20"
+          }
+        }
+      ],
+      "files": [
+        {
+          "name": "json-schema-serialization-jvm-0.8.13.jar",
+          "url": "json-schema-serialization-jvm-0.8.13.jar",
+          "size": 143698,
+          "sha512": "f15b87137aa00ec8c9ef8de2be694559c1cb9dd6fab2db8002f0daa6dff853f645ce951fb939c3b033784ead727b528fcedb5c39b7a9759796fae3f819d997a4",
+          "sha256": "b7abe0f91099192dd36ffa78fda0560b750c5fa699dd2f788b046bc507b106e8",
+          "sha1": "7885b7b891c3b3e8fbed42df9edc830ad5ac9890",
+          "md5": "62cbb9fd339a9449634d87dd228b005e"
+        }
+      ]
+    },
+    {
+      "name": "jvmRuntimeElements-published",
+      "attributes": {
+        "org.gradle.category": "library",
+        "org.gradle.libraryelements": "jar",
+        "org.gradle.usage": "java-runtime",
+        "org.jetbrains.kotlin.platform.type": "jvm"
+      },
+      "dependencies": [
+        {
+          "group": "org.jetbrains.kotlin",
+          "module": "kotlin-stdlib-jdk8",
+          "version": {
+            "requires": "1.7.20"
+          }
+        },
+        {
+          "group": "org.jetbrains.kotlin",
+          "module": "kotlin-stdlib-common",
+          "version": {
+            "requires": "1.7.20"
+          }
+        },
+        {
+          "group": "org.jetbrains.kotlin",
+          "module": "kotlin-reflect",
+          "version": {
+            "requires": "1.7.20"
+          }
+        },
+        {
+          "group": "org.jetbrains.kotlinx",
+          "module": "kotlinx-serialization-json",
+          "version": {
+            "requires": "1.4.0"
+          }
+        }
+      ],
+      "files": [
+        {
+          "name": "json-schema-serialization-jvm-0.8.13.jar",
+          "url": "json-schema-serialization-jvm-0.8.13.jar",
+          "size": 143698,
+          "sha512": "f15b87137aa00ec8c9ef8de2be694559c1cb9dd6fab2db8002f0daa6dff853f645ce951fb939c3b033784ead727b528fcedb5c39b7a9759796fae3f819d997a4",
+          "sha256": "b7abe0f91099192dd36ffa78fda0560b750c5fa699dd2f788b046bc507b106e8",
+          "sha1": "7885b7b891c3b3e8fbed42df9edc830ad5ac9890",
+          "md5": "62cbb9fd339a9449634d87dd228b005e"
+        }
+      ]
+    }
+  ]
+}
