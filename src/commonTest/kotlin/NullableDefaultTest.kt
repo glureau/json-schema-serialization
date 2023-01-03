@@ -21,7 +21,7 @@ class NullableDefaultTest {
     @Test
     fun check_SimpleType() {
         assertEquals(
-            "no message", json.encodeToSchema(SimpleType.serializer(), false), """
+            "no message", json.encodeToSchema(SimpleType.serializer(), false,), """
             {
               "${"$"}schema": "http://json-schema.org/draft-07/schema",
               "additionalProperties": false,

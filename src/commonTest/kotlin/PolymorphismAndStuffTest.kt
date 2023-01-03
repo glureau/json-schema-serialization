@@ -13,6 +13,7 @@ import kotlinx.serialization.modules.subclass
 import kotlinx.serialization.serializer
 import kotlin.jvm.JvmInline
 import kotlin.test.Test
+import kotlin.test.assertEquals
 
 
 @Serializable
@@ -80,16 +81,38 @@ private sealed interface Foo {
     object Bar : Foo
 
     @Serializable
+    @SerialName("Bazzz")
     object Baz : Foo
 }
 
 // Stuff: because many other details are still in this class for now...
 class PolymorphismAndStuffTest {
-    val json = globalJson
+    val json = Json(globalJson) {
+        classDiscriminator = "classDiscriminator"
+    }
 
     @Test
     fun annotated_schema() {
         println(json.encodeToSchema(Config.serializer(), false))
+    }
+
+    @Test
+    fun serialName() {
+        assertEquals(
+            json.encodeToSchema(Foo.Baz.serializer(), false, exposeClassDiscriminator = true),
+            """
+                {
+                  "${"$"}schema": "http://json-schema.org/draft-07/schema",
+                  "additionalProperties": false,
+                  "type": "object",
+                  "properties": {
+                    "classDiscriminator": "string"
+                  },
+                  "definitions": {
+                  }
+                }
+            """.trimIndent()
+        )
     }
 
     @Test

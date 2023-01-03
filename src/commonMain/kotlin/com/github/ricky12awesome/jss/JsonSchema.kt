@@ -5,7 +5,6 @@ import com.github.ricky12awesome.jss.internal.createJsonSchema
 import kotlinx.serialization.*
 import kotlinx.serialization.descriptors.*
 import kotlinx.serialization.json.*
-import kotlinx.serialization.modules.SerializersModule
 import kotlin.reflect.typeOf
 
 /**
@@ -156,15 +155,16 @@ fun <T> Json.encodeWithSchema(serializer: SerializationStrategy<T>, value: T, ur
 fun Json.encodeToSchema(
     descriptor: SerialDescriptor,
     generateDefinitions: Boolean = true,
-    additionalProperties: Boolean = false
+    additionalProperties: Boolean = false,
+    exposeClassDiscriminator: Boolean = false,
 ): String {
     return encodeToString(
         JsonObject.serializer(),
         buildJsonSchema(
             descriptor,
-            serializersModule,
             generateDefinitions,
-            additionalProperties
+            additionalProperties,
+            exposeClassDiscriminator
         )
     )
 }
@@ -176,21 +176,31 @@ fun Json.encodeToSchema(
  * ```
  * @param generateDefinitions Should this generate definitions by default
  */
-fun Json.encodeToSchema(serializer: SerializationStrategy<*>, generateDefinitions: Boolean = true): String {
-    return encodeToSchema(serializer.descriptor, generateDefinitions)
+fun Json.encodeToSchema(
+    serializer: SerializationStrategy<*>,
+    generateDefinitions: Boolean = true,
+    exposeClassDiscriminator: Boolean = false,
+): String {
+    return encodeToSchema(
+        serializer.descriptor,
+        generateDefinitions = generateDefinitions,
+        exposeClassDiscriminator = exposeClassDiscriminator
+    )
 }
 
 @OptIn(ExperimentalStdlibApi::class)
 inline fun <reified T : Any> Json.encodeToSchema(
     generateDefinitions: Boolean = true,
     additionalProperties: Boolean = false,
+    exposeClassDiscriminator: Boolean = false,
 ): String {
     val serializer = serializersModule.serializer(typeOf<T>())
     val descriptor = serializer.descriptor
     return encodeToSchema(
         descriptor = descriptor,
         generateDefinitions = generateDefinitions,
-        additionalProperties = additionalProperties
+        additionalProperties = additionalProperties,
+        exposeClassDiscriminator = exposeClassDiscriminator,
     )
 }
 
@@ -199,21 +209,22 @@ inline fun <reified T : Any> Json.encodeToSchema(
  *
  * @param autoDefinitions automatically generate definitions by default
  */
-fun buildJsonSchema(
+fun Json.buildJsonSchema(
     descriptor: SerialDescriptor,
-    serializersModule: SerializersModule,
     autoDefinitions: Boolean = false,
     additionalProperties: Boolean = false,
+    exposeClassDiscriminator: Boolean,
 ): JsonObject {
     val prepend = mapOf(
         "\$schema" to JsonPrimitive("http://json-schema.org/draft-07/schema"),
         "additionalProperties" to JsonPrimitive(additionalProperties)
     )
     val definitions = JsonSchemaDefinitions(autoDefinitions)
-    val root = descriptor.createJsonSchema(
+    val root = createJsonSchema(
+        descriptor,
         descriptor.annotations,
         definitions,
-        serializersModule
+        exposeClassDiscriminator,
     )
     val append = mapOf("definitions" to definitions.getDefinitionsAsJsonObject())
 
@@ -226,11 +237,11 @@ fun buildJsonSchema(
  *
  * @param generateDefinitions Should this generate definitions by default
  */
-fun buildJsonSchema(
+fun Json.buildJsonSchema(
     serializer: SerializationStrategy<*>,
-    serializersModule: SerializersModule,
     generateDefinitions: Boolean = true,
-    additionalProperties: Boolean = false
+    additionalProperties: Boolean = false,
+    exposeClassDiscriminator: Boolean = false,
 ): JsonObject {
-    return buildJsonSchema(serializer.descriptor, serializersModule, generateDefinitions, additionalProperties)
+    return buildJsonSchema(serializer.descriptor, generateDefinitions, additionalProperties, exposeClassDiscriminator)
 }

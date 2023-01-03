@@ -18,9 +18,9 @@ class EnumTest {
 
     @Test
     fun check_ProtectedString() {
-        println(globalJson.encodeToSchema(Address.serializer(), false))
+        println(globalJson.encodeToSchema(Address.serializer(), false,))
         assertEquals(
-            globalJson.encodeToSchema(Address.serializer(), false), """
+            globalJson.encodeToSchema(Address.serializer(), false,), """
             {
               "${"$"}schema": "http://json-schema.org/draft-07/schema",
               "additionalProperties": false,

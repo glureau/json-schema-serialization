@@ -17,7 +17,7 @@ class ValueClassTest {
     @Test
     fun check_ProtectedString() {
         assertEquals(
-            "no message", globalJson.encodeToSchema(ProtectedString.serializer(), false), """
+            "no message", globalJson.encodeToSchema(ProtectedString.serializer(), false,), """
             {
               "${"$"}schema": "http://json-schema.org/draft-07/schema",
               "additionalProperties": false,

@@ -50,9 +50,9 @@ class CustomSerializerTest {
 
     @Test
     fun check() {
-        println(json.encodeToSchema(Container.serializer(), false))
+        println(json.encodeToSchema(Container.serializer(), false,))
         assertEquals(
-            json.encodeToSchema(Container.serializer(), false), """
+            json.encodeToSchema(Container.serializer(), false,), """
             {
               "${"$"}schema": "http://json-schema.org/draft-07/schema",
               "additionalProperties": false,
