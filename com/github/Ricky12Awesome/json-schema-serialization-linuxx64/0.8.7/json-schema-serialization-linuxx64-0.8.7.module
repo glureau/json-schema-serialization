@@ -1,0 +1,63 @@
+{
+  "formatVersion": "1.1",
+  "component": {
+    "url": "../../json-schema-serialization/0.8.7/json-schema-serialization-0.8.7.module",
+    "group": "com.github.Ricky12Awesome",
+    "module": "json-schema-serialization",
+    "version": "0.8.7",
+    "attributes": {
+      "org.gradle.status": "release"
+    }
+  },
+  "createdBy": {
+    "gradle": {
+      "version": "7.1.1"
+    }
+  },
+  "variants": [
+    {
+      "name": "linuxX64ApiElements-published",
+      "attributes": {
+        "artifactType": "org.jetbrains.kotlin.klib",
+        "org.gradle.category": "library",
+        "org.gradle.usage": "kotlin-api",
+        "org.jetbrains.kotlin.native.target": "linux_x64",
+        "org.jetbrains.kotlin.platform.type": "native"
+      },
+      "dependencies": [
+        {
+          "group": "org.jetbrains.kotlin",
+          "module": "kotlin-stdlib-common",
+          "version": {
+            "requires": "1.7.20"
+          }
+        },
+        {
+          "group": "org.jetbrains.kotlin",
+          "module": "kotlin-reflect",
+          "version": {
+            "requires": "1.7.20"
+          }
+        },
+        {
+          "group": "org.jetbrains.kotlinx",
+          "module": "kotlinx-serialization-json",
+          "version": {
+            "requires": "1.4.0"
+          }
+        }
+      ],
+      "files": [
+        {
+          "name": "json-schema-serialization.klib",
+          "url": "json-schema-serialization-linuxx64-0.8.7.klib",
+          "size": 73378,
+          "sha512": "725439c66f756e1c66a9a0330f3f20c601e61b009d21ddc1ae157cd4d09b22ab6e10e00da7b69575c72fd1ebfcc677b9922c9affa24937508dd981e85ea730bb",
+          "sha256": "f2c5385a4f0b9c853bbcac09f5e46e20230da8dd81e7a72a257e05b104521199",
+          "sha1": "5c5fa2c3a4788d50d2000bc0d7ce179a3d44c3a2",
+          "md5": "3e52f0b706755eb9b567fec029b11eb4"
+        }
+      ]
+    }
+  ]
+}
