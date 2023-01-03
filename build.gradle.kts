@@ -68,6 +68,7 @@ kotlin {
       dependencies {
         implementation(kotlin("test-common"))
         implementation(kotlin("test-annotations-common"))
+        implementation("org.jetbrains.kotlinx:kotlinx-datetime:0.4.0")
       }
     }
 
@@ -82,7 +83,7 @@ kotlin {
     val jvmTest by getting {
       dependencies {
         implementation(kotlin("test-junit5"))
-        runtimeOnly("org.junit.jupiter:junit-jupiter-engine:5.0.0")
+        runtimeOnly("org.junit.jupiter:junit-jupiter-engine:5.9.1")
       }
     }
 

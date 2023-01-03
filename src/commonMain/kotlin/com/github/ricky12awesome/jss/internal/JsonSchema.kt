@@ -51,7 +51,7 @@ internal fun Json.jsonSchemaObject(
         )
 
         // If it's not nullable, it's a default value, and it's safer to mark it as required if used with 'encodeDefaults = true'
-        // Also we don't know if it's enabled or not, so we may want to expose an option instead.
+        // Also, we don't know if it's enabled or not, so we may want to expose an option instead.
         val elementDescriptor = serialDescriptor.getElementDescriptor(index)
         if (!(elementDescriptor.isNullable && serialDescriptor.isElementOptional(index))) {
             required += JsonPrimitive(name)
@@ -60,9 +60,9 @@ internal fun Json.jsonSchemaObject(
 
     // We should check if the class extends a class/interface annotated to know if this is probably required.
     // Or better, determine if that class is supported by a serializer.
-    // Also we may want to support JsonClassDiscriminator... (different discriminator depending on the depth)
+    // Also, we may want to support JsonClassDiscriminator... (different discriminator depending on the depth)
     if (exposeClassDiscriminator) {
-        properties[this.configuration.classDiscriminator] = JsonType.STRING.json
+        properties[this.configuration.classDiscriminator] = JsonPrimitive(serialDescriptor.serialName)
         required += JsonPrimitive(this.configuration.classDiscriminator)
     }
 
@@ -227,6 +227,11 @@ internal fun SerialDescriptor.jsonSchemaString(
 
         if (enum.isNotEmpty()) {
             it["enum"] = enum.toList()
+        }
+
+        if (this.serialName == "Instant") { // kotlinx.datetime
+            // override "string" type here...
+            it["type"] = "date-time"
         }
     })
 }
