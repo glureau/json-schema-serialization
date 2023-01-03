@@ -30,48 +30,51 @@ private interface ColorSpaceWithHue {
 
 @Serializable
 private sealed interface ThemeColor {
-    @JvmInline
-    @Serializable
-    @SerialName("HEX")
-    value class HEX(
-        @Pattern("#[0-9a-fA-F]{2,6}") val hex: String
-    ) : ThemeColor
-
-    @Serializable
-    @SerialName("RGB")
-    data class RGB(
-        @JsonSchema.IntRange(0, 255) val r: Int,
-        @JsonSchema.IntRange(0, 255) val g: Int,
-        @JsonSchema.IntRange(0, 255) val b: Int
-    ) : ThemeColor
-
-    @Serializable
-    @SerialName("HSV")
-    data class HSV(
-        @JsonSchema.IntRange(1, 360) override val h: Int,
-        @FloatRange(0.0, 1.0) val s: Double,
-        @FloatRange(0.0, 1.0) val v: Double
-    ) : ThemeColor, ColorSpaceWithHue
-
-    @Serializable
-    @SerialName("HSL")
-    data class HSL(
-        @JsonSchema.IntRange(1, 360) override val h: Int,
-        @FloatRange(0.0, 1.0) val s: Double,
-        @FloatRange(0.0, 1.0) val l: Double
-    ) : ThemeColor, ColorSpaceWithHue
 }
+
+@JvmInline
+@Serializable
+@SerialName("HEX")
+value class HEX(
+    @Pattern("#[0-9a-fA-F]{2,6}") val hex: String
+) : ThemeColor
+
+
+@Serializable
+@SerialName("RGB")
+data class RGB(
+    @JsonSchema.IntRange(0, 255) val r: Int,
+    @JsonSchema.IntRange(0, 255) val g: Int,
+    @JsonSchema.IntRange(0, 255) val b: Int
+) : ThemeColor
+
+
+@Serializable
+@SerialName("HSV")
+data class HSV(
+    @JsonSchema.IntRange(1, 360) override val h: Int,
+    @FloatRange(0.0, 1.0) val s: Double,
+    @FloatRange(0.0, 1.0) val v: Double
+) : ThemeColor, ColorSpaceWithHue
+
+@Serializable
+@SerialName("HSL")
+data class HSL(
+    @JsonSchema.IntRange(1, 360) override val h: Int,
+    @FloatRange(0.0, 1.0) val s: Double,
+    @FloatRange(0.0, 1.0) val l: Double
+) : ThemeColor, ColorSpaceWithHue
 
 @Serializable
 private data class Theme(
     @Description(arrayOf("Primary color for this theme."))
-    @Definition("ThemeColor") val primary: ThemeColor = ThemeColor.RGB(128, 128, 128),
+    @Definition("ThemeColor") val primary: ThemeColor = RGB(128, 128, 128),
     @Description(arrayOf("Secondary color for this theme."))
-    @Definition("ThemeColor") val secondary: ThemeColor = ThemeColor.HSV(0, 0.0, 0.3),
+    @Definition("ThemeColor") val secondary: ThemeColor = HSV(0, 0.0, 0.3),
     @Description(arrayOf("Accent color for this theme."))
-    @Definition("ThemeColor") val accent: ThemeColor = ThemeColor.HSL(0, 0.0, 0.8),
+    @Definition("ThemeColor") val accent: ThemeColor = HSL(0, 0.0, 0.8),
     @Description(arrayOf("Background color for this theme."))
-    @Definition("ThemeColor") val background: ThemeColor = ThemeColor.HEX("#242424"),
+    @Definition("ThemeColor") val background: ThemeColor = HEX("#242424"),
     val foo: Foo = Foo.Baz
 )
 
@@ -148,8 +151,8 @@ class PolymorphismAndStuffTest {
     fun annotated_schema_interface() {
         val module = SerializersModule {
             polymorphic(ColorSpaceWithHue::class) {
-                subclass(Json.serializersModule.serializer<ThemeColor.HSV>())
-                subclass(Json.serializersModule.serializer<ThemeColor.HSL>())
+                subclass(Json.serializersModule.serializer<HSV>())
+                subclass(Json.serializersModule.serializer<HSL>())
             }
         }
         val json = Json(globalJson) {

@@ -47,7 +47,8 @@ internal fun Json.jsonSchemaObject(
             serialDescriptor = child,
             annotations = annotations,
             definitions = definitions,
-            exposeClassDiscriminator = false // Temporary trick for my needs :'( , only 1st level is impacted.
+            exposeClassDiscriminator = false,
+            // Temporary trick for my needs :'( , only 1st level is impacted.
         )
 
         // If it's not nullable, it's a default value, and it's safer to mark it as required if used with 'encodeDefaults = true'
@@ -93,7 +94,7 @@ internal fun Json.jsonSchemaObjectMap(
             value,
             serialDescriptor.getElementAnnotations(1),
             definitions,
-            exposeClassDiscriminator
+            exposeClassDiscriminator,
         )
     }, additionalProperties = false)
 }
@@ -102,7 +103,6 @@ internal fun Json.jsonSchemaObjectMap(
 internal fun Json.jsonSchemaObjectSealed(
     serialDescriptor: SerialDescriptor,
     definitions: JsonSchemaDefinitions,
-    polymorphicDescriptors: List<SerialDescriptor>,
     exposeClassDiscriminator: Boolean
 ): JsonObject {
     val properties = mutableMapOf<String, JsonElement>()
@@ -110,6 +110,7 @@ internal fun Json.jsonSchemaObjectSealed(
     val anyOf = mutableListOf<JsonElement>()
 
     val (_, value) = serialDescriptor.elementDescriptors.toList()
+    val polymorphicDescriptors = serializersModule.getPolymorphicDescriptors(serialDescriptor)
 
     properties["type"] = buildJson {
         it["type"] = JsonType.STRING.json
@@ -131,10 +132,11 @@ internal fun Json.jsonSchemaObjectSealed(
 
     value.elementDescriptors.forEachIndexed { index, child ->
         val schema = createJsonSchema(
-            child,
-            value.getElementAnnotations(index),
-            definitions,
-            exposeClassDiscriminator
+            serialDescriptor = child,
+            annotations = value.getElementAnnotations(index),
+            definitions = definitions,
+            exposeClassDiscriminator = exposeClassDiscriminator,
+            polymorphicDescriptors = polymorphicDescriptors
         )
         val newSchema = schema.mapValues { (name, element) ->
             if (element is JsonObject && name == "properties") {
@@ -155,7 +157,13 @@ internal fun Json.jsonSchemaObjectSealed(
 
     polymorphicDescriptors.forEachIndexed { index, child ->
         // TODO: annotations
-        val schema = createJsonSchema(child, emptyList(), definitions, exposeClassDiscriminator)
+        val schema = createJsonSchema(
+            serialDescriptor = child,
+            annotations = emptyList(), //value.getElementAnnotations(index),
+            definitions = definitions,
+            exposeClassDiscriminator = exposeClassDiscriminator,
+            polymorphicDescriptors = polymorphicDescriptors
+        )
         val newSchema = schema.mapValues { (name, element) ->
             if (element is JsonObject && name == "properties") {
                 val prependProps = mutableMapOf<String, JsonElement>()
@@ -276,6 +284,7 @@ internal fun Json.createJsonSchema(
     annotations: List<Annotation>,
     definitions: JsonSchemaDefinitions,
     exposeClassDiscriminator: Boolean,
+    polymorphicDescriptors: List<SerialDescriptor> = emptyList(),
 ): JsonObject {
     val combinedAnnotations = annotations + serialDescriptor.annotations
     var targetDescriptor = serialDescriptor
@@ -321,7 +330,6 @@ internal fun Json.createJsonSchema(
             jsonSchemaObjectSealed(
                 targetDescriptor,
                 definitions,
-                serializersModule.getPolymorphicDescriptors(serialDescriptor),
                 exposeClassDiscriminator
             )
         }

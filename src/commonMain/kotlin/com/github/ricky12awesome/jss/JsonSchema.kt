@@ -225,6 +225,7 @@ fun Json.buildJsonSchema(
         descriptor.annotations,
         definitions,
         exposeClassDiscriminator,
+        serializersModule.getPolymorphicDescriptors(descriptor)
     )
     val append = mapOf("definitions" to definitions.getDefinitionsAsJsonObject())
 
