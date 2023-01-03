@@ -5,6 +5,7 @@ import com.github.ricky12awesome.jss.internal.createJsonSchema
 import kotlinx.serialization.*
 import kotlinx.serialization.descriptors.*
 import kotlinx.serialization.json.*
+import kotlinx.serialization.modules.SerializersModule
 import kotlin.reflect.typeOf
 
 /**
@@ -161,7 +162,7 @@ fun Json.encodeToSchema(
         JsonObject.serializer(),
         buildJsonSchema(
             descriptor,
-            serializersModule.getPolymorphicDescriptors(descriptor),
+            serializersModule,
             generateDefinitions,
             additionalProperties
         )
@@ -200,7 +201,7 @@ inline fun <reified T : Any> Json.encodeToSchema(
  */
 fun buildJsonSchema(
     descriptor: SerialDescriptor,
-    polymorphicDescriptors: List<SerialDescriptor> = emptyList(),
+    serializersModule: SerializersModule,
     autoDefinitions: Boolean = false,
     additionalProperties: Boolean = false,
 ): JsonObject {
@@ -209,7 +210,11 @@ fun buildJsonSchema(
         "additionalProperties" to JsonPrimitive(additionalProperties)
     )
     val definitions = JsonSchemaDefinitions(autoDefinitions)
-    val root = descriptor.createJsonSchema(descriptor.annotations, definitions, polymorphicDescriptors)
+    val root = descriptor.createJsonSchema(
+        descriptor.annotations,
+        definitions,
+        serializersModule
+    )
     val append = mapOf("definitions" to definitions.getDefinitionsAsJsonObject())
 
     return JsonObject(prepend + root + append)
@@ -223,9 +228,9 @@ fun buildJsonSchema(
  */
 fun buildJsonSchema(
     serializer: SerializationStrategy<*>,
-    polymorphicDescriptors: List<SerialDescriptor> = emptyList(),
+    serializersModule: SerializersModule,
     generateDefinitions: Boolean = true,
     additionalProperties: Boolean = false
 ): JsonObject {
-    return buildJsonSchema(serializer.descriptor, polymorphicDescriptors, generateDefinitions, additionalProperties)
+    return buildJsonSchema(serializer.descriptor, serializersModule, generateDefinitions, additionalProperties)
 }

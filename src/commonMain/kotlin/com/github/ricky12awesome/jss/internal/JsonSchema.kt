@@ -5,6 +5,8 @@ import com.github.ricky12awesome.jss.JsonSchema.*
 import com.github.ricky12awesome.jss.JsonType
 import kotlinx.serialization.descriptors.*
 import kotlinx.serialization.json.*
+import kotlinx.serialization.modules.SerializersModule
+import kotlin.reflect.KClass
 
 @PublishedApi
 internal inline val SerialDescriptor.jsonLiteral
@@ -31,7 +33,8 @@ internal inline fun <reified T> List<Annotation>.lastOfInstance(): T? {
 
 @PublishedApi
 internal fun SerialDescriptor.jsonSchemaObject(
-    definitions: JsonSchemaDefinitions
+    definitions: JsonSchemaDefinitions,
+    serializersModule: SerializersModule
 ): JsonObject {
     val properties = mutableMapOf<String, JsonElement>()
     val required = mutableListOf<JsonPrimitive>()
@@ -40,7 +43,11 @@ internal fun SerialDescriptor.jsonSchemaObject(
         val name = getElementName(index)
         val annotations = getElementAnnotations(index)
 
-        properties[name] = child.createJsonSchema(annotations, definitions)
+        properties[name] = child.createJsonSchema(
+            annotations,
+            definitions,
+            serializersModule
+        )
 
         // If it's not nullable, it's a default value, and it's safer to mark it as required if used with 'encodeDefaults = true'
         // Also we don't know if it's enabled or not, so we may want to expose an option instead.
@@ -61,7 +68,10 @@ internal fun SerialDescriptor.jsonSchemaObject(
     }, additionalProperties = false)
 }
 
-internal fun SerialDescriptor.jsonSchemaObjectMap(definitions: JsonSchemaDefinitions): JsonObject {
+internal fun SerialDescriptor.jsonSchemaObjectMap(
+    definitions: JsonSchemaDefinitions,
+    serializersModule: SerializersModule
+): JsonObject {
     return jsonSchemaElement(annotations, skipNullCheck = false, extra = {
         val (key, value) = elementDescriptors.toList()
 
@@ -71,7 +81,8 @@ internal fun SerialDescriptor.jsonSchemaObjectMap(definitions: JsonSchemaDefinit
 
         it["additionalProperties"] = value.createJsonSchema(
             getElementAnnotations(1),
-            definitions
+            definitions,
+            serializersModule,
         )
     }, additionalProperties = false)
 }
@@ -79,7 +90,8 @@ internal fun SerialDescriptor.jsonSchemaObjectMap(definitions: JsonSchemaDefinit
 @PublishedApi
 internal fun SerialDescriptor.jsonSchemaObjectSealed(
     definitions: JsonSchemaDefinitions,
-    polymorphicDescriptors: List<SerialDescriptor>
+    polymorphicDescriptors: List<SerialDescriptor>,
+    serializersModule: SerializersModule
 ): JsonObject {
     val properties = mutableMapOf<String, JsonElement>()
     val required = mutableListOf<JsonPrimitive>()
@@ -109,7 +121,7 @@ internal fun SerialDescriptor.jsonSchemaObjectSealed(
         val schema = child.createJsonSchema(
             value.getElementAnnotations(index),
             definitions,
-            polymorphicDescriptors
+            serializersModule,
         )
         val newSchema = schema.mapValues { (name, element) ->
             if (element is JsonObject && name == "properties") {
@@ -130,7 +142,7 @@ internal fun SerialDescriptor.jsonSchemaObjectSealed(
 
     polymorphicDescriptors.forEachIndexed { index, child ->
         // TODO: annotations
-        val schema = child.createJsonSchema(emptyList(), definitions, polymorphicDescriptors)
+        val schema = child.createJsonSchema(emptyList(), definitions, serializersModule)
         val newSchema = schema.mapValues { (name, element) ->
             if (element is JsonObject && name == "properties") {
                 val prependProps = mutableMapOf<String, JsonElement>()
@@ -166,12 +178,16 @@ internal fun SerialDescriptor.jsonSchemaObjectSealed(
 @PublishedApi
 internal fun SerialDescriptor.jsonSchemaArray(
     annotations: List<Annotation> = listOf(),
-    definitions: JsonSchemaDefinitions
+    definitions: JsonSchemaDefinitions,
+    serializersModule: SerializersModule
 ): JsonObject {
     return jsonSchemaElement(annotations, extra = {
         val type = getElementDescriptor(0)
 
-        it["items"] = type.createJsonSchema(getElementAnnotations(0), definitions)
+        it["items"] = type.createJsonSchema(
+            getElementAnnotations(0), definitions,
+            serializersModule
+        )
     }, additionalProperties = false)
 }
 
@@ -231,26 +247,44 @@ internal fun SerialDescriptor.jsonSchemaBoolean(
 internal fun SerialDescriptor.createJsonSchema(
     annotations: List<Annotation>,
     definitions: JsonSchemaDefinitions,
-    polymorphicDescriptors: List<SerialDescriptor> = emptyList()
+    serializersModule: SerializersModule,
 ): JsonObject {
     val combinedAnnotations = annotations + this.annotations
     var targetDescriptor = this
-    if (this.isInline) {
+
+    if (this.kind == SerialKind.CONTEXTUAL) {
+        targetDescriptor = serializersModule.getContextual(targetDescriptor.capturedKClass as KClass<*>)!!.descriptor
+    } else if (this.isInline) {
         // Inline class has always 1 elementDescriptors
         targetDescriptor = this.elementDescriptors.first()
     }
+
     val key = JsonSchemaDefinitions.Key(targetDescriptor, combinedAnnotations)
     return when (targetDescriptor.kind.jsonType) {
         JsonType.NUMBER -> definitions.get(key) { targetDescriptor.jsonSchemaNumber(combinedAnnotations) }
         JsonType.STRING -> definitions.get(key) { targetDescriptor.jsonSchemaString(combinedAnnotations) }
         JsonType.BOOLEAN -> definitions.get(key) { targetDescriptor.jsonSchemaBoolean(combinedAnnotations) }
-        JsonType.ARRAY -> definitions.get(key) { targetDescriptor.jsonSchemaArray(combinedAnnotations, definitions) }
-        JsonType.OBJECT -> definitions.get(key) { targetDescriptor.jsonSchemaObject(definitions) }
-        JsonType.OBJECT_MAP -> definitions.get(key) { targetDescriptor.jsonSchemaObjectMap(definitions) }
+        JsonType.ARRAY -> definitions.get(key) {
+            targetDescriptor.jsonSchemaArray(
+                combinedAnnotations,
+                definitions,
+                serializersModule
+            )
+        }
+
+        JsonType.OBJECT -> definitions.get(key) { targetDescriptor.jsonSchemaObject(definitions, serializersModule) }
+        JsonType.OBJECT_MAP -> definitions.get(key) {
+            targetDescriptor.jsonSchemaObjectMap(
+                definitions,
+                serializersModule
+            )
+        }
+
         JsonType.OBJECT_SEALED -> definitions.get(key) {
             targetDescriptor.jsonSchemaObjectSealed(
                 definitions,
-                polymorphicDescriptors
+                serializersModule.getPolymorphicDescriptors(this),
+                serializersModule,
             )
         }
     }
