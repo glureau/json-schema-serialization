@@ -1,0 +1,159 @@
+{
+  "formatVersion": "1.1",
+  "component": {
+    "url": "../../json-schema-serialization/0.8.9/json-schema-serialization-0.8.9.module",
+    "group": "com.github.Ricky12Awesome",
+    "module": "json-schema-serialization",
+    "version": "0.8.9",
+    "attributes": {
+      "org.gradle.status": "release"
+    }
+  },
+  "createdBy": {
+    "gradle": {
+      "version": "7.1.1"
+    }
+  },
+  "variants": [
+    {
+      "name": "releaseApiElements-published",
+      "attributes": {
+        "org.gradle.category": "library",
+        "org.gradle.usage": "java-api",
+        "org.jetbrains.kotlin.platform.type": "androidJvm"
+      },
+      "dependencies": [
+        {
+          "group": "org.jetbrains.kotlin",
+          "module": "kotlin-stdlib-jdk8",
+          "version": {
+            "requires": "1.7.20"
+          }
+        },
+        {
+          "group": "org.jetbrains.kotlin",
+          "module": "kotlin-stdlib-common",
+          "version": {
+            "requires": "1.7.20"
+          }
+        }
+      ],
+      "files": [
+        {
+          "name": "json-schema-serialization-release.aar",
+          "url": "json-schema-serialization-android-0.8.9.aar",
+          "size": 129158,
+          "sha512": "439b042bcb066c7a96e7dc56afe9e0908a1cc8b5376fb26ef4cd8209950de6c91e4acdeee5afbc8e827dab0cb6d46189b94e1482518c82c01ea360e55015d26b",
+          "sha256": "3b200ab38ddebf7a76a6f96d9ad2586c24d6ebb93c5255e5566b493c69f9894f",
+          "sha1": "b48ef978163c9ee271afcbdef0ad2c330422498c",
+          "md5": "31c6d14090c9373e299b4b91c743790e"
+        }
+      ]
+    },
+    {
+      "name": "releaseRuntimeElements-published",
+      "attributes": {
+        "org.gradle.category": "library",
+        "org.gradle.usage": "java-runtime",
+        "org.jetbrains.kotlin.platform.type": "androidJvm"
+      },
+      "dependencies": [
+        {
+          "group": "org.jetbrains.kotlin",
+          "module": "kotlin-stdlib-jdk8",
+          "version": {
+            "requires": "1.7.20"
+          },
+          "excludes": [
+            {
+              "group": "org.jetbrains.kotlin",
+              "module": "kotlin-stdlib-common"
+            },
+            {
+              "group": "org.jetbrains.kotlin",
+              "module": "kotlin-test-common"
+            },
+            {
+              "group": "org.jetbrains.kotlin",
+              "module": "kotlin-test-annotations-common"
+            }
+          ]
+        },
+        {
+          "group": "org.jetbrains.kotlin",
+          "module": "kotlin-stdlib-common",
+          "version": {
+            "requires": "1.7.20"
+          },
+          "excludes": [
+            {
+              "group": "org.jetbrains.kotlin",
+              "module": "kotlin-stdlib-common"
+            },
+            {
+              "group": "org.jetbrains.kotlin",
+              "module": "kotlin-test-common"
+            },
+            {
+              "group": "org.jetbrains.kotlin",
+              "module": "kotlin-test-annotations-common"
+            }
+          ]
+        },
+        {
+          "group": "org.jetbrains.kotlin",
+          "module": "kotlin-reflect",
+          "version": {
+            "requires": "1.7.20"
+          },
+          "excludes": [
+            {
+              "group": "org.jetbrains.kotlin",
+              "module": "kotlin-stdlib-common"
+            },
+            {
+              "group": "org.jetbrains.kotlin",
+              "module": "kotlin-test-common"
+            },
+            {
+              "group": "org.jetbrains.kotlin",
+              "module": "kotlin-test-annotations-common"
+            }
+          ]
+        },
+        {
+          "group": "org.jetbrains.kotlinx",
+          "module": "kotlinx-serialization-json",
+          "version": {
+            "requires": "1.4.0"
+          },
+          "excludes": [
+            {
+              "group": "org.jetbrains.kotlin",
+              "module": "kotlin-stdlib-common"
+            },
+            {
+              "group": "org.jetbrains.kotlin",
+              "module": "kotlin-test-common"
+            },
+            {
+              "group": "org.jetbrains.kotlin",
+              "module": "kotlin-test-annotations-common"
+            }
+          ]
+        }
+      ],
+      "files": [
+        {
+          "name": "json-schema-serialization-release.aar",
+          "url": "json-schema-serialization-android-0.8.9.aar",
+          "size": 129158,
+          "sha512": "439b042bcb066c7a96e7dc56afe9e0908a1cc8b5376fb26ef4cd8209950de6c91e4acdeee5afbc8e827dab0cb6d46189b94e1482518c82c01ea360e55015d26b",
+          "sha256": "3b200ab38ddebf7a76a6f96d9ad2586c24d6ebb93c5255e5566b493c69f9894f",
+          "sha1": "b48ef978163c9ee271afcbdef0ad2c330422498c",
+          "md5": "31c6d14090c9373e299b4b91c743790e"
+        }
+      ]
+    }
+  ]
+}
