@@ -330,10 +330,7 @@ internal fun Json.createJsonSchema(
 
 @PublishedApi
 internal fun JsonObjectBuilder.applyJsonSchemaDefaults(
-    descriptor: SerialDescriptor,
     annotations: List<Annotation>,
-    skipNullCheck: Boolean = false,
-    skipTypeCheck: Boolean = false,
     additionalProperties: Boolean?,
 ) {
     if (additionalProperties != null) {
@@ -387,22 +384,22 @@ internal inline fun SerialDescriptor.jsonSchemaElement(
     annotations: List<Annotation>,
     skipNullCheck: Boolean = false,
     skipTypeCheck: Boolean = false,
-    applyDefaults: Boolean = true,
     extra: (JsonObjectBuilder) -> Unit = {},
     additionalProperties: Boolean? = null,
 ): JsonObject {
     return buildJson {
-        if (applyDefaults) {
-            it.applyJsonSchemaDefaults(
-                descriptor = this,
-                annotations = annotations,
-                skipNullCheck = skipNullCheck,
-                skipTypeCheck = skipTypeCheck,
-                additionalProperties = additionalProperties
-            )
-        }
+        println("jsonSchemaElement for ${serialName} => ${kind} (additionalProperties=$additionalProperties)")
+        it.applyJsonSchemaDefaults(
+            annotations = annotations,
+            additionalProperties = additionalProperties
+        )
 
-        it.applyNullability(this, skipNullCheck, skipTypeCheck, extra)
+        it.applyNullability(
+            descriptor = this,
+            skipNullCheck = skipNullCheck,
+            skipTypeCheck = skipTypeCheck,
+            extra = extra
+        )
     }
 }
 
