@@ -329,14 +329,9 @@ internal fun Json.createJsonSchema(
 }
 
 @PublishedApi
-internal fun JsonObjectBuilder.applyJsonSchemaDefaults(
+internal fun JsonObjectBuilder.applyDescription(
     annotations: List<Annotation>,
-    additionalProperties: Boolean?,
 ) {
-    if (additionalProperties != null) {
-        this["additionalProperties"] = additionalProperties
-    }
-
     if (annotations.isNotEmpty()) {
         val description = annotations
             .filterIsInstance<Description>()
@@ -354,6 +349,7 @@ internal inline fun JsonObjectBuilder.applyNullability(
     descriptor: SerialDescriptor,
     skipNullCheck: Boolean,
     skipTypeCheck: Boolean,
+    additionalProperties: Boolean?,
     extra: (JsonObjectBuilder) -> Unit = {},
 ) {
     if (descriptor.isNullable && !skipNullCheck) {
@@ -362,6 +358,9 @@ internal inline fun JsonObjectBuilder.applyNullability(
                 it["type"] = "null"
             })
             add(buildJson {
+                if (additionalProperties != null) {
+                    it["additionalProperties"] = additionalProperties
+                }
                 it["type"] = descriptor.jsonLiteral
                 if (descriptor.kind == SerialKind.ENUM) {
                     it["enum"] = descriptor.elementNames
@@ -370,6 +369,9 @@ internal inline fun JsonObjectBuilder.applyNullability(
             })
         }
     } else {
+        if (additionalProperties != null) {
+            this["additionalProperties"] = additionalProperties
+        }
         if (!skipTypeCheck) {
             this["type"] = descriptor.jsonLiteral
         }
@@ -389,15 +391,15 @@ internal inline fun SerialDescriptor.jsonSchemaElement(
 ): JsonObject {
     return buildJson {
         println("jsonSchemaElement for ${serialName} => ${kind} (additionalProperties=$additionalProperties)")
-        it.applyJsonSchemaDefaults(
+        it.applyDescription(
             annotations = annotations,
-            additionalProperties = additionalProperties
         )
 
         it.applyNullability(
             descriptor = this,
             skipNullCheck = skipNullCheck,
             skipTypeCheck = skipTypeCheck,
+            additionalProperties = additionalProperties,
             extra = extra
         )
     }
