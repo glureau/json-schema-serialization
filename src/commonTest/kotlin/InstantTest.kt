@@ -23,7 +23,6 @@ class InstantTest {
               "type": "object",
               "properties": {
                 "createdAt": {
-                  "additionalProperties": false,
                   "type": "string",
                   "format": "date-time"
                 }

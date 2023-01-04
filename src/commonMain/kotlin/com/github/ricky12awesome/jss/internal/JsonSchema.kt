@@ -47,8 +47,8 @@ internal fun Json.jsonSchemaObject(
             serialDescriptor = child,
             annotations = annotations,
             definitions = definitions,
+            // exposeClassDiscriminator=false <= Temporary trick for my needs :'( , only 1st level is impacted.
             exposeClassDiscriminator = false,
-            // Temporary trick for my needs :'( , only 1st level is impacted.
         )
 
         // If it's not nullable, it's a default value, and it's safer to mark it as required if used with 'encodeDefaults = true'
@@ -124,7 +124,7 @@ internal fun Json.jsonSchemaObjectSealed(
         it["enum"] = elementNames
     }
 
-    required += JsonPrimitive("type")
+    required += JsonPrimitive(configuration.classDiscriminator)
 
     if (serialDescriptor.isNullable) {
         anyOf += buildJson { nullable ->
@@ -198,7 +198,7 @@ internal fun Json.jsonSchemaObjectSealed(
                 it["required"] = JsonArray(required)
             }
         },
-        additionalProperties = false
+        additionalProperties = null // we do NOT want to lock as anyOf implementations can have properties
     )
 }
 
@@ -240,7 +240,7 @@ internal fun SerialDescriptor.jsonSchemaString(
         if (this.serialName == "Instant") { // kotlinx.datetime
             it["format"] = "date-time"
         }
-    })
+    }, additionalProperties = null)
 }
 
 @PublishedApi
@@ -267,14 +267,14 @@ internal fun SerialDescriptor.jsonSchemaNumber(
             it["minimum"] = min
             it["maximum"] = max
         }
-    }, additionalProperties = false)
+    }, additionalProperties = true)
 }
 
 @PublishedApi
 internal fun SerialDescriptor.jsonSchemaBoolean(
     annotations: List<Annotation> = listOf()
 ): JsonObject {
-    return jsonSchemaElement(annotations, additionalProperties = false)
+    return jsonSchemaElement(annotations, additionalProperties = null)
 }
 
 @PublishedApi
@@ -341,9 +341,11 @@ internal fun JsonObjectBuilder.applyJsonSchemaDefaults(
     annotations: List<Annotation>,
     skipNullCheck: Boolean = false,
     skipTypeCheck: Boolean = false,
-    additionalProperties: Boolean = false,
+    additionalProperties: Boolean?,
 ) {
-    this["additionalProperties"] = additionalProperties
+    if (additionalProperties != null) {
+        this["additionalProperties"] = additionalProperties
+    }
     if (descriptor.isNullable && !skipNullCheck) {
         this["oneOf"] = buildJsonArray {
             add(buildJson {
@@ -386,11 +388,17 @@ internal inline fun SerialDescriptor.jsonSchemaElement(
     skipTypeCheck: Boolean = false,
     applyDefaults: Boolean = true,
     extra: (JsonObjectBuilder) -> Unit = {},
-    additionalProperties: Boolean = false
+    additionalProperties: Boolean?
 ): JsonObject {
     return buildJson {
         if (applyDefaults) {
-            it.applyJsonSchemaDefaults(this, annotations, skipNullCheck, skipTypeCheck, additionalProperties)
+            it.applyJsonSchemaDefaults(
+                descriptor = this,
+                annotations = annotations,
+                skipNullCheck = skipNullCheck,
+                skipTypeCheck = skipTypeCheck,
+                additionalProperties = additionalProperties
+            )
         }
 
         it.apply(extra)

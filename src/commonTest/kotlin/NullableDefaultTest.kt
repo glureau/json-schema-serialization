@@ -1,7 +1,7 @@
 import com.github.ricky12awesome.jss.encodeToSchema
 import com.github.ricky12awesome.jss.globalJson
 import kotlinx.serialization.Serializable
-import kotlin.test.DefaultAsserter.assertEquals
+import kotlin.test.assertEquals
 import kotlin.test.Test
 
 
@@ -21,22 +21,19 @@ class NullableDefaultTest {
     @Test
     fun check_SimpleType() {
         assertEquals(
-            "no message", json.encodeToSchema(SimpleType.serializer(), false,), """
+            json.encodeToSchema(SimpleType.serializer(), false,), """
             {
               "${"$"}schema": "http://json-schema.org/draft-07/schema",
               "additionalProperties": false,
               "type": "object",
               "properties": {
                 "myString": {
-                  "additionalProperties": false,
                   "type": "string"
                 },
                 "myStringWithDefaultVal": {
-                  "additionalProperties": false,
                   "type": "string"
                 },
                 "myNullableString": {
-                  "additionalProperties": false,
                   "oneOf": [
                     {
                       "type": "null"
@@ -47,7 +44,6 @@ class NullableDefaultTest {
                   ]
                 },
                 "myNullableStringWithDefaultVal": {
-                  "additionalProperties": false,
                   "oneOf": [
                     {
                       "type": "null"
@@ -58,7 +54,6 @@ class NullableDefaultTest {
                   ]
                 },
                 "myNullableStringWithDefaultNull": {
-                  "additionalProperties": false,
                   "oneOf": [
                     {
                       "type": "null"

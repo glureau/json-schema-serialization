@@ -27,7 +27,6 @@ class EnumTest {
               "type": "object",
               "properties": {
                 "country": {
-                  "additionalProperties": false,
                   "oneOf": [
                     {
                       "type": "null"
@@ -41,7 +40,6 @@ class EnumTest {
                   ]
                 },
                 "details": {
-                  "additionalProperties": false,
                   "type": "string"
                 }
               },

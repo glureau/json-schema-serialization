@@ -243,5 +243,10 @@ fun Json.buildJsonSchema(
     additionalProperties: Boolean = false,
     exposeClassDiscriminator: Boolean = false,
 ): JsonObject {
-    return buildJsonSchema(serializer.descriptor, generateDefinitions, additionalProperties, exposeClassDiscriminator)
+    return buildJsonSchema(
+        descriptor = serializer.descriptor,
+        autoDefinitions = generateDefinitions,
+        additionalProperties = additionalProperties,
+        exposeClassDiscriminator = exposeClassDiscriminator
+    )
 }

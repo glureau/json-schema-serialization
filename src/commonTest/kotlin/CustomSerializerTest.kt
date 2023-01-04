@@ -59,7 +59,6 @@ class CustomSerializerTest {
               "type": "object",
               "properties": {
                 "fbd": {
-                  "additionalProperties": false,
                   "type": "string"
                 }
               },
