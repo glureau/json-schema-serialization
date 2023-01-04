@@ -47,8 +47,7 @@ internal fun Json.jsonSchemaObject(
             serialDescriptor = child,
             annotations = annotations,
             definitions = definitions,
-            // exposeClassDiscriminator=false <= Temporary trick for my needs :'( , only 1st level is impacted.
-            exposeClassDiscriminator = false,
+            exposeClassDiscriminator = exposeClassDiscriminator,
         )
 
         // If it's not nullable, it's a default value, it is required if used with 'encodeDefaults = true'.
