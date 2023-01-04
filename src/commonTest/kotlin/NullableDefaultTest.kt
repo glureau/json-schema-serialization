@@ -9,6 +9,7 @@ class NullableDefaultTest {
 
     @Serializable
     data class SimpleType(
+        val myNumber: Double,
         val myString: String,
         val myStringWithDefaultVal: String = "defaultVal",
         val myNullableString: String?,

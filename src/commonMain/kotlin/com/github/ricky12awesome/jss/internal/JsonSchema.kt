@@ -234,7 +234,7 @@ internal fun SerialDescriptor.jsonSchemaString(
         if (this.serialName == "Instant") { // kotlinx.datetime
             it["format"] = "date-time"
         }
-    }, additionalProperties = null)
+    })
 }
 
 @PublishedApi
@@ -261,14 +261,14 @@ internal fun SerialDescriptor.jsonSchemaNumber(
             it["minimum"] = min
             it["maximum"] = max
         }
-    }, additionalProperties = true)
+    })
 }
 
 @PublishedApi
 internal fun SerialDescriptor.jsonSchemaBoolean(
     annotations: List<Annotation> = listOf()
 ): JsonObject {
-    return jsonSchemaElement(annotations, additionalProperties = null)
+    return jsonSchemaElement(annotations)
 }
 
 @PublishedApi
@@ -382,7 +382,7 @@ internal inline fun SerialDescriptor.jsonSchemaElement(
     skipTypeCheck: Boolean = false,
     applyDefaults: Boolean = true,
     extra: (JsonObjectBuilder) -> Unit = {},
-    additionalProperties: Boolean?
+    additionalProperties: Boolean? = null,
 ): JsonObject {
     return buildJson {
         if (applyDefaults) {
