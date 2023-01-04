@@ -155,7 +155,6 @@ fun <T> Json.encodeWithSchema(serializer: SerializationStrategy<T>, value: T, ur
 fun Json.encodeToSchema(
     descriptor: SerialDescriptor,
     generateDefinitions: Boolean = true,
-    additionalProperties: Boolean = false,
     exposeClassDiscriminator: Boolean = false,
 ): String {
     return encodeToString(
@@ -163,7 +162,6 @@ fun Json.encodeToSchema(
         buildJsonSchema(
             descriptor,
             generateDefinitions,
-            additionalProperties,
             exposeClassDiscriminator
         )
     )
@@ -191,7 +189,6 @@ fun Json.encodeToSchema(
 @OptIn(ExperimentalStdlibApi::class)
 inline fun <reified T : Any> Json.encodeToSchema(
     generateDefinitions: Boolean = true,
-    additionalProperties: Boolean = false,
     exposeClassDiscriminator: Boolean = false,
 ): String {
     val serializer = serializersModule.serializer(typeOf<T>())
@@ -199,7 +196,6 @@ inline fun <reified T : Any> Json.encodeToSchema(
     return encodeToSchema(
         descriptor = descriptor,
         generateDefinitions = generateDefinitions,
-        additionalProperties = additionalProperties,
         exposeClassDiscriminator = exposeClassDiscriminator,
     )
 }
@@ -212,13 +208,14 @@ inline fun <reified T : Any> Json.encodeToSchema(
 fun Json.buildJsonSchema(
     descriptor: SerialDescriptor,
     autoDefinitions: Boolean = false,
-    additionalProperties: Boolean = false,
     exposeClassDiscriminator: Boolean,
 ): JsonObject {
-    val prepend = mapOf(
+    val prepend = mutableMapOf(
         "\$schema" to JsonPrimitive("http://json-schema.org/draft-07/schema"),
-        "additionalProperties" to JsonPrimitive(additionalProperties)
     )
+    if (descriptor.kind != PolymorphicKind.SEALED) {
+        prepend["additionalProperties"] = JsonPrimitive(false)
+    }
     val definitions = JsonSchemaDefinitions(autoDefinitions)
     val root = createJsonSchema(
         descriptor,
@@ -240,13 +237,11 @@ fun Json.buildJsonSchema(
 fun Json.buildJsonSchema(
     serializer: SerializationStrategy<*>,
     generateDefinitions: Boolean = true,
-    additionalProperties: Boolean = false,
     exposeClassDiscriminator: Boolean = false,
 ): JsonObject {
     return buildJsonSchema(
         descriptor = serializer.descriptor,
         autoDefinitions = generateDefinitions,
-        additionalProperties = additionalProperties,
         exposeClassDiscriminator = exposeClassDiscriminator
     )
 }

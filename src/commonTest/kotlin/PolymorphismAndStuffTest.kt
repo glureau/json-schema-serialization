@@ -162,6 +162,6 @@ class PolymorphismAndStuffTest {
         val json = Json(globalJson) {
             serializersModule = Json.serializersModule + module
         }
-        println(json.encodeToSchema<ColorSpaceWithHue>(false, true))
+        println(json.encodeToSchema<ColorSpaceWithHue>(false))
     }
 }
