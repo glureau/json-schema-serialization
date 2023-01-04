@@ -18,6 +18,7 @@ val globalJson by lazy {
         isLenient = true
         coerceInputValues = true
         encodeDefaults = true
+        classDiscriminator = "classDiscriminator"
     }
 }
 

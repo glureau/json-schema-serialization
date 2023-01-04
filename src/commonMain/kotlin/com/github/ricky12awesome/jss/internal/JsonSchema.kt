@@ -51,10 +51,11 @@ internal fun Json.jsonSchemaObject(
             exposeClassDiscriminator = false,
         )
 
-        // If it's not nullable, it's a default value, and it's safer to mark it as required if used with 'encodeDefaults = true'
-        // Also, we don't know if it's enabled or not, so we may want to expose an option instead.
+        // If it's not nullable, it's a default value, it is required if used with 'encodeDefaults = true'.
         val elementDescriptor = serialDescriptor.getElementDescriptor(index)
-        if (!(elementDescriptor.isNullable && serialDescriptor.isElementOptional(index))) {
+        if (configuration.encodeDefaults &&
+            !(elementDescriptor.isNullable && serialDescriptor.isElementOptional(index))
+        ) {
             required += JsonPrimitive(name)
         }
     }
@@ -139,21 +140,17 @@ internal fun Json.jsonSchemaObjectSealed(
             definitions = definitions,
             exposeClassDiscriminator = exposeClassDiscriminator
         )
-        val newSchema = schema.mapValues { (name, element) ->
-            if (element is JsonObject && name == "properties") {
-                val prependProps = mutableMapOf<String, JsonElement>()
-
-                prependProps[configuration.classDiscriminator] = buildJson {
-                    it["const"] = child.serialName
-                }
-
-                JsonObject(prependProps + element)
-            } else {
-                element
-            }
+        var prop = schema.getOrElse("properties") { JsonObject(emptyMap()) }
+        if (prop is JsonObject) {
+            prop = JsonObject(
+                mutableMapOf<String, JsonElement>(
+                    configuration.classDiscriminator to buildJson {
+                        it["const"] = child.serialName
+                    }) + prop
+            )
         }
 
-        anyOf += JsonObject(newSchema)
+        anyOf += JsonObject(schema + mapOf("properties" to prop))
     }
 
     polymorphicDescriptors.forEachIndexed { index, child ->
@@ -164,21 +161,18 @@ internal fun Json.jsonSchemaObjectSealed(
             definitions = definitions,
             exposeClassDiscriminator = exposeClassDiscriminator
         )
-        val newSchema = schema.mapValues { (name, element) ->
-            if (element is JsonObject && name == "properties") {
-                val prependProps = mutableMapOf<String, JsonElement>()
 
-                prependProps[configuration.classDiscriminator] = buildJson {
-                    it["const"] = child.serialName
-                }
-
-                JsonObject(prependProps + element)
-            } else {
-                element
-            }
+        var prop = schema.getOrElse("properties") { JsonObject(emptyMap()) }
+        if (prop is JsonObject) {
+            prop = JsonObject(
+                mutableMapOf<String, JsonElement>(
+                    configuration.classDiscriminator to buildJson {
+                        it["const"] = child.serialName
+                    }) + prop as JsonObject
+            )
         }
 
-        anyOf += JsonObject(newSchema)
+        anyOf += JsonObject(schema + mapOf("properties" to prop))
     }
 
     return serialDescriptor.jsonSchemaElement(

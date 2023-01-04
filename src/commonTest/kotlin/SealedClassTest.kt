@@ -17,7 +17,7 @@ class SealedClassTest {
 
             @Serializable
             @SerialName("Implem2")
-            data class Implem2(val title: String = "title") : Sealed
+            object Implem2 : Sealed
         }
     }
 
@@ -30,7 +30,7 @@ class SealedClassTest {
                 {
                   "${"$"}schema": "http://json-schema.org/draft-07/schema",
                   "properties": {
-                    "type": {
+                    "classDiscriminator": {
                       "type": "string",
                       "enum": [
                         "Implem1",
@@ -43,7 +43,7 @@ class SealedClassTest {
                       "additionalProperties": false,
                       "type": "object",
                       "properties": {
-                        "type": {
+                        "classDiscriminator": {
                           "const": "Implem1"
                         },
                         "name": {
@@ -58,20 +58,14 @@ class SealedClassTest {
                       "additionalProperties": false,
                       "type": "object",
                       "properties": {
-                        "type": {
+                        "classDiscriminator": {
                           "const": "Implem2"
-                        },
-                        "title": {
-                          "type": "string"
                         }
-                      },
-                      "required": [
-                        "title"
-                      ]
+                      }
                     }
                   ],
                   "required": [
-                    "type"
+                    "classDiscriminator"
                   ],
                   "definitions": {
                   }
@@ -93,7 +87,7 @@ class SealedClassTest {
                   "properties": {
                     "sealed": {
                       "properties": {
-                        "type": {
+                        "classDiscriminator": {
                           "type": "string",
                           "enum": [
                             "Implem1",
@@ -106,7 +100,7 @@ class SealedClassTest {
                           "additionalProperties": false,
                           "type": "object",
                           "properties": {
-                            "type": {
+                            "classDiscriminator": {
                               "const": "Implem1"
                             },
                             "name": {
@@ -121,20 +115,14 @@ class SealedClassTest {
                           "additionalProperties": false,
                           "type": "object",
                           "properties": {
-                            "type": {
+                            "classDiscriminator": {
                               "const": "Implem2"
-                            },
-                            "title": {
-                              "type": "string"
                             }
-                          },
-                          "required": [
-                            "title"
-                          ]
+                          }
                         }
                       ],
                       "required": [
-                        "type"
+                        "classDiscriminator"
                       ]
                     }
                   },
