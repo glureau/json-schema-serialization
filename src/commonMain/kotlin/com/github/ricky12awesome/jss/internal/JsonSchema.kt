@@ -114,7 +114,7 @@ internal fun Json.jsonSchemaObjectSealed(
     val (_, value) = serialDescriptor.elementDescriptors.toList()
     val polymorphicDescriptors = serializersModule.getPolymorphicDescriptors(serialDescriptor)
 
-    properties["type"] = buildJson {
+    properties[configuration.classDiscriminator] = buildJson {
         it["type"] = JsonType.STRING.json
         val elementNames = value.elementNames + polymorphicDescriptors.map { it.serialName }
         require(elementNames.isNotEmpty()) {
@@ -143,7 +143,7 @@ internal fun Json.jsonSchemaObjectSealed(
             if (element is JsonObject && name == "properties") {
                 val prependProps = mutableMapOf<String, JsonElement>()
 
-                prependProps["type"] = buildJson {
+                prependProps[configuration.classDiscriminator] = buildJson {
                     it["const"] = child.serialName
                 }
 
@@ -168,7 +168,7 @@ internal fun Json.jsonSchemaObjectSealed(
             if (element is JsonObject && name == "properties") {
                 val prependProps = mutableMapOf<String, JsonElement>()
 
-                prependProps["type"] = buildJson {
+                prependProps[configuration.classDiscriminator] = buildJson {
                     it["const"] = child.serialName
                 }
 

@@ -113,7 +113,9 @@ class PolymorphismAndStuffTest {
                   "additionalProperties": false,
                   "type": "object",
                   "properties": {
-                    "classDiscriminator": "Bazzz"
+                    "classDiscriminator": {
+                      "const": "Bazzz"
+                    }
                   },
                   "required": [
                     "classDiscriminator"
@@ -135,7 +137,9 @@ class PolymorphismAndStuffTest {
                   "additionalProperties": false,
                   "type": "object",
                   "properties": {
-                    "classDiscriminator": "Bim"
+                    "classDiscriminator": {
+                      "const": "Bim"
+                    }
                   },
                   "required": [
                     "classDiscriminator"
