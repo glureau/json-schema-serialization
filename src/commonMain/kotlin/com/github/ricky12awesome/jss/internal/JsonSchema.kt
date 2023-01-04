@@ -340,28 +340,6 @@ internal fun JsonObjectBuilder.applyJsonSchemaDefaults(
     if (additionalProperties != null) {
         this["additionalProperties"] = additionalProperties
     }
-    if (descriptor.isNullable && !skipNullCheck) {
-        this["oneOf"] = buildJsonArray {
-            add(buildJson {
-                it["type"] = "null"
-            })
-            add(buildJson {
-                it["type"] = descriptor.jsonLiteral
-                if (descriptor.kind == SerialKind.ENUM) {
-                    it["enum"] = descriptor.elementNames
-                }
-            })
-        }
-
-    } else {
-        if (!skipTypeCheck) {
-            this["type"] = descriptor.jsonLiteral
-        }
-        if (descriptor.kind == SerialKind.ENUM) {
-            this["enum"] = descriptor.elementNames
-        }
-    }
-
 
     if (annotations.isNotEmpty()) {
         val description = annotations
@@ -373,6 +351,36 @@ internal fun JsonObjectBuilder.applyJsonSchemaDefaults(
         if (description.isNotEmpty()) {
             this["description"] = description
         }
+    }
+}
+
+internal inline fun JsonObjectBuilder.applyNullability(
+    descriptor: SerialDescriptor,
+    skipNullCheck: Boolean,
+    skipTypeCheck: Boolean,
+    extra: (JsonObjectBuilder) -> Unit = {},
+) {
+    if (descriptor.isNullable && !skipNullCheck) {
+        this["oneOf"] = buildJsonArray {
+            add(buildJson {
+                it["type"] = "null"
+            })
+            add(buildJson {
+                it["type"] = descriptor.jsonLiteral
+                if (descriptor.kind == SerialKind.ENUM) {
+                    it["enum"] = descriptor.elementNames
+                }
+                extra(it)
+            })
+        }
+    } else {
+        if (!skipTypeCheck) {
+            this["type"] = descriptor.jsonLiteral
+        }
+        if (descriptor.kind == SerialKind.ENUM) {
+            this["enum"] = descriptor.elementNames
+        }
+        extra(this)
     }
 }
 
@@ -395,7 +403,7 @@ internal inline fun SerialDescriptor.jsonSchemaElement(
             )
         }
 
-        it.apply(extra)
+        it.applyNullability(this, skipNullCheck, skipTypeCheck, extra)
     }
 }
 

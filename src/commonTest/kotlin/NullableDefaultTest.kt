@@ -28,6 +28,9 @@ class NullableDefaultTest {
               "additionalProperties": false,
               "type": "object",
               "properties": {
+                "myNumber": {
+                  "type": "number"
+                },
                 "myString": {
                   "type": "string"
                 },
@@ -66,6 +69,7 @@ class NullableDefaultTest {
                 }
               },
               "required": [
+                "myNumber",
                 "myString",
                 "myStringWithDefaultVal",
                 "myNullableString"
