@@ -47,7 +47,9 @@ internal fun Json.jsonSchemaObject(
             serialDescriptor = child,
             annotations = annotations,
             definitions = definitions,
-            exposeClassDiscriminator = exposeClassDiscriminator,
+            // exposeClassDiscriminator is used only for 1st level, for the case where the original class
+            // is already one implem of a polymorphism.
+            exposeClassDiscriminator = false,
         )
 
         // If it's not nullable, it's a default value, it is required if used with 'encodeDefaults = true'.
@@ -64,7 +66,7 @@ internal fun Json.jsonSchemaObject(
     // Also, we may want to support JsonClassDiscriminator... (different discriminator depending on the depth)
     if (exposeClassDiscriminator) {
         properties[this.configuration.classDiscriminator] = JsonObject(
-            mapOf("const" to JsonPrimitive(serialDescriptor.serialName))
+            mapOf("const" to JsonPrimitive(serialDescriptor.serialName.removeSuffix("?")))
         )
         required += JsonPrimitive(this.configuration.classDiscriminator)
     }
@@ -121,7 +123,7 @@ internal fun Json.jsonSchemaObjectSealed(
             "${serialDescriptor.serialName} of type SEALED doesn't have registered definitions. " +
                     "Have you defined implementations with @Serializable annotation?"
         }
-        it["enum"] = elementNames
+        it["enum"] = elementNames.sorted()
     }
 
     required += JsonPrimitive(configuration.classDiscriminator)
@@ -132,47 +134,32 @@ internal fun Json.jsonSchemaObjectSealed(
         }
     }
 
-    value.elementDescriptors.forEachIndexed { index, child ->
-        val schema = createJsonSchema(
-            serialDescriptor = child,
-            annotations = value.getElementAnnotations(index),
-            definitions = definitions,
-            exposeClassDiscriminator = exposeClassDiscriminator
-        )
-        var prop = schema.getOrElse("properties") { JsonObject(emptyMap()) }
-        if (prop is JsonObject) {
-            prop = JsonObject(
-                mutableMapOf<String, JsonElement>(
-                    configuration.classDiscriminator to buildJson {
-                        it["const"] = child.serialName
-                    }) + prop
+    val descriptorsWithAnnotations =
+        value.elementDescriptors.mapIndexed { i, d -> d to value.getElementAnnotations(i) } +
+                // TODO: annotations?
+                polymorphicDescriptors.mapIndexed { i, d -> d to emptyList<Annotation>() }
+
+    descriptorsWithAnnotations
+        .sortedBy { it.first.serialName }
+        .forEachIndexed { index, (descriptor, annotations) ->
+            val schema = createJsonSchema(
+                serialDescriptor = descriptor,
+                annotations = annotations,
+                definitions = definitions,
+                exposeClassDiscriminator = exposeClassDiscriminator
             )
+            var prop = schema.getOrElse("properties") { JsonObject(emptyMap()) }
+            if (prop is JsonObject) {
+                prop = JsonObject(
+                    mutableMapOf<String, JsonElement>(
+                        configuration.classDiscriminator to buildJson {
+                            it["const"] = descriptor.serialName.removeSuffix("?")
+                        }) + prop
+                )
+            }
+
+            anyOf += JsonObject(schema + mapOf("properties" to prop))
         }
-
-        anyOf += JsonObject(schema + mapOf("properties" to prop))
-    }
-
-    polymorphicDescriptors.forEachIndexed { index, child ->
-        // TODO: annotations
-        val schema = createJsonSchema(
-            serialDescriptor = child,
-            annotations = emptyList(), //value.getElementAnnotations(index),
-            definitions = definitions,
-            exposeClassDiscriminator = exposeClassDiscriminator
-        )
-
-        var prop = schema.getOrElse("properties") { JsonObject(emptyMap()) }
-        if (prop is JsonObject) {
-            prop = JsonObject(
-                mutableMapOf<String, JsonElement>(
-                    configuration.classDiscriminator to buildJson {
-                        it["const"] = child.serialName
-                    }) + prop as JsonObject
-            )
-        }
-
-        anyOf += JsonObject(schema + mapOf("properties" to prop))
-    }
 
     return serialDescriptor.jsonSchemaElement(
         serialDescriptor.annotations,
@@ -227,7 +214,7 @@ internal fun SerialDescriptor.jsonSchemaString(
         }
 
         if (enum.isNotEmpty()) {
-            it["enum"] = enum.toList()
+            it["enum"] = enum.toList().sorted()
         }
 
         if (this.serialName == "Instant") { // kotlinx.datetime
@@ -363,7 +350,7 @@ internal inline fun JsonObjectBuilder.applyNullability(
                 }
                 it["type"] = descriptor.jsonLiteral
                 if (descriptor.kind == SerialKind.ENUM) {
-                    it["enum"] = descriptor.elementNames
+                    it["enum"] = descriptor.elementNames.sorted()
                 }
                 extra(it)
             })
@@ -376,7 +363,7 @@ internal inline fun JsonObjectBuilder.applyNullability(
             this["type"] = descriptor.jsonLiteral
         }
         if (descriptor.kind == SerialKind.ENUM) {
-            this["enum"] = descriptor.elementNames
+            this["enum"] = descriptor.elementNames.sorted()
         }
         extra(this)
     }
