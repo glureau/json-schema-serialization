@@ -20,6 +20,7 @@ class ValueClassTest {
             "no message", globalJson.encodeToSchema(ProtectedString.serializer(), false,), """
             {
               "${"$"}schema": "http://json-schema.org/draft-07/schema",
+              "title": "ProtectedString",
               "additionalProperties": false,
               "type": "string",
               "definitions": {

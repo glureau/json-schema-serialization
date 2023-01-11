@@ -214,7 +214,9 @@ fun Json.buildJsonSchema(
     val prepend = mutableMapOf(
         "\$schema" to JsonPrimitive("http://json-schema.org/draft-07/schema"),
     )
-    println("Default for ${descriptor.serialName} => ${descriptor.kind}")
+    if (!descriptor.serialName.startsWith("kotlinx.")) {
+        prepend["title"] = JsonPrimitive(descriptor.serialName)
+    }
     if (descriptor.kind != PolymorphicKind.SEALED) {
         prepend["additionalProperties"] = JsonPrimitive(false)
     }

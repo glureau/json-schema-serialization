@@ -29,6 +29,7 @@ class SealedClassTest {
             """
                 {
                   "${"$"}schema": "http://json-schema.org/draft-07/schema",
+                  "title": "SealedClassTest.Container.Sealed",
                   "properties": {
                     "classDiscriminator": {
                       "type": "string",
@@ -82,6 +83,7 @@ class SealedClassTest {
             """
                 {
                   "${"$"}schema": "http://json-schema.org/draft-07/schema",
+                  "title": "SealedClassTest.Container",
                   "additionalProperties": false,
                   "type": "object",
                   "properties": {

@@ -25,6 +25,7 @@ class NullableDefaultTest {
             json.encodeToSchema(SimpleType.serializer(), false,), """
             {
               "${"$"}schema": "http://json-schema.org/draft-07/schema",
+              "title": "NullableDefaultTest.SimpleType",
               "additionalProperties": false,
               "type": "object",
               "properties": {

@@ -23,6 +23,7 @@ class EnumTest {
             globalJson.encodeToSchema(Address.serializer(), false), """
             {
               "${"$"}schema": "http://json-schema.org/draft-07/schema",
+              "title": "EnumTest.Address",
               "additionalProperties": false,
               "type": "object",
               "properties": {

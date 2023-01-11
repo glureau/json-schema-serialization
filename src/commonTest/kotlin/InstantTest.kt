@@ -19,6 +19,7 @@ class InstantTest {
             globalJson.encodeToSchema(Event.serializer(), false,), """
             {
               "${"$"}schema": "http://json-schema.org/draft-07/schema",
+              "title": "InstantTest.Event",
               "additionalProperties": false,
               "type": "object",
               "properties": {

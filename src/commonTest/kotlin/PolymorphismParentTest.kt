@@ -58,6 +58,7 @@ class PolymorphismParentTest {
             """
                 {
                   "${"$"}schema": "http://json-schema.org/draft-07/schema",
+                  "title": "PolymorphismParentTest.GrandParent",
                   "properties": {
                     "classDiscriminator": {
                       "type": "string",

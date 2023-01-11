@@ -34,6 +34,7 @@ class ClassDiscriminatorTest {
             """
                 {
                   "${"$"}schema": "http://json-schema.org/draft-07/schema",
+                  "title": "Bazzz",
                   "additionalProperties": false,
                   "type": "object",
                   "properties": {
@@ -58,6 +59,7 @@ class ClassDiscriminatorTest {
             """
                 {
                   "${"$"}schema": "http://json-schema.org/draft-07/schema",
+                  "title": "Bim",
                   "additionalProperties": false,
                   "type": "object",
                   "properties": {

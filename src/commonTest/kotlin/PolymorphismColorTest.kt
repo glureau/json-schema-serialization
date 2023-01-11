@@ -23,6 +23,7 @@ class PolymorphismColorTest {
         val theme: Theme = Theme()
     )
 
+    @SerialName("ColorSpaceWithHue")
     private interface ColorSpaceWithHue {
         val h: Int
     }
@@ -88,6 +89,7 @@ class PolymorphismColorTest {
             """
                 {
                   "${"$"}schema": "http://json-schema.org/draft-07/schema",
+                  "title": "PolymorphismColorTest.Config",
                   "additionalProperties": false,
                   "type": "object",
                   "properties": {
