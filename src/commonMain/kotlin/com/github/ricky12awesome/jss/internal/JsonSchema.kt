@@ -269,7 +269,10 @@ internal fun Json.createJsonSchema(
 
     if (serialDescriptor.isInline) {
         // Inline class has always 1 elementDescriptors
-        targetDescriptor = serialDescriptor.elementDescriptors.first()
+        targetDescriptor = object : SerialDescriptor by serialDescriptor.elementDescriptors.first() {
+            // Hacky way to preserve nullability
+            override val isNullable: Boolean get() = serialDescriptor.isNullable
+        }
     }
     if (targetDescriptor.kind == SerialKind.CONTEXTUAL) {
         targetDescriptor = serializersModule.getContextual(targetDescriptor.capturedKClass as KClass<*>)!!.descriptor

@@ -1,5 +1,5 @@
 import com.github.ricky12awesome.jss.encodeToSchema
-import com.github.ricky12awesome.jss.globalJson
+import com.github.ricky12awesome.jss.myGlobalJson
 import kotlinx.serialization.Contextual
 import kotlinx.serialization.KSerializer
 import kotlinx.serialization.Serializable
@@ -42,7 +42,7 @@ class CustomSerializerTest {
     @Serializable
     data class Container(@Contextual val fbd: FakeBigDecimal)
 
-    val json = Json(globalJson) {
+    val json = Json(myGlobalJson) {
         serializersModule += SerializersModule {
             contextual(FakeBigDecimal::class) { FakeBigDecimalSerializer() }
         }

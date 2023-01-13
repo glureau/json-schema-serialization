@@ -1,7 +1,7 @@
 import com.github.ricky12awesome.jss.JsonSchema.*
 import com.github.ricky12awesome.jss.dsl.*
 import com.github.ricky12awesome.jss.encodeToSchema
-import com.github.ricky12awesome.jss.globalJson
+import com.github.ricky12awesome.jss.myGlobalJson
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.json.Json
@@ -23,7 +23,7 @@ private sealed interface Foo {
 object Bim
 
 class ClassDiscriminatorTest {
-    val json = Json(globalJson) {
+    val json = Json(myGlobalJson) {
         classDiscriminator = "classDiscriminator"
     }
 

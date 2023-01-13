@@ -1,6 +1,6 @@
 import com.github.ricky12awesome.jss.JsonSchema
 import com.github.ricky12awesome.jss.encodeToSchema
-import com.github.ricky12awesome.jss.globalJson
+import com.github.ricky12awesome.jss.myGlobalJson
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.json.Json
@@ -77,7 +77,7 @@ class PolymorphismColorTest {
         @JsonSchema.Definition("ThemeColor") val background: ThemeColor = HEX("#242424"),
     )
 
-    val json = Json(globalJson) {
+    val json = Json(myGlobalJson) {
         classDiscriminator = "classDiscriminator"
     }
 
@@ -263,7 +263,7 @@ class PolymorphismColorTest {
                 subclass(Json.serializersModule.serializer<HSL>())
             }
         }
-        val json = Json(globalJson) {
+        val json = Json(myGlobalJson) {
             serializersModule = Json.serializersModule + module
         }
         println(json.encodeToSchema<ColorSpaceWithHue>(false))

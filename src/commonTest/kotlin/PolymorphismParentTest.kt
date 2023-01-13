@@ -1,5 +1,5 @@
 import com.github.ricky12awesome.jss.encodeToSchema
-import com.github.ricky12awesome.jss.globalJson
+import com.github.ricky12awesome.jss.myGlobalJson
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.json.Json
 import kotlin.test.Test
@@ -46,7 +46,7 @@ class PolymorphismParentTest {
         object Parent3 : Parent
     }
 
-    val json = Json(globalJson) {
+    val json = Json(myGlobalJson) {
         classDiscriminator = "classDiscriminator"
     }
 

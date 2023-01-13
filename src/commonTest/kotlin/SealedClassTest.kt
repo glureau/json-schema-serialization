@@ -1,5 +1,5 @@
 import com.github.ricky12awesome.jss.encodeToSchema
-import com.github.ricky12awesome.jss.globalJson
+import com.github.ricky12awesome.jss.myGlobalJson
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 import kotlin.test.Test
@@ -23,9 +23,9 @@ class SealedClassTest {
 
     @Test
     fun check() {
-        println(globalJson.encodeToSchema(Container.Sealed.serializer(), false))
+        println(myGlobalJson.encodeToSchema(Container.Sealed.serializer(), false))
         assertEquals(
-            globalJson.encodeToSchema(Container.Sealed.serializer(), false),
+            myGlobalJson.encodeToSchema(Container.Sealed.serializer(), false),
             """
                 {
                   "${"$"}schema": "http://json-schema.org/draft-07/schema",
@@ -77,9 +77,9 @@ class SealedClassTest {
 
     @Test
     fun checkContainer() {
-        println(globalJson.encodeToString(Container.serializer(), Container(Container.Sealed.Implem1())))
+        println(myGlobalJson.encodeToString(Container.serializer(), Container(Container.Sealed.Implem1())))
         assertEquals(
-            globalJson.encodeToSchema(Container.serializer(), false),
+            myGlobalJson.encodeToSchema(Container.serializer(), false),
             """
                 {
                   "${"$"}schema": "http://json-schema.org/draft-07/schema",

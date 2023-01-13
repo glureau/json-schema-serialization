@@ -1,5 +1,5 @@
 import com.github.ricky12awesome.jss.encodeToSchema
-import com.github.ricky12awesome.jss.globalJson
+import com.github.ricky12awesome.jss.myGlobalJson
 import kotlinx.serialization.Serializable
 import kotlin.test.Test
 import kotlin.test.assertEquals
@@ -18,9 +18,9 @@ class EnumTest {
 
     @Test
     fun check() {
-        println(globalJson.encodeToSchema(Address.serializer(), false))
+        println(myGlobalJson.encodeToSchema(Address.serializer(), false))
         assertEquals(
-            globalJson.encodeToSchema(Address.serializer(), false), """
+            myGlobalJson.encodeToSchema(Address.serializer(), false), """
             {
               "${"$"}schema": "http://json-schema.org/draft-07/schema",
               "title": "EnumTest.Address",

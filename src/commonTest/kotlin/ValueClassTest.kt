@@ -1,8 +1,8 @@
 import com.github.ricky12awesome.jss.encodeToSchema
-import com.github.ricky12awesome.jss.globalJson
+import com.github.ricky12awesome.jss.myGlobalJson
 import kotlinx.serialization.Serializable
 import kotlin.jvm.JvmInline
-import kotlin.test.DefaultAsserter.assertEquals
+import kotlin.test.assertEquals
 import kotlin.test.Test
 
 @JvmInline
@@ -13,11 +13,44 @@ private value class ProtectedString(val value: String) {
     }
 }
 
+@Serializable
+private data class MaybeUser(val username: ProtectedString? = null)
+
 class ValueClassTest {
+
+    @Test
+    fun checkValueClassNullability() {
+        assertEquals(
+            myGlobalJson.encodeToSchema(MaybeUser.serializer(), false),
+            """
+                {
+                  "${"$"}schema": "http://json-schema.org/draft-07/schema",
+                  "title": "MaybeUser",
+                  "additionalProperties": false,
+                  "type": "object",
+                  "properties": {
+                    "username": {
+                      "oneOf": [
+                        {
+                          "type": "null"
+                        },
+                        {
+                          "type": "string"
+                        }
+                      ]
+                    }
+                  },
+                  "definitions": {
+                  }
+                }
+            """.trimIndent()
+        )
+    }
+
     @Test
     fun check_ProtectedString() {
         assertEquals(
-            "no message", globalJson.encodeToSchema(ProtectedString.serializer(), false,), """
+            myGlobalJson.encodeToSchema(ProtectedString.serializer(), false), """
             {
               "${"$"}schema": "http://json-schema.org/draft-07/schema",
               "title": "ProtectedString",

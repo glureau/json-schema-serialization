@@ -1,5 +1,5 @@
 import com.github.ricky12awesome.jss.encodeToSchema
-import com.github.ricky12awesome.jss.globalJson
+import com.github.ricky12awesome.jss.myGlobalJson
 import kotlinx.datetime.Instant
 import kotlinx.serialization.Serializable
 import kotlin.test.Test
@@ -14,9 +14,9 @@ class InstantTest {
 
     @Test
     fun check_ProtectedString() {
-        println(globalJson.encodeToSchema(Event.serializer(), false,))
+        println(myGlobalJson.encodeToSchema(Event.serializer(), false,))
         assertEquals(
-            globalJson.encodeToSchema(Event.serializer(), false,), """
+            myGlobalJson.encodeToSchema(Event.serializer(), false,), """
             {
               "${"$"}schema": "http://json-schema.org/draft-07/schema",
               "title": "InstantTest.Event",

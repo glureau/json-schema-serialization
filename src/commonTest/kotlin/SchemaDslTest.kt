@@ -1,5 +1,5 @@
 import com.github.ricky12awesome.jss.dsl.*
-import com.github.ricky12awesome.jss.globalJson
+import com.github.ricky12awesome.jss.myGlobalJson
 import kotlinx.serialization.json.JsonObject
 import kotlin.test.Test
 
@@ -45,6 +45,6 @@ class SchemaDslTest {
             }
         }
 
-        println(globalJson.encodeToString(JsonObject.serializer(), schema))
+        println(myGlobalJson.encodeToString(JsonObject.serializer(), schema))
     }
 }

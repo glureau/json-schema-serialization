@@ -1,5 +1,5 @@
 import com.github.ricky12awesome.jss.encodeToSchema
-import com.github.ricky12awesome.jss.globalJson
+import com.github.ricky12awesome.jss.myGlobalJson
 import kotlinx.serialization.Serializable
 import kotlin.test.assertEquals
 import kotlin.test.Test
@@ -17,7 +17,7 @@ class NullableDefaultTest {
         val myNullableStringWithDefaultNull: String? = null,
     )
 
-    val json = globalJson
+    val json = myGlobalJson
 
     @Test
     fun check_SimpleType() {

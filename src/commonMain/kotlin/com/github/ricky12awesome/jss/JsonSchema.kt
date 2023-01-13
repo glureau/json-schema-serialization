@@ -10,7 +10,7 @@ import kotlin.reflect.typeOf
 /**
  * Global Json object for basic serialization. uses Stable Configuration.
  */
-val globalJson by lazy {
+val myGlobalJson by lazy {
     Json {
         prettyPrintIndent = "  "
         prettyPrint = true
