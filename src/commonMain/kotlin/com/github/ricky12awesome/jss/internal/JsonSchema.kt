@@ -380,7 +380,6 @@ internal inline fun SerialDescriptor.jsonSchemaElement(
     additionalProperties: Boolean? = null,
 ): JsonObject {
     return buildJson {
-        println("jsonSchemaElement for ${serialName} => ${kind} (additionalProperties=$additionalProperties)")
         it.applyDescription(
             annotations = annotations,
         )
