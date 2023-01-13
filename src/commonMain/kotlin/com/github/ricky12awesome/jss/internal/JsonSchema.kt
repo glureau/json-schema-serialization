@@ -274,7 +274,8 @@ internal fun Json.createJsonSchema(
             override val isNullable: Boolean get() = serialDescriptor.isNullable
         }
     }
-    if (targetDescriptor.kind == SerialKind.CONTEXTUAL) {
+
+    if (targetDescriptor.kind == SerialKind.CONTEXTUAL && targetDescriptor.capturedKClass is KClass<*>) {
         targetDescriptor = serializersModule.getContextual(targetDescriptor.capturedKClass as KClass<*>)!!.descriptor
     }
 
