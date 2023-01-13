@@ -1,0 +1,107 @@
+{
+  "formatVersion": "1.1",
+  "component": {
+    "url": "../../json-schema-serialization/0.8.29/json-schema-serialization-0.8.29.module",
+    "group": "com.github.Ricky12Awesome",
+    "module": "json-schema-serialization",
+    "version": "0.8.29",
+    "attributes": {
+      "org.gradle.status": "release"
+    }
+  },
+  "createdBy": {
+    "gradle": {
+      "version": "7.1.1"
+    }
+  },
+  "variants": [
+    {
+      "name": "iosSimulatorArm64ApiElements-published",
+      "attributes": {
+        "artifactType": "org.jetbrains.kotlin.klib",
+        "org.gradle.category": "library",
+        "org.gradle.usage": "kotlin-api",
+        "org.jetbrains.kotlin.native.target": "ios_simulator_arm64",
+        "org.jetbrains.kotlin.platform.type": "native"
+      },
+      "dependencies": [
+        {
+          "group": "org.jetbrains.kotlin",
+          "module": "kotlin-stdlib-common",
+          "version": {
+            "requires": "1.7.20"
+          }
+        },
+        {
+          "group": "org.jetbrains.kotlin",
+          "module": "kotlin-reflect",
+          "version": {
+            "requires": "1.7.20"
+          }
+        },
+        {
+          "group": "org.jetbrains.kotlinx",
+          "module": "kotlinx-serialization-json",
+          "version": {
+            "requires": "1.4.0"
+          }
+        }
+      ],
+      "files": [
+        {
+          "name": "json-schema-serialization.klib",
+          "url": "json-schema-serialization-iossimulatorarm64-0.8.29.klib",
+          "size": 76287,
+          "sha512": "52ae68eeb5effbbcd98ead9dcd072e065967a708e5e70cb80d5cf54fc88923060133b2ef2125a0bdab3ea364b7ffb540578578e7468e171c7e6ab129a740e3d5",
+          "sha256": "c4cb5fae54eac5208aab282dd54e97b907c259a347fcbd092d99079458e34c92",
+          "sha1": "8c96835e7585248b535479f432bef5872fbaf88a",
+          "md5": "14376aa31a8ba8e50e38a7172bdff1f1"
+        }
+      ]
+    },
+    {
+      "name": "iosSimulatorArm64MetadataElements-published",
+      "attributes": {
+        "artifactType": "org.jetbrains.kotlin.klib",
+        "org.gradle.category": "library",
+        "org.gradle.usage": "kotlin-metadata",
+        "org.jetbrains.kotlin.native.target": "ios_simulator_arm64",
+        "org.jetbrains.kotlin.platform.type": "native"
+      },
+      "dependencies": [
+        {
+          "group": "org.jetbrains.kotlin",
+          "module": "kotlin-stdlib-common",
+          "version": {
+            "requires": "1.7.20"
+          }
+        },
+        {
+          "group": "org.jetbrains.kotlin",
+          "module": "kotlin-reflect",
+          "version": {
+            "requires": "1.7.20"
+          }
+        },
+        {
+          "group": "org.jetbrains.kotlinx",
+          "module": "kotlinx-serialization-json",
+          "version": {
+            "requires": "1.4.0"
+          }
+        }
+      ],
+      "files": [
+        {
+          "name": "json-schema-serialization-iossimulatorarm64-0.8.29-metadata.jar",
+          "url": "json-schema-serialization-iossimulatorarm64-0.8.29-metadata.jar",
+          "size": 261,
+          "sha512": "5bf8d851f836f8f3395d0925f5448d62ae9fcfbb4e13b44b46be604c450f2f92cd93241dfb277d2d42b468daed55c963d904a097f1f69bd62ae43989246c284b",
+          "sha256": "ff8686d2b0a9275bffed6baa51e657c5c45dc9438ac1a33adfac1a29fd14ceb6",
+          "sha1": "ada60f06e466268bf26f582cb82c9bce03538f77",
+          "md5": "00a809ec954bab9f01c611793f6f2772"
+        }
+      ]
+    }
+  ]
+}
