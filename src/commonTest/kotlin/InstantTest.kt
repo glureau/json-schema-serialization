@@ -1,3 +1,5 @@
+import com.github.ricky12awesome.jss.JsonFormat
+import com.github.ricky12awesome.jss.JsonSchema
 import com.github.ricky12awesome.jss.encodeToSchema
 import com.github.ricky12awesome.jss.myGlobalJson
 import kotlinx.datetime.Instant
@@ -9,6 +11,7 @@ class InstantTest {
 
     @Serializable
     public data class Event(
+        @JsonSchema.Format(JsonFormat.dateTime)
         val createdAt: Instant,
     )
 
