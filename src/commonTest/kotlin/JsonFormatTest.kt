@@ -1,12 +1,9 @@
 import com.github.ricky12awesome.jss.*
-import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.descriptors.PrimitiveKind
 import kotlinx.serialization.descriptors.SerialDescriptor
-import kotlinx.serialization.descriptors.elementNames
 import kotlinx.serialization.encodeToString
 import kotlinx.serialization.serializer
-import kotlin.reflect.KProperty0
 import kotlin.test.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertTrue
@@ -35,15 +32,45 @@ class JsonFormatTest {
     @Test
     fun validateField() {
         val original = JsonFormatSerialized()
-        assertTrue(jsonFormatValidator<JsonFormatSerialized>(original::uuid).isSuccess)
+        assertTrue(myGlobalJson.jsonFormatValidator<JsonFormatSerialized>(original::uuid).isSuccess)
 
         val bad = JsonFormatSerialized(uuid = "BadValueForUUID")
-        val result = jsonFormatValidator<JsonFormatSerialized>(bad::uuid)
-        println(result)
+        val result = myGlobalJson.jsonFormatValidator<JsonFormatSerialized>(bad::uuid)
         assertTrue(result.isFailure)
         val exception = result.exceptionOrNull()
         assertTrue(exception is JsonSchemaValidationException)
-        assertEquals(exception.message, "")
+        assertEquals(
+            exception.message, """
+            Cannot validate the field 'uuid' with value 'BadValueForUUID', annotated format uuid
+            regex:^(?:urn:uuid:)?[0-9a-f]{8}-(?:[0-9a-f]{4}-){3}[0-9a-f]{12}${'$'}
+        """.trimIndent()
+        )
+    }
+
+    @Test
+    fun validateClass() {
+        val original = JsonFormatSerialized()
+        myGlobalJson.jsonFormatValidator(original) {
+            it::duration.validateOrThrow()
+            it::email.validateOrThrow()
+            it::ipv4.validateOrThrow()
+            it::ipv6.validateOrThrow()
+            it::uuid.validateOrThrow()
+        }
+
+        val bad = JsonFormatSerialized(uuid = "BadValueForUUID")
+        myGlobalJson.jsonFormatValidator(bad) {
+            val result = it::uuid.validate()
+            assertTrue(result.isFailure)
+            val exception = result.exceptionOrNull()
+            assertTrue(exception is JsonSchemaValidationException)
+            assertEquals(
+                exception.message, """
+            Cannot validate the field 'uuid' with value 'BadValueForUUID', annotated format uuid
+            regex:^(?:urn:uuid:)?[0-9a-f]{8}-(?:[0-9a-f]{4}-){3}[0-9a-f]{12}${'$'}
+        """.trimIndent()
+            )
+        }
     }
 
     @Test
