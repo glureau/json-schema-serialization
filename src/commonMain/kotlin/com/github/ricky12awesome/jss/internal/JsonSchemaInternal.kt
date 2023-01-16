@@ -208,6 +208,7 @@ internal fun SerialDescriptor.jsonSchemaString(
     return jsonSchemaElement(annotations, extra = {
         val pattern = annotations.lastOfInstance<Pattern>()?.pattern ?: ""
         val enum = annotations.lastOfInstance<StringEnum>()?.values ?: arrayOf()
+        val format = annotations.lastOfInstance<Format>()?.format
 
         if (pattern.isNotEmpty()) {
             it["pattern"] = pattern
@@ -217,7 +218,10 @@ internal fun SerialDescriptor.jsonSchemaString(
             it["enum"] = enum.toList().sorted()
         }
 
-        if (this.serialName == "Instant") { // kotlinx.datetime
+        if (format != null) {
+            it["format"] = format.jsonSchemaFormat
+        } else if (this.serialName == "Instant") { // kotlinx.datetime
+            // Default automatic format, may be removed soon...
             it["format"] = "date-time"
         }
     })

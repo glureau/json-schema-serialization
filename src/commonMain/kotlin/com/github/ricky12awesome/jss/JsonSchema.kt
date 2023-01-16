@@ -5,6 +5,7 @@ import com.github.ricky12awesome.jss.internal.createJsonSchema
 import kotlinx.serialization.*
 import kotlinx.serialization.descriptors.*
 import kotlinx.serialization.json.*
+import kotlin.reflect.KProperty0
 import kotlin.reflect.typeOf
 
 /**
@@ -20,119 +21,6 @@ val myGlobalJson by lazy {
         encodeDefaults = true
         classDiscriminator = "classDiscriminator"
     }
-}
-
-/**
- * Represents the type of a json type
- */
-enum class JsonType(jsonType: String) {
-    /**
-     * Represents the json array type
-     */
-    ARRAY("array"),
-
-    /**
-     * Represents the json number type
-     */
-    NUMBER("number"),
-
-    /**
-     * Represents the string type
-     */
-    STRING("string"),
-
-    /**
-     * Represents the boolean type
-     */
-    BOOLEAN("boolean"),
-
-    /**
-     * Represents the object type, this is used for serializing normal classes
-     */
-    OBJECT("object"),
-
-    /**
-     * Represents the object type, this is used for serializing sealed classes
-     */
-    OBJECT_SEALED("object"),
-
-    /**
-     * Represents the object type, this is used for serializing maps
-     */
-    OBJECT_MAP("object");
-
-    val json = JsonPrimitive(jsonType)
-
-    override fun toString(): String = json.content
-}
-
-@Target()
-annotation class JsonSchema {
-    /**
-     * Description of this property
-     */
-    @SerialInfo
-    @Repeatable
-    @Retention(AnnotationRetention.BINARY)
-    @Target(AnnotationTarget.PROPERTY, AnnotationTarget.FIELD)
-    annotation class Description(val lines: Array<out String>)
-
-    /**
-     * Enum-like values for non-enum string
-     */
-    @SerialInfo
-    @Retention(AnnotationRetention.BINARY)
-    @Target(AnnotationTarget.PROPERTY, AnnotationTarget.FIELD)
-    annotation class StringEnum(val values: Array<out String>)
-
-    /**
-     * Minimum and Maximum values using whole numbers
-     *
-     * Only works when [SerialKind] is any of
-     * [PrimitiveKind.BYTE], [PrimitiveKind.SHORT], [PrimitiveKind.INT], [PrimitiveKind.LONG]
-     */
-    @SerialInfo
-    @Retention(AnnotationRetention.BINARY)
-    @Target(AnnotationTarget.PROPERTY, AnnotationTarget.FIELD)
-    annotation class IntRange(val min: Long, val max: Long)
-
-    /**
-     * Minimum and Maximum values using floating point numbers
-     *
-     * Only works when [SerialKind] is [PrimitiveKind.FLOAT] or [PrimitiveKind.DOUBLE]
-     */
-    @SerialInfo
-    @Retention(AnnotationRetention.BINARY)
-    @Target(AnnotationTarget.PROPERTY, AnnotationTarget.FIELD)
-    annotation class FloatRange(val min: Double, val max: Double)
-
-    /**
-     * [pattern] to use on this property
-     *
-     * Only works when [SerialKind] is [PrimitiveKind.STRING]
-     */
-    @SerialInfo
-    @Retention(AnnotationRetention.BINARY)
-    @Target(AnnotationTarget.PROPERTY, AnnotationTarget.FIELD)
-    annotation class Pattern(val pattern: String)
-
-    /**
-     * Should this property be a definition and be referenced using [id]?
-     *
-     * @param id The id for this definition, this will be referenced by '#/definitions/$[id]'
-     */
-    @SerialInfo
-    @Retention(AnnotationRetention.BINARY)
-    @Target(AnnotationTarget.CLASS, AnnotationTarget.PROPERTY, AnnotationTarget.FIELD)
-    annotation class Definition(val id: String)
-
-    /**
-     * This property will not create definitions
-     */
-    @SerialInfo
-    @Retention(AnnotationRetention.BINARY)
-    @Target(AnnotationTarget.CLASS, AnnotationTarget.PROPERTY, AnnotationTarget.FIELD)
-    annotation class NoDefinition
 }
 
 /**
