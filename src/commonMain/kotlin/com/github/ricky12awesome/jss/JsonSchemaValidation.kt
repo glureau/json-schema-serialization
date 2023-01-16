@@ -7,9 +7,9 @@ import kotlinx.serialization.json.Json
 import kotlinx.serialization.serializer
 import kotlin.reflect.KProperty0
 
-public class JsonSchemaValidationException(name: String, get: String, format: JsonFormat, ajvFormatRegex: Regex) :
+public class JsonSchemaValidationException(name: String, encodedValue: String, ajvFormatRegex: Regex) :
     Exception(
-        "Cannot validate the field '$name' with value '$get', annotated format $format\n" +
+        "Cannot validate the field '$name' with value '$encodedValue'\n" +
                 "regex:$ajvFormatRegex"
     )
 
@@ -45,16 +45,27 @@ internal inline fun <reified F> Json.jsonFormatValidatorInternal(
 ): Result<Unit> = runCatching {
     val index = descriptor.elementNames.indexOf(field.name)
     if (index < 0) return@runCatching
-    val annotation = descriptor.getElementAnnotations(index)
-        .filterIsInstance<JsonSchema.Format>().firstOrNull() ?: return@runCatching
-    annotation.format.ajvFormatRegex ?: return@runCatching
-    val encodedValue = encodeToString(field.get()).removeSurrounding("\"")
-    if (annotation.format.ajvFormatRegex.matches(encodedValue)) return@runCatching
+
+    val validationRegex = findValidationRegex(descriptor.getElementAnnotations(index))
+        ?: return@runCatching // No regex = Success
+    val value = field.get() ?: return@runCatching
+    // Nullable = no check
+    val encodedValue = encodeToString(value).removeSurrounding("\"")
+    if (validationRegex.matches(encodedValue)) return@runCatching
 
     throw JsonSchemaValidationException(
         field.name,
         encodedValue,
-        annotation.format,
-        annotation.format.ajvFormatRegex
+        validationRegex
     )
+}
+
+fun findValidationRegex(
+    annotations: List<Annotation>,
+): Regex? {
+    val annotationPattern = annotations.filterIsInstance<JsonSchema.Pattern>().firstOrNull()
+    if (annotationPattern != null) return Regex(annotationPattern.pattern)
+
+    val annotationFormat = annotations.filterIsInstance<JsonSchema.Format>().firstOrNull()
+    return annotationFormat?.format?.ajvFormatRegex
 }

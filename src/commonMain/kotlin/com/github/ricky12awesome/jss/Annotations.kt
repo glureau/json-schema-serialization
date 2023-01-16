@@ -55,6 +55,11 @@ annotation class JsonSchema {
     @Target(AnnotationTarget.PROPERTY, AnnotationTarget.FIELD)
     annotation class Pattern(val pattern: String)
 
+    @SerialInfo
+    @Retention(AnnotationRetention.BINARY)
+    @Target(AnnotationTarget.CLASS, AnnotationTarget.PROPERTY, AnnotationTarget.FIELD)
+    annotation class Format(val format: JsonFormat)
+
     /**
      * Should this property be a definition and be referenced using [id]?
      *
@@ -72,11 +77,6 @@ annotation class JsonSchema {
     @Retention(AnnotationRetention.BINARY)
     @Target(AnnotationTarget.CLASS, AnnotationTarget.PROPERTY, AnnotationTarget.FIELD)
     annotation class NoDefinition
-
-    @SerialInfo
-    @Retention(AnnotationRetention.BINARY)
-    @Target(AnnotationTarget.PROPERTY, AnnotationTarget.FIELD)
-    annotation class Format(val format: JsonFormat)
 }
 
 @DslMarker

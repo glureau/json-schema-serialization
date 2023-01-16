@@ -220,9 +220,13 @@ internal fun SerialDescriptor.jsonSchemaString(
 
         if (format != null) {
             it["format"] = format.jsonSchemaFormat
-        } else if (this.serialName == "Instant") { // kotlinx.datetime
-            // Default automatic format, may be removed soon...
-            it["format"] = "date-time"
+        }
+
+        if (it["pattern"] != null && it["format"] != null) {
+            throw IllegalArgumentException(
+                "Cannot define a pattern AND a format on the same field.\n" +
+                        "pattern=$pattern / format=$format"
+            )
         }
     })
 }

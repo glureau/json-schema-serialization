@@ -2,13 +2,25 @@ package com.github.ricky12awesome.jss
 
 enum class JsonFormat(val jsonSchemaFormat: String, val ajvFormatRegex: Regex? = null) {
     // date: http://tools.ietf.org/html/rfc3339#section-5.6
-    date("date"),
+    date("date", Regex("^\\d\\d\\d\\d-[0-1]\\d-[0-3]\\d\$", RegexOption.IGNORE_CASE)),
 
     // date-time: http://tools.ietf.org/html/rfc3339#section-5.6
-    time("time"),
-    dateTime("date-time"),
-    isoTime("iso-time"),
-    isoDateTime("iso-date-time"),
+    time("time", Regex("^(?:[0-2]\\d:[0-5]\\d:[0-5]\\d|23:59:60)(?:\\.\\d+)?(?:z|[+-]\\d\\d(?::?\\d\\d)?)\$", RegexOption.IGNORE_CASE)),
+    dateTime("date-time", Regex("^\\d\\d\\d\\d-[0-1]\\d-[0-3]\\dt(?:[0-2]\\d:[0-5]\\d:[0-5]\\d|23:59:60)(?:\\.\\d+)?(?:z|[+-]\\d\\d(?::?\\d\\d)?)\$", RegexOption.IGNORE_CASE)),
+    isoTime(
+        "iso-time",
+        Regex(
+            "^(?:[0-2]\\d:[0-5]\\d:[0-5]\\d|23:59:60)(?:\\.\\d+)?(?:z|[+-]\\d\\d(?::?\\d\\d)?)?\$",
+            RegexOption.IGNORE_CASE
+        )
+    ),
+    isoDateTime(
+        "iso-date-time",
+        Regex(
+            "^\\d\\d\\d\\d-[0-1]\\d-[0-3]\\d[t\\s](?:[0-2]\\d:[0-5]\\d:[0-5]\\d|23:59:60)(?:\\.\\d+)?(?:z|[+-]\\d\\d(?::?\\d\\d)?)?\$",
+            RegexOption.IGNORE_CASE
+        )
+    ),
 
     // duration: https://tools.ietf.org/html/rfc3339#appendix-A
     duration("duration", Regex("^P(?!\$)((\\d+Y)?(\\d+M)?(\\d+D)?(T(?=\\d)(\\d+H)?(\\d+M)?(\\d+S)?)?|(\\d+W)?)\$")),

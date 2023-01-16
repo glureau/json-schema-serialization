@@ -1,9 +1,12 @@
 import com.github.ricky12awesome.jss.*
+import kotlinx.datetime.Clock
+import kotlinx.datetime.Instant
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.descriptors.PrimitiveKind
 import kotlinx.serialization.descriptors.SerialDescriptor
 import kotlinx.serialization.encodeToString
 import kotlinx.serialization.serializer
+import kotlin.jvm.JvmInline
 import kotlin.test.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertTrue
@@ -14,6 +17,10 @@ import kotlin.time.days
 
 @OptIn(ExperimentalTime::class, ExperimentalJsonSchemaValidation::class)
 class JsonFormatTest {
+
+    @JvmInline
+    @JsonSchema.Format(JsonFormat.uuid)
+    value class MyUUID(val uuid: String)
 
     @Serializable
     data class JsonFormatSerialized(
@@ -27,6 +34,10 @@ class JsonFormatTest {
         val ipv6: String = "2001:0db8:0001:0000:0000:0ab9:C0A8:0102",
         @JsonSchema.Format(JsonFormat.uuid)
         val uuid: String = "123e4567-e89b-12d3-a456-426614174000",
+        @JsonSchema.Pattern("^A[0-9]+$")
+        val code: String = "A001",
+        @JsonSchema.Format(JsonFormat.dateTime)
+        val date: Instant? = Clock.System.now(),
     )
 
     @Test
@@ -41,10 +52,54 @@ class JsonFormatTest {
         assertTrue(exception is JsonSchemaValidationException)
         assertEquals(
             exception.message, """
-            Cannot validate the field 'uuid' with value 'BadValueForUUID', annotated format uuid
+            Cannot validate the field 'uuid' with value 'BadValueForUUID'
             regex:^(?:urn:uuid:)?[0-9a-f]{8}-(?:[0-9a-f]{4}-){3}[0-9a-f]{12}${'$'}
         """.trimIndent()
         )
+    }
+
+    @Test
+    fun validatePattern() {
+        val bad = JsonFormatSerialized(code = "BadCode")
+        val result = myGlobalJson.jsonFormatValidator<JsonFormatSerialized>(bad::code)
+        assertTrue(result.isFailure)
+        val exception = result.exceptionOrNull()
+        assertTrue(exception is JsonSchemaValidationException)
+        assertEquals(
+            exception.message, """
+            Cannot validate the field 'code' with value 'BadCode'
+            regex:^A[0-9]+${'$'}
+        """.trimIndent()
+        )
+    }
+
+
+    @Test
+    fun validateInstant() {
+        // ISO 8601 expects 4 digits for the year, so we maxout this to ensure it's not accepted
+        val bad = JsonFormatSerialized(date = Instant.fromEpochMilliseconds(Long.MAX_VALUE))
+        myGlobalJson.jsonFormatValidator(bad) {
+            val result = bad::date.validate()
+            assertTrue(result.isFailure)
+            val exception = result.exceptionOrNull()
+            assertTrue(exception is JsonSchemaValidationException)
+            assertEquals(
+                expected = """
+                            Cannot validate the field 'date' with value '+292278994-08-17T07:12:55.807Z'
+                            regex:^\d\d\d\d-[0-1]\d-[0-3]\dt(?:[0-2]\d:[0-5]\d:[0-5]\d|23:59:60)(?:\.\d+)?(?:z|[+-]\d\d(?::?\d\d)?)${'$'}
+                        """.trimIndent(),
+                actual = exception.message
+            )
+        }
+    }
+
+    @Test
+    fun validateNullableWhenNull() {
+        val bad = JsonFormatSerialized(date = null)
+        myGlobalJson.jsonFormatValidator(bad) {
+            val result = bad::date.validate()
+            assertTrue(result.isSuccess)
+        }
     }
 
     @Test
@@ -56,6 +111,8 @@ class JsonFormatTest {
             it::ipv4.validateOrThrow()
             it::ipv6.validateOrThrow()
             it::uuid.validateOrThrow()
+            it::code.validateOrThrow()
+            it::date.validateOrThrow()
         }
 
         val bad = JsonFormatSerialized(uuid = "BadValueForUUID")
@@ -66,7 +123,7 @@ class JsonFormatTest {
             assertTrue(exception is JsonSchemaValidationException)
             assertEquals(
                 exception.message, """
-            Cannot validate the field 'uuid' with value 'BadValueForUUID', annotated format uuid
+            Cannot validate the field 'uuid' with value 'BadValueForUUID'
             regex:^(?:urn:uuid:)?[0-9a-f]{8}-(?:[0-9a-f]{4}-){3}[0-9a-f]{12}${'$'}
         """.trimIndent()
             )
