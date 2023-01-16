@@ -51,11 +51,11 @@
         {
           "name": "json-schema-serialization.klib",
           "url": "json-schema-serialization-iossimulatorarm64-0.9.1.klib",
-          "size": 85015,
-          "sha512": "184c05351cc33f9e87a806343dcd8793476de2461cbfa67764419b0f8d69833e48fdcab672e039a9f90340f850998f6277846a4817c3dd2374fe0bef0f1811be",
-          "sha256": "a5f6caef52ccc2bc1ac8dae31f13ad4bc6548a61ea7e80ec9a829b05f8510c7e",
-          "sha1": "0deb932c165c3d8ace0c80e5db9bbdf0120067f8",
-          "md5": "a45089c01c93a54c1e75acb3d7392307"
+          "size": 84890,
+          "sha512": "dcac75e088fb0cf0d5efd524869b9560f7173a5228cb4ef54e1fca1492556fd23c8cfaff960ac3389b77503dd34d07babb4ed1d9437238ed410623c7959b0f31",
+          "sha256": "6dafc97f09e2292f86d8479fd1bc947a507ac8f94fea4980bfa80fe30699d245",
+          "sha1": "c81ac48e149100fde9e804074b2701177f77df60",
+          "md5": "fdf00d1fb8c2c1435a5b1acb00f7b05c"
         }
       ]
     },

@@ -51,11 +51,11 @@
         {
           "name": "json-schema-serialization.klib",
           "url": "json-schema-serialization-iosx64-0.9.1.klib",
-          "size": 84911,
-          "sha512": "aba86e1fe0c0f0d5bd4dba5533d4f265b8114f0be726dfd11c1d61e9aa2d1f8967c12b5ab3f91251a861425381bca0596ad22dda518a2a4ee001a1bc0dbedc8a",
-          "sha256": "fd721dc1f2adf139fe3b968a02529d0de026222f1f591bf42299d04e572589e5",
-          "sha1": "194ec2d8564be3d4cc32c91b808c943529b18f2c",
-          "md5": "66a55a6833648df6edf6d03e0ad588c4"
+          "size": 84786,
+          "sha512": "432f58c4dfd0a150348b1d1dec60ce5ac07d8cf4c55b1cc5833fd5635d05fabd4da18e7df74e82d973f7be1cc08819046743e5181bb4fd5fd621238edb16d9bc",
+          "sha256": "ca00fbf506023f7993e07d1f372628077fbfef823b1f1fb1e523f7215b8c3d7b",
+          "sha1": "ba76ec7e06f8ab13bcfe1e554066c19a0a949665",
+          "md5": "6b78b4af4c5280fc4f51d425c202c413"
         }
       ]
     },

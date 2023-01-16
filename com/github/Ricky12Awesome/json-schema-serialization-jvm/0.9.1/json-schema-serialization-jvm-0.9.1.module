@@ -43,11 +43,11 @@
         {
           "name": "json-schema-serialization-jvm-0.9.1.jar",
           "url": "json-schema-serialization-jvm-0.9.1.jar",
-          "size": 168400,
-          "sha512": "f44e84cc3c7de2e06551511d79ba37dc87c8d4760762e91e9dbd41d11630af701e7b2aa9ae7974e488f9417a4170eb0a35528ede9de4fe3165091d731f66d35c",
-          "sha256": "a4e4d907c726f98c26d05279f5d8782959d698515cddda89b377f52604e57004",
-          "sha1": "c7adef653929ddb6c5fffd4352acc75d24206705",
-          "md5": "5b79708db2279f74e899c735547e13ac"
+          "size": 168352,
+          "sha512": "e7757319199dcc32c7d8c21e67db2eced22e3554cbe5d4de51de9a00e026d1b5656a8331fbefa31e99cbe36a6c633ef358213dab3934aaefad0bf70416e5d080",
+          "sha256": "5dcd2835ef08ee4c17514b08a084a2a75f552758abba8f84c9dc507827aa27e7",
+          "sha1": "0b954fc8a4b2bc80a9c76111c9523b5cbfa1bddf",
+          "md5": "9fab448ba86a46548d541f7fc8cdc1b4"
         }
       ]
     },
@@ -93,11 +93,11 @@
         {
           "name": "json-schema-serialization-jvm-0.9.1.jar",
           "url": "json-schema-serialization-jvm-0.9.1.jar",
-          "size": 168400,
-          "sha512": "f44e84cc3c7de2e06551511d79ba37dc87c8d4760762e91e9dbd41d11630af701e7b2aa9ae7974e488f9417a4170eb0a35528ede9de4fe3165091d731f66d35c",
-          "sha256": "a4e4d907c726f98c26d05279f5d8782959d698515cddda89b377f52604e57004",
-          "sha1": "c7adef653929ddb6c5fffd4352acc75d24206705",
-          "md5": "5b79708db2279f74e899c735547e13ac"
+          "size": 168352,
+          "sha512": "e7757319199dcc32c7d8c21e67db2eced22e3554cbe5d4de51de9a00e026d1b5656a8331fbefa31e99cbe36a6c633ef358213dab3934aaefad0bf70416e5d080",
+          "sha256": "5dcd2835ef08ee4c17514b08a084a2a75f552758abba8f84c9dc507827aa27e7",
+          "sha1": "0b954fc8a4b2bc80a9c76111c9523b5cbfa1bddf",
+          "md5": "9fab448ba86a46548d541f7fc8cdc1b4"
         }
       ]
     }

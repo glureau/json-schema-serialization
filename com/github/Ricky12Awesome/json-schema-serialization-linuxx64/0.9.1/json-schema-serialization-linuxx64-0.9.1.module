@@ -51,11 +51,11 @@
         {
           "name": "json-schema-serialization.klib",
           "url": "json-schema-serialization-linuxx64-0.9.1.klib",
-          "size": 84929,
-          "sha512": "ad7d9d8507581abd87af1f3bd1057e8a48bef028f480a74d28abaeb6f2dbc959dc87807c71459b83978f26b50e9dd0f51d80c72a7b68464d9d016c6d04d61f5b",
-          "sha256": "b3684b4483978eb16d7ec99c17bfbe2f5af22f70734eb4583bf2502270957c36",
-          "sha1": "243f45829c918e0a3df4f889f16f4ef625eda7d3",
-          "md5": "4ac6f0bef4f2619b551291ea3d0616ba"
+          "size": 84804,
+          "sha512": "ac5484038f95f8dabb1f82f6054aa4f699e63d9a2a6757a18f6b4b3f54db836e91f952c003c33d112d7b0269c2ef239526cecb51587af54df4591379f6c39946",
+          "sha256": "84195a13d74b0fc28d519c811de64ce68c73f611c7e25ac69ba7808b29592395",
+          "sha1": "79300bb7faadf49f12b5d6f4ed9b0b4c15f129da",
+          "md5": "8f7f3150e688559845599c1832de06f0"
         }
       ]
     }

@@ -51,11 +51,11 @@
         {
           "name": "json-schema-serialization.klib",
           "url": "json-schema-serialization-mingwx64-0.9.1.klib",
-          "size": 84929,
-          "sha512": "9b88045545180fed045c4bafe42192577c225c9d5c05048198d889d1138249924ef518328b35339c8b4e1798769116a62d1c8aa17026c43cc7b96fa6023d75b1",
-          "sha256": "36b46d64424c59e05ffa1243c20a8e302042637ba16bb868cb6cc94c75293f42",
-          "sha1": "be27b5d7197858a07513ada94cb52c13cc2dca1d",
-          "md5": "f6f89f5ea42ed80a42ca9d7a16b163f6"
+          "size": 84804,
+          "sha512": "06403b08098b5e8ca1959bea6cad42f41ca640cbd87a34f79586d8cd3d89196fe15c73fba36fcf8b883bb5dc2cf990f9a47b723f71b1bd91edfadcb4113cea56",
+          "sha256": "61a818cab9f28c4c7980fcd647d24e602ce745bb1ea316cb65615c5631c766e2",
+          "sha1": "d4f109928891a8693b74ff739abc7b0e4c37dbcc",
+          "md5": "388249e5f91caf08b9de5eb01683fb45"
         }
       ]
     }

@@ -43,11 +43,11 @@
         {
           "name": "json-schema-serialization-jslegacy-0.9.1.jar",
           "url": "json-schema-serialization-js-0.9.1.jar",
-          "size": 58524,
-          "sha512": "611d9270c51e038d473012aef74bcf86512d58971e04bb98c975cef39cc53dce7500baf73fc2594dd725d971b6504eae7e85852714e1bf307de9bf0b7b2269b0",
-          "sha256": "1b3e875d84eb00c10bfcac1b526dd493ecbbfad909d5209d21eb5e391061e0e9",
-          "sha1": "1a23a43db5261295c18c1c1037c31803096d62c9",
-          "md5": "856ae3902c83a7c5da2f7e4385986c69"
+          "size": 58462,
+          "sha512": "0ce2819733d828e375abf8558e5f518edfe0987baf9b6b8e972c25e58d5a1e068f0f5e39cf355455001e5691681a0a60489919eeef18a9ba86852e831dd77f17",
+          "sha256": "6aa3c881ff4c0898f154dc83dd34ad4ce8d20464ac3eab11011b470016220076",
+          "sha1": "521feefc4724fa537c7a305ac1704de3d81cff03",
+          "md5": "707d27cb47b2ec0c1080dce96edfe302"
         }
       ]
     },
@@ -93,11 +93,11 @@
         {
           "name": "json-schema-serialization-jslegacy-0.9.1.jar",
           "url": "json-schema-serialization-js-0.9.1.jar",
-          "size": 58524,
-          "sha512": "611d9270c51e038d473012aef74bcf86512d58971e04bb98c975cef39cc53dce7500baf73fc2594dd725d971b6504eae7e85852714e1bf307de9bf0b7b2269b0",
-          "sha256": "1b3e875d84eb00c10bfcac1b526dd493ecbbfad909d5209d21eb5e391061e0e9",
-          "sha1": "1a23a43db5261295c18c1c1037c31803096d62c9",
-          "md5": "856ae3902c83a7c5da2f7e4385986c69"
+          "size": 58462,
+          "sha512": "0ce2819733d828e375abf8558e5f518edfe0987baf9b6b8e972c25e58d5a1e068f0f5e39cf355455001e5691681a0a60489919eeef18a9ba86852e831dd77f17",
+          "sha256": "6aa3c881ff4c0898f154dc83dd34ad4ce8d20464ac3eab11011b470016220076",
+          "sha1": "521feefc4724fa537c7a305ac1704de3d81cff03",
+          "md5": "707d27cb47b2ec0c1080dce96edfe302"
         }
       ]
     },
@@ -143,11 +143,11 @@
         {
           "name": "json-schema-serialization-jsir-0.9.1.klib",
           "url": "json-schema-serialization-js-0.9.1.klib",
-          "size": 83840,
-          "sha512": "ffbadbc0351126451a8e07f4b0d29a3089539eaed7bb9da7aca533ec821f97088a414f2857f64e39162a5462ec458e826c9545cd1af40c31fead57d734bad173",
-          "sha256": "0bb319b6832757237c70f5f8e8e388308590941096751f49f2021c8659e8e559",
-          "sha1": "ffb96a8571efe6afd1a4982c63e5432183d36af9",
-          "md5": "bdf7d2be0ffbfe687773e685f509d742"
+          "size": 83716,
+          "sha512": "6d6c8a8a97f268fb1841311f0ee9d3372e1d2e2a67e0190901542cb6c76a0f2c5bc0d9f1b22ca74a132f99e4f59f271a3bc98c29209021843f968eb035287cd7",
+          "sha256": "d9041f4565cc27386d1be5e17af554f266a4120de9aa8b2de8f39e4eae714b0e",
+          "sha1": "4a66005992bdae1cf00d46fe3aa11ee22a76d8ef",
+          "md5": "1ec35eac4777da3936b6953e2f5bb94d"
         }
       ]
     },
@@ -193,11 +193,11 @@
         {
           "name": "json-schema-serialization-jsir-0.9.1.klib",
           "url": "json-schema-serialization-js-0.9.1.klib",
-          "size": 83840,
-          "sha512": "ffbadbc0351126451a8e07f4b0d29a3089539eaed7bb9da7aca533ec821f97088a414f2857f64e39162a5462ec458e826c9545cd1af40c31fead57d734bad173",
-          "sha256": "0bb319b6832757237c70f5f8e8e388308590941096751f49f2021c8659e8e559",
-          "sha1": "ffb96a8571efe6afd1a4982c63e5432183d36af9",
-          "md5": "bdf7d2be0ffbfe687773e685f509d742"
+          "size": 83716,
+          "sha512": "6d6c8a8a97f268fb1841311f0ee9d3372e1d2e2a67e0190901542cb6c76a0f2c5bc0d9f1b22ca74a132f99e4f59f271a3bc98c29209021843f968eb035287cd7",
+          "sha256": "d9041f4565cc27386d1be5e17af554f266a4120de9aa8b2de8f39e4eae714b0e",
+          "sha1": "4a66005992bdae1cf00d46fe3aa11ee22a76d8ef",
+          "md5": "1ec35eac4777da3936b6953e2f5bb94d"
         }
       ]
     }

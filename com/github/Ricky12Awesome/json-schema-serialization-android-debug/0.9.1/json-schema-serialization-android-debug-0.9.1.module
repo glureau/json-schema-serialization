@@ -43,11 +43,11 @@
         {
           "name": "json-schema-serialization-debug.aar",
           "url": "json-schema-serialization-android-debug-0.9.1.aar",
-          "size": 159380,
-          "sha512": "0e815704c2b148aef9ca4535f8195bf645ef792d5552a452677453f9b5d777ac439a3bbb7232e61333bbe066790584c2422f3b09a021ae4d9cbadb01cda9cb1a",
-          "sha256": "76be30d67c621ad618cbf33fd94c9001d93cdb832c86465ed153cbd7ae1df412",
-          "sha1": "9dd8adf7bbccdf0c124ee76db5a3e3fabf521a1d",
-          "md5": "3875e80ef4a3a20c38424492b01cd613"
+          "size": 159365,
+          "sha512": "eb28f32cc91c7d3e875af930b04562c46e71a7feea415b291266a00173900fc9710dbec4e169ec8a61cfd4766e317f4fa09e6adda87e8f468d9e7db0c2231f32",
+          "sha256": "916d2144e2d4fefe8ed5a4c2209163c9d41a431edf9adafd324f0672b15cf023",
+          "sha1": "00b21b3e4c9bfa4760724da3838798f41bf5b4c2",
+          "md5": "889b7d3c00b6ea7e4acc66d024605b81"
         }
       ]
     },
@@ -149,11 +149,11 @@
         {
           "name": "json-schema-serialization-debug.aar",
           "url": "json-schema-serialization-android-debug-0.9.1.aar",
-          "size": 159380,
-          "sha512": "0e815704c2b148aef9ca4535f8195bf645ef792d5552a452677453f9b5d777ac439a3bbb7232e61333bbe066790584c2422f3b09a021ae4d9cbadb01cda9cb1a",
-          "sha256": "76be30d67c621ad618cbf33fd94c9001d93cdb832c86465ed153cbd7ae1df412",
-          "sha1": "9dd8adf7bbccdf0c124ee76db5a3e3fabf521a1d",
-          "md5": "3875e80ef4a3a20c38424492b01cd613"
+          "size": 159365,
+          "sha512": "eb28f32cc91c7d3e875af930b04562c46e71a7feea415b291266a00173900fc9710dbec4e169ec8a61cfd4766e317f4fa09e6adda87e8f468d9e7db0c2231f32",
+          "sha256": "916d2144e2d4fefe8ed5a4c2209163c9d41a431edf9adafd324f0672b15cf023",
+          "sha1": "00b21b3e4c9bfa4760724da3838798f41bf5b4c2",
+          "md5": "889b7d3c00b6ea7e4acc66d024605b81"
         }
       ]
     }
