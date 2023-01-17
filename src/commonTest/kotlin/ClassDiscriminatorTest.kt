@@ -44,9 +44,7 @@ class ClassDiscriminatorTest {
                   },
                   "required": [
                     "classDiscriminator"
-                  ],
-                  "definitions": {
-                  }
+                  ]
                 }
             """.trimIndent()
         )
@@ -69,9 +67,7 @@ class ClassDiscriminatorTest {
                   },
                   "required": [
                     "classDiscriminator"
-                  ],
-                  "definitions": {
-                  }
+                  ]
                 }
             """.trimIndent()
         )

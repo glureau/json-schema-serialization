@@ -294,9 +294,7 @@ class PolymorphismParentTest {
                   ],
                   "required": [
                     "classDiscriminator"
-                  ],
-                  "definitions": {
-                  }
+                  ]
                 }
             """.trimIndent()
         )

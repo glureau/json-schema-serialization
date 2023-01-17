@@ -39,8 +39,6 @@ class ValueClassTest {
                         }
                       ]
                     }
-                  },
-                  "definitions": {
                   }
                 }
             """.trimIndent()
@@ -55,9 +53,7 @@ class ValueClassTest {
               "${"$"}schema": "http://json-schema.org/draft-07/schema",
               "title": "ProtectedString",
               "additionalProperties": false,
-              "type": "string",
-              "definitions": {
-              }
+              "type": "string"
             }
         """.trimIndent()
         )

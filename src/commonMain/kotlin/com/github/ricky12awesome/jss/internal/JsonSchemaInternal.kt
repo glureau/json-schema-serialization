@@ -265,6 +265,11 @@ internal fun SerialDescriptor.jsonSchemaBoolean(
     return jsonSchemaElement(annotations)
 }
 
+private class NullableSerialDescriptor(
+    val delegatedDescriptor: SerialDescriptor,
+    override val isNullable: Boolean,
+) : SerialDescriptor by delegatedDescriptor
+
 @PublishedApi
 internal fun Json.createJsonSchema(
     serialDescriptor: SerialDescriptor,
@@ -277,14 +282,21 @@ internal fun Json.createJsonSchema(
 
     if (serialDescriptor.isInline) {
         // Inline class has always 1 elementDescriptors
-        targetDescriptor = object : SerialDescriptor by serialDescriptor.elementDescriptors.first() {
-            // Hacky way to preserve nullability
-            override val isNullable: Boolean get() = serialDescriptor.isNullable
-        }
+        targetDescriptor = NullableSerialDescriptor(
+            delegatedDescriptor = serialDescriptor.elementDescriptors.first(),
+            isNullable = serialDescriptor.isNullable
+        )
     }
 
-    if (targetDescriptor.kind == SerialKind.CONTEXTUAL && targetDescriptor.capturedKClass is KClass<*>) {
-        targetDescriptor = serializersModule.getContextual(targetDescriptor.capturedKClass as KClass<*>)!!.descriptor
+    if (targetDescriptor.kind == SerialKind.CONTEXTUAL) {
+        val capturedKClass = when (targetDescriptor) {
+            is NullableSerialDescriptor -> targetDescriptor.delegatedDescriptor.capturedKClass
+            else -> targetDescriptor.capturedKClass
+        }
+        if (capturedKClass is KClass<*>) {
+            targetDescriptor =
+                serializersModule.getContextual(capturedKClass as KClass<*>)!!.descriptor
+        }
     }
 
     val key = JsonSchemaDefinitions.Key(targetDescriptor, combinedAnnotations)

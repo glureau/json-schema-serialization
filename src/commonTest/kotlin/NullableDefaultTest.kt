@@ -74,9 +74,7 @@ class NullableDefaultTest {
                 "myString",
                 "myStringWithDefaultVal",
                 "myNullableString"
-              ],
-              "definitions": {
-              }
+              ]
             }
         """.trimIndent()
         )

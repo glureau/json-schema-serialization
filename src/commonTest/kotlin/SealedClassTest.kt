@@ -67,9 +67,7 @@ class SealedClassTest {
                   ],
                   "required": [
                     "classDiscriminator"
-                  ],
-                  "definitions": {
-                  }
+                  ]
                 }
             """.trimIndent()
         )
@@ -130,9 +128,7 @@ class SealedClassTest {
                   },
                   "required": [
                     "sealed"
-                  ],
-                  "definitions": {
-                  }
+                  ]
                 }
             """.trimIndent()
         )

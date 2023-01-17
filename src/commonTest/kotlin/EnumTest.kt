@@ -47,9 +47,7 @@ class EnumTest {
               "required": [
                 "country",
                 "details"
-              ],
-              "definitions": {
-              }
+              ]
             }
         """.trimIndent()
         )

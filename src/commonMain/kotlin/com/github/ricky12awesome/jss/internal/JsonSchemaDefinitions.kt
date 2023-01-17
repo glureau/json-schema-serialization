@@ -51,6 +51,8 @@ internal class JsonSchemaDefinitions(private val isEnabled: Boolean = true) {
         return get(key)
     }
 
+    fun hasNoDefinitions() = definitions.isEmpty()
+
     fun getDefinitionsAsJsonObject(): JsonObject {
         while (creator.isNotEmpty()) {
             creator.toList().forEach { (id, create) ->

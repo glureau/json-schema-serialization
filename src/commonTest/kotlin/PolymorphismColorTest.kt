@@ -344,9 +344,7 @@ class PolymorphismColorTest {
                   ],
                   "required": [
                     "classDiscriminator"
-                  ],
-                  "definitions": {
-                  }
+                  ]
                 }
             """.trimIndent()
         )

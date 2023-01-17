@@ -114,7 +114,12 @@ fun Json.buildJsonSchema(
         definitions,
         exposeClassDiscriminator
     )
-    val append = mapOf("definitions" to definitions.getDefinitionsAsJsonObject())
+    val definitionsAsJsonObject = definitions.getDefinitionsAsJsonObject()
+
+    val append: Map<String, JsonObject> =
+        if (definitionsAsJsonObject.isNotEmpty())
+            mapOf("definitions" to definitionsAsJsonObject)
+        else emptyMap()
 
     return JsonObject(prepend + root + append)
 }

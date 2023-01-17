@@ -33,9 +33,7 @@ class InstantTest {
               },
               "required": [
                 "createdAt"
-              ],
-              "definitions": {
-              }
+              ]
             }
         """.trimIndent()
         )
