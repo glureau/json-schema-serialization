@@ -19,6 +19,7 @@ import kotlin.time.days
 class JsonFormatTest {
 
     @JvmInline
+    @Serializable
     @JsonSchema.Format(JsonFormat.uuid)
     value class MyUUID(val uuid: String)
 
@@ -38,6 +39,7 @@ class JsonFormatTest {
         val code: String = "A001",
         @JsonSchema.Format(JsonFormat.dateTime)
         val date: Instant? = Clock.System.now(),
+        val myUUID: MyUUID = MyUUID("hop"),
     )
 
     @Test
@@ -73,13 +75,12 @@ class JsonFormatTest {
         )
     }
 
-
     @Test
     fun validateInstant() {
         // ISO 8601 expects 4 digits for the year, so we maxout this to ensure it's not accepted
         val bad = JsonFormatSerialized(date = Instant.fromEpochMilliseconds(Long.MAX_VALUE))
         myGlobalJson.jsonFormatValidator(bad) {
-            val result = bad::date.validate()
+            val result = bad::date.validateResult()
             assertTrue(result.isFailure)
             val exception = result.exceptionOrNull()
             assertTrue(exception is JsonSchemaValidationException)
@@ -97,7 +98,7 @@ class JsonFormatTest {
     fun validateNullableWhenNull() {
         val bad = JsonFormatSerialized(date = null)
         myGlobalJson.jsonFormatValidator(bad) {
-            val result = bad::date.validate()
+            val result = bad::date.validateResult()
             assertTrue(result.isSuccess)
         }
     }
@@ -117,7 +118,7 @@ class JsonFormatTest {
 
         val bad = JsonFormatSerialized(uuid = "BadValueForUUID")
         myGlobalJson.jsonFormatValidator(bad) {
-            val result = it::uuid.validate()
+            val result = it::uuid.validateResult()
             assertTrue(result.isFailure)
             val exception = result.exceptionOrNull()
             assertTrue(exception is JsonSchemaValidationException)

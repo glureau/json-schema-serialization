@@ -5,13 +5,12 @@ import com.github.ricky12awesome.jss.internal.createJsonSchema
 import kotlinx.serialization.*
 import kotlinx.serialization.descriptors.*
 import kotlinx.serialization.json.*
-import kotlin.reflect.KProperty0
 import kotlin.reflect.typeOf
 
 /**
  * Global Json object for basic serialization. uses Stable Configuration.
  */
-val myGlobalJson by lazy {
+internal val myGlobalJson by lazy {
     Json {
         prettyPrintIndent = "  "
         prettyPrint = true

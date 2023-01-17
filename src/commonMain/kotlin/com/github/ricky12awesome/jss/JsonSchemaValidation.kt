@@ -24,7 +24,8 @@ public class JsonFormatValidator @PublishedApi internal constructor(
     inline fun <reified F> KProperty0<F>.validateOrThrow() =
         json.jsonFormatValidatorInternal(descriptor, this).getOrThrow()
 
-    inline fun <reified F> KProperty0<F>.validate() = json.jsonFormatValidatorInternal(descriptor, this)
+    inline fun <reified F> KProperty0<F>.validateResult(): Result<Unit> =
+        json.jsonFormatValidatorInternal(descriptor, this)
 }
 
 public inline fun <reified T> Json.jsonFormatValidator(target: T, validation: JsonFormatValidator.(target: T) -> Unit) {
