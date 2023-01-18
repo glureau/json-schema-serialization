@@ -28,14 +28,14 @@ public class JsonFormatValidator @PublishedApi internal constructor(
         json.jsonFormatValidatorInternal(descriptor, this)
 }
 
-public inline fun <reified T> Json.jsonFormatValidator(target: T, validation: JsonFormatValidator.(target: T) -> Unit) {
+public inline fun <reified T> Json.formatValidator(target: T, validation: JsonFormatValidator.(target: T) -> Unit) {
     JsonFormatValidator(serializer<T>().descriptor, this).apply {
         validation(target)
     }
 }
 
 @ExperimentalJsonSchemaValidation
-public inline fun <reified T> Json.jsonFormatValidator(field: KProperty0<String>): Result<Unit> =
+public inline fun <reified T> Json.formatValidator(field: KProperty0<String>): Result<Unit> =
     jsonFormatValidatorInternal(serializer<T>().descriptor, field)
 
 @ExperimentalJsonSchemaValidation

@@ -45,10 +45,10 @@ class JsonFormatTest {
     @Test
     fun validateField() {
         val original = JsonFormatSerialized()
-        assertTrue(myGlobalJson.jsonFormatValidator<JsonFormatSerialized>(original::uuid).isSuccess)
+        assertTrue(myGlobalJson.formatValidator<JsonFormatSerialized>(original::uuid).isSuccess)
 
         val bad = JsonFormatSerialized(uuid = "BadValueForUUID")
-        val result = myGlobalJson.jsonFormatValidator<JsonFormatSerialized>(bad::uuid)
+        val result = myGlobalJson.formatValidator<JsonFormatSerialized>(bad::uuid)
         assertTrue(result.isFailure)
         val exception = result.exceptionOrNull()
         assertTrue(exception is JsonSchemaValidationException)
@@ -63,7 +63,7 @@ class JsonFormatTest {
     @Test
     fun validatePattern() {
         val bad = JsonFormatSerialized(code = "BadCode")
-        val result = myGlobalJson.jsonFormatValidator<JsonFormatSerialized>(bad::code)
+        val result = myGlobalJson.formatValidator<JsonFormatSerialized>(bad::code)
         assertTrue(result.isFailure)
         val exception = result.exceptionOrNull()
         assertTrue(exception is JsonSchemaValidationException)
@@ -79,7 +79,7 @@ class JsonFormatTest {
     fun validateInstant() {
         // ISO 8601 expects 4 digits for the year, so we maxout this to ensure it's not accepted
         val bad = JsonFormatSerialized(date = Instant.fromEpochMilliseconds(Long.MAX_VALUE))
-        myGlobalJson.jsonFormatValidator(bad) {
+        myGlobalJson.formatValidator(bad) {
             val result = bad::date.validateResult()
             assertTrue(result.isFailure)
             val exception = result.exceptionOrNull()
@@ -97,7 +97,7 @@ class JsonFormatTest {
     @Test
     fun validateNullableWhenNull() {
         val bad = JsonFormatSerialized(date = null)
-        myGlobalJson.jsonFormatValidator(bad) {
+        myGlobalJson.formatValidator(bad) {
             val result = bad::date.validateResult()
             assertTrue(result.isSuccess)
         }
@@ -106,7 +106,7 @@ class JsonFormatTest {
     @Test
     fun validateClass() {
         val original = JsonFormatSerialized()
-        myGlobalJson.jsonFormatValidator(original) {
+        myGlobalJson.formatValidator(original) {
             it::duration.validateOrThrow()
             it::email.validateOrThrow()
             it::ipv4.validateOrThrow()
@@ -117,7 +117,7 @@ class JsonFormatTest {
         }
 
         val bad = JsonFormatSerialized(uuid = "BadValueForUUID")
-        myGlobalJson.jsonFormatValidator(bad) {
+        myGlobalJson.formatValidator(bad) {
             val result = it::uuid.validateResult()
             assertTrue(result.isFailure)
             val exception = result.exceptionOrNull()

@@ -1,12 +1,10 @@
-import com.github.ricky12awesome.jss.JsonSchema
-import com.github.ricky12awesome.jss.encodeToSchema
-import com.github.ricky12awesome.jss.jsonFormatValidator
-import com.github.ricky12awesome.jss.myGlobalJson
+import com.github.ricky12awesome.jss.*
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.encodeToString
 import kotlin.jvm.JvmInline
 import kotlin.test.Test
 import kotlin.test.assertEquals
+import kotlin.test.fail
 
 class AnnotationInheritanceTest {
 
@@ -44,11 +42,14 @@ class AnnotationInheritanceTest {
 
     @Test
     fun validation() {
-        myGlobalJson.jsonFormatValidator(Container()) {
+        myGlobalJson.formatValidator(Container()) {
             it::basic.validateOrThrow()
-            it.basic::value.validateOrThrow()
+            it.basic::value.validateOrThrow() // Will not work
             it::annotatedValueClass.validateOrThrow()
-            it.annotatedValueClass::value.validateOrThrow()
+            it.annotatedValueClass::value.validateOrThrow() // Will not work
+            myGlobalJson.formatValidator(it.annotatedValueClass) {
+                it::value.validateOrThrow()// Crash as expected
+            }
             it::doubleAnnotationValueClass.validateOrThrow()
             it.doubleAnnotationValueClass::value.validateOrThrow()
             it::annotatedDataClass.validateOrThrow()
@@ -57,6 +58,22 @@ class AnnotationInheritanceTest {
             //it::doubleAnnotationDataClass.validateOrThrow()
             it.doubleAnnotationDataClass::value.validateOrThrow()
         }
+    }
+
+
+    @Test
+    fun failInDepth() {
+        try {
+            myGlobalJson.formatValidator(Container(annotatedValueClass = AnnotatedValueClass("bad value"))) {
+                it.annotatedValueClass::value.validateOrThrow() // Will not work, the descriptor is invalid
+                myGlobalJson.formatValidator(it.annotatedValueClass) {
+                    it::value.validateOrThrow() // Crash is expected
+                }
+            }
+        } catch (e: JsonSchemaValidationException) {
+            return // OK, we can stop test here
+        }
+        fail("should have failed")
     }
 
     @Test
