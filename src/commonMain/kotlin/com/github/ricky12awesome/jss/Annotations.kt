@@ -57,7 +57,7 @@ annotation class JsonSchema {
 
     @SerialInfo
     @Retention(AnnotationRetention.BINARY)
-    @Target(AnnotationTarget.CLASS, AnnotationTarget.PROPERTY, AnnotationTarget.FIELD)
+    @Target(AnnotationTarget.PROPERTY, AnnotationTarget.FIELD)
     annotation class Format(val format: JsonFormat)
 
     /**

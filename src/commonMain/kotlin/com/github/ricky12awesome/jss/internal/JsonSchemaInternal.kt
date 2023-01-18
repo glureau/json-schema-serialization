@@ -277,7 +277,7 @@ internal fun Json.createJsonSchema(
     definitions: JsonSchemaDefinitions,
     exposeClassDiscriminator: Boolean,
 ): JsonObject {
-    val combinedAnnotations = annotations + serialDescriptor.annotations
+    var combinedAnnotations = annotations + serialDescriptor.annotations
     var targetDescriptor = serialDescriptor
 
     if (serialDescriptor.isInline) {
@@ -286,6 +286,7 @@ internal fun Json.createJsonSchema(
             delegatedDescriptor = serialDescriptor.elementDescriptors.first(),
             isNullable = serialDescriptor.isNullable
         )
+        combinedAnnotations = serialDescriptor.getElementAnnotations(0) + combinedAnnotations
     }
 
     if (targetDescriptor.kind == SerialKind.CONTEXTUAL) {
@@ -294,8 +295,8 @@ internal fun Json.createJsonSchema(
             else -> targetDescriptor.capturedKClass
         }
         if (capturedKClass is KClass<*>) {
-            targetDescriptor =
-                serializersModule.getContextual(capturedKClass as KClass<*>)!!.descriptor
+            targetDescriptor = serializersModule.getContextual(capturedKClass as KClass<*>)!!.descriptor
+            combinedAnnotations = targetDescriptor.annotations + combinedAnnotations
         }
     }
 

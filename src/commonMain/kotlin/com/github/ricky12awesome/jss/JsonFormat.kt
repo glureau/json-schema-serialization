@@ -1,5 +1,7 @@
 package com.github.ricky12awesome.jss
 
+// Source ajv-formats:
+// https://github.com/ajv-validator/ajv-formats/blob/master/src/formats.ts
 enum class JsonFormat(val jsonSchemaFormat: String, val ajvFormatRegex: Regex? = null) {
     // date: http://tools.ietf.org/html/rfc3339#section-5.6
     date("date", Regex("^\\d\\d\\d\\d-[0-1]\\d-[0-3]\\d\$", RegexOption.IGNORE_CASE)),

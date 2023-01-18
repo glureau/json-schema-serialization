@@ -85,7 +85,6 @@ class PolymorphismColorTest {
     fun checkColors() {
         println(json.encodeToSchema(Config.serializer(), false))
         assertEquals(
-            json.encodeToSchema(Config.serializer(), false),
             """
                 {
                   "${"$"}schema": "http://json-schema.org/draft-07/schema",
@@ -150,6 +149,7 @@ class PolymorphismColorTest {
                       "anyOf": [
                         {
                           "type": "string",
+                          "pattern": "#[0-9a-fA-F]{2,6}",
                           "properties": {
                             "classDiscriminator": {
                               "const": "HEX"
@@ -250,8 +250,10 @@ class PolymorphismColorTest {
                     }
                   }
                 }
-            """.trimIndent()
-        )
+            """.trimIndent(),
+            json.encodeToSchema(Config.serializer(), false),
+
+            )
     }
 
 
