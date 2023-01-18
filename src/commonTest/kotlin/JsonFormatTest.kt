@@ -20,8 +20,7 @@ class JsonFormatTest {
 
     @JvmInline
     @Serializable
-    @JsonSchema.Format(JsonFormat.uuid)
-    value class MyUUID(val uuid: String)
+    value class MyUUID(@JsonSchema.Format(JsonFormat.uuid) val uuid: String)
 
     @Serializable
     data class JsonFormatSerialized(
