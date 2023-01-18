@@ -1,0 +1,368 @@
+{
+  "formatVersion": "1.1",
+  "component": {
+    "group": "com.github.Ricky12Awesome",
+    "module": "json-schema-serialization",
+    "version": "0.9.5",
+    "attributes": {
+      "org.gradle.status": "release"
+    }
+  },
+  "createdBy": {
+    "gradle": {
+      "version": "7.1.1"
+    }
+  },
+  "variants": [
+    {
+      "name": "metadataApiElements",
+      "attributes": {
+        "org.gradle.category": "library",
+        "org.gradle.usage": "kotlin-metadata",
+        "org.jetbrains.kotlin.platform.type": "common"
+      },
+      "dependencies": [
+        {
+          "group": "org.jetbrains.kotlin",
+          "module": "kotlin-stdlib-common",
+          "version": {
+            "requires": "1.7.20"
+          }
+        },
+        {
+          "group": "org.jetbrains.kotlin",
+          "module": "kotlin-reflect",
+          "version": {
+            "requires": "1.7.20"
+          }
+        },
+        {
+          "group": "org.jetbrains.kotlinx",
+          "module": "kotlinx-serialization-json",
+          "version": {
+            "requires": "1.4.0"
+          }
+        }
+      ],
+      "files": [
+        {
+          "name": "json-schema-serialization-metadata-0.9.5.jar",
+          "url": "json-schema-serialization-0.9.5.jar",
+          "size": 13521,
+          "sha512": "7b0bd8c643251ef18eb6dba4b59fedbeaf6ddcebf001382eb42df95ea81477ae714f985ee776c2138b6f6dfe70ad70441661a1d3f97673a88de8243fc9c5368e",
+          "sha256": "4245640e5d3df057361922a4ca9710a78b36a0c12d4b610d1ab4edc7f8df0fdd",
+          "sha1": "37c9b78fca10a1ab07df7045ecc0575cd7da82bb",
+          "md5": "69fe39c844e5904e6abc3d3754919c28"
+        }
+      ]
+    },
+    {
+      "name": "debugApiElements-published",
+      "attributes": {
+        "com.android.build.api.attributes.BuildTypeAttr": "debug",
+        "org.gradle.category": "library",
+        "org.gradle.usage": "java-api",
+        "org.jetbrains.kotlin.platform.type": "androidJvm"
+      },
+      "available-at": {
+        "url": "../../json-schema-serialization-android-debug/0.9.5/json-schema-serialization-android-debug-0.9.5.module",
+        "group": "com.github.Ricky12Awesome",
+        "module": "json-schema-serialization-android-debug",
+        "version": "0.9.5"
+      }
+    },
+    {
+      "name": "debugRuntimeElements-published",
+      "attributes": {
+        "com.android.build.api.attributes.BuildTypeAttr": "debug",
+        "org.gradle.category": "library",
+        "org.gradle.usage": "java-runtime",
+        "org.jetbrains.kotlin.platform.type": "androidJvm"
+      },
+      "available-at": {
+        "url": "../../json-schema-serialization-android-debug/0.9.5/json-schema-serialization-android-debug-0.9.5.module",
+        "group": "com.github.Ricky12Awesome",
+        "module": "json-schema-serialization-android-debug",
+        "version": "0.9.5"
+      }
+    },
+    {
+      "name": "releaseApiElements-published",
+      "attributes": {
+        "org.gradle.category": "library",
+        "org.gradle.usage": "java-api",
+        "org.jetbrains.kotlin.platform.type": "androidJvm"
+      },
+      "available-at": {
+        "url": "../../json-schema-serialization-android/0.9.5/json-schema-serialization-android-0.9.5.module",
+        "group": "com.github.Ricky12Awesome",
+        "module": "json-schema-serialization-android",
+        "version": "0.9.5"
+      }
+    },
+    {
+      "name": "releaseRuntimeElements-published",
+      "attributes": {
+        "org.gradle.category": "library",
+        "org.gradle.usage": "java-runtime",
+        "org.jetbrains.kotlin.platform.type": "androidJvm"
+      },
+      "available-at": {
+        "url": "../../json-schema-serialization-android/0.9.5/json-schema-serialization-android-0.9.5.module",
+        "group": "com.github.Ricky12Awesome",
+        "module": "json-schema-serialization-android",
+        "version": "0.9.5"
+      }
+    },
+    {
+      "name": "iosArm64ApiElements-published",
+      "attributes": {
+        "artifactType": "org.jetbrains.kotlin.klib",
+        "org.gradle.category": "library",
+        "org.gradle.usage": "kotlin-api",
+        "org.jetbrains.kotlin.native.target": "ios_arm64",
+        "org.jetbrains.kotlin.platform.type": "native"
+      },
+      "available-at": {
+        "url": "../../json-schema-serialization-iosarm64/0.9.5/json-schema-serialization-iosarm64-0.9.5.module",
+        "group": "com.github.Ricky12Awesome",
+        "module": "json-schema-serialization-iosarm64",
+        "version": "0.9.5"
+      }
+    },
+    {
+      "name": "iosArm64MetadataElements-published",
+      "attributes": {
+        "artifactType": "org.jetbrains.kotlin.klib",
+        "org.gradle.category": "library",
+        "org.gradle.usage": "kotlin-metadata",
+        "org.jetbrains.kotlin.native.target": "ios_arm64",
+        "org.jetbrains.kotlin.platform.type": "native"
+      },
+      "available-at": {
+        "url": "../../json-schema-serialization-iosarm64/0.9.5/json-schema-serialization-iosarm64-0.9.5.module",
+        "group": "com.github.Ricky12Awesome",
+        "module": "json-schema-serialization-iosarm64",
+        "version": "0.9.5"
+      }
+    },
+    {
+      "name": "iosSimulatorArm64ApiElements-published",
+      "attributes": {
+        "artifactType": "org.jetbrains.kotlin.klib",
+        "org.gradle.category": "library",
+        "org.gradle.usage": "kotlin-api",
+        "org.jetbrains.kotlin.native.target": "ios_simulator_arm64",
+        "org.jetbrains.kotlin.platform.type": "native"
+      },
+      "available-at": {
+        "url": "../../json-schema-serialization-iossimulatorarm64/0.9.5/json-schema-serialization-iossimulatorarm64-0.9.5.module",
+        "group": "com.github.Ricky12Awesome",
+        "module": "json-schema-serialization-iossimulatorarm64",
+        "version": "0.9.5"
+      }
+    },
+    {
+      "name": "iosSimulatorArm64MetadataElements-published",
+      "attributes": {
+        "artifactType": "org.jetbrains.kotlin.klib",
+        "org.gradle.category": "library",
+        "org.gradle.usage": "kotlin-metadata",
+        "org.jetbrains.kotlin.native.target": "ios_simulator_arm64",
+        "org.jetbrains.kotlin.platform.type": "native"
+      },
+      "available-at": {
+        "url": "../../json-schema-serialization-iossimulatorarm64/0.9.5/json-schema-serialization-iossimulatorarm64-0.9.5.module",
+        "group": "com.github.Ricky12Awesome",
+        "module": "json-schema-serialization-iossimulatorarm64",
+        "version": "0.9.5"
+      }
+    },
+    {
+      "name": "iosX64ApiElements-published",
+      "attributes": {
+        "artifactType": "org.jetbrains.kotlin.klib",
+        "org.gradle.category": "library",
+        "org.gradle.usage": "kotlin-api",
+        "org.jetbrains.kotlin.native.target": "ios_x64",
+        "org.jetbrains.kotlin.platform.type": "native"
+      },
+      "available-at": {
+        "url": "../../json-schema-serialization-iosx64/0.9.5/json-schema-serialization-iosx64-0.9.5.module",
+        "group": "com.github.Ricky12Awesome",
+        "module": "json-schema-serialization-iosx64",
+        "version": "0.9.5"
+      }
+    },
+    {
+      "name": "iosX64MetadataElements-published",
+      "attributes": {
+        "artifactType": "org.jetbrains.kotlin.klib",
+        "org.gradle.category": "library",
+        "org.gradle.usage": "kotlin-metadata",
+        "org.jetbrains.kotlin.native.target": "ios_x64",
+        "org.jetbrains.kotlin.platform.type": "native"
+      },
+      "available-at": {
+        "url": "../../json-schema-serialization-iosx64/0.9.5/json-schema-serialization-iosx64-0.9.5.module",
+        "group": "com.github.Ricky12Awesome",
+        "module": "json-schema-serialization-iosx64",
+        "version": "0.9.5"
+      }
+    },
+    {
+      "name": "jsLegacyApiElements-published",
+      "attributes": {
+        "org.gradle.category": "library",
+        "org.gradle.usage": "kotlin-api",
+        "org.jetbrains.kotlin.js.compiler": "legacy",
+        "org.jetbrains.kotlin.platform.type": "js"
+      },
+      "available-at": {
+        "url": "../../json-schema-serialization-js/0.9.5/json-schema-serialization-js-0.9.5.module",
+        "group": "com.github.Ricky12Awesome",
+        "module": "json-schema-serialization-js",
+        "version": "0.9.5"
+      }
+    },
+    {
+      "name": "jsLegacyRuntimeElements-published",
+      "attributes": {
+        "org.gradle.category": "library",
+        "org.gradle.usage": "kotlin-runtime",
+        "org.jetbrains.kotlin.js.compiler": "legacy",
+        "org.jetbrains.kotlin.platform.type": "js"
+      },
+      "available-at": {
+        "url": "../../json-schema-serialization-js/0.9.5/json-schema-serialization-js-0.9.5.module",
+        "group": "com.github.Ricky12Awesome",
+        "module": "json-schema-serialization-js",
+        "version": "0.9.5"
+      }
+    },
+    {
+      "name": "jsIrApiElements-published",
+      "attributes": {
+        "org.gradle.category": "library",
+        "org.gradle.usage": "kotlin-api",
+        "org.jetbrains.kotlin.js.compiler": "ir",
+        "org.jetbrains.kotlin.platform.type": "js"
+      },
+      "available-at": {
+        "url": "../../json-schema-serialization-js/0.9.5/json-schema-serialization-js-0.9.5.module",
+        "group": "com.github.Ricky12Awesome",
+        "module": "json-schema-serialization-js",
+        "version": "0.9.5"
+      }
+    },
+    {
+      "name": "jsIrRuntimeElements-published",
+      "attributes": {
+        "org.gradle.category": "library",
+        "org.gradle.usage": "kotlin-runtime",
+        "org.jetbrains.kotlin.js.compiler": "ir",
+        "org.jetbrains.kotlin.platform.type": "js"
+      },
+      "available-at": {
+        "url": "../../json-schema-serialization-js/0.9.5/json-schema-serialization-js-0.9.5.module",
+        "group": "com.github.Ricky12Awesome",
+        "module": "json-schema-serialization-js",
+        "version": "0.9.5"
+      }
+    },
+    {
+      "name": "jvmApiElements-published",
+      "attributes": {
+        "org.gradle.category": "library",
+        "org.gradle.libraryelements": "jar",
+        "org.gradle.usage": "java-api",
+        "org.jetbrains.kotlin.platform.type": "jvm"
+      },
+      "available-at": {
+        "url": "../../json-schema-serialization-jvm/0.9.5/json-schema-serialization-jvm-0.9.5.module",
+        "group": "com.github.Ricky12Awesome",
+        "module": "json-schema-serialization-jvm",
+        "version": "0.9.5"
+      }
+    },
+    {
+      "name": "jvmRuntimeElements-published",
+      "attributes": {
+        "org.gradle.category": "library",
+        "org.gradle.libraryelements": "jar",
+        "org.gradle.usage": "java-runtime",
+        "org.jetbrains.kotlin.platform.type": "jvm"
+      },
+      "available-at": {
+        "url": "../../json-schema-serialization-jvm/0.9.5/json-schema-serialization-jvm-0.9.5.module",
+        "group": "com.github.Ricky12Awesome",
+        "module": "json-schema-serialization-jvm",
+        "version": "0.9.5"
+      }
+    },
+    {
+      "name": "linuxX64ApiElements-published",
+      "attributes": {
+        "artifactType": "org.jetbrains.kotlin.klib",
+        "org.gradle.category": "library",
+        "org.gradle.usage": "kotlin-api",
+        "org.jetbrains.kotlin.native.target": "linux_x64",
+        "org.jetbrains.kotlin.platform.type": "native"
+      },
+      "available-at": {
+        "url": "../../json-schema-serialization-linuxx64/0.9.5/json-schema-serialization-linuxx64-0.9.5.module",
+        "group": "com.github.Ricky12Awesome",
+        "module": "json-schema-serialization-linuxx64",
+        "version": "0.9.5"
+      }
+    },
+    {
+      "name": "macosX64ApiElements-published",
+      "attributes": {
+        "artifactType": "org.jetbrains.kotlin.klib",
+        "org.gradle.category": "library",
+        "org.gradle.usage": "kotlin-api",
+        "org.jetbrains.kotlin.native.target": "macos_x64",
+        "org.jetbrains.kotlin.platform.type": "native"
+      },
+      "available-at": {
+        "url": "../../json-schema-serialization-macosx64/0.9.5/json-schema-serialization-macosx64-0.9.5.module",
+        "group": "com.github.Ricky12Awesome",
+        "module": "json-schema-serialization-macosx64",
+        "version": "0.9.5"
+      }
+    },
+    {
+      "name": "macosX64MetadataElements-published",
+      "attributes": {
+        "artifactType": "org.jetbrains.kotlin.klib",
+        "org.gradle.category": "library",
+        "org.gradle.usage": "kotlin-metadata",
+        "org.jetbrains.kotlin.native.target": "macos_x64",
+        "org.jetbrains.kotlin.platform.type": "native"
+      },
+      "available-at": {
+        "url": "../../json-schema-serialization-macosx64/0.9.5/json-schema-serialization-macosx64-0.9.5.module",
+        "group": "com.github.Ricky12Awesome",
+        "module": "json-schema-serialization-macosx64",
+        "version": "0.9.5"
+      }
+    },
+    {
+      "name": "mingwX64ApiElements-published",
+      "attributes": {
+        "artifactType": "org.jetbrains.kotlin.klib",
+        "org.gradle.category": "library",
+        "org.gradle.usage": "kotlin-api",
+        "org.jetbrains.kotlin.native.target": "mingw_x64",
+        "org.jetbrains.kotlin.platform.type": "native"
+      },
+      "available-at": {
+        "url": "../../json-schema-serialization-mingwx64/0.9.5/json-schema-serialization-mingwx64-0.9.5.module",
+        "group": "com.github.Ricky12Awesome",
+        "module": "json-schema-serialization-mingwx64",
+        "version": "0.9.5"
+      }
+    }
+  ]
+}
