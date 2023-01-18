@@ -1,5 +1,6 @@
 import com.github.ricky12awesome.jss.JsonSchema
 import com.github.ricky12awesome.jss.encodeToSchema
+import com.github.ricky12awesome.jss.jsonFormatValidator
 import com.github.ricky12awesome.jss.myGlobalJson
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.encodeToString
@@ -35,10 +36,28 @@ class AnnotationInheritanceTest {
         val annotatedDataClass: AnnotatedDataClass = AnnotatedDataClass("dataclass"),
 
         // Annotation is not relevant here, type=object doesn't have pattern
+        // Also it's not a good idea to validate on it since the pattern will be applied on the serialized version of the class
         // Could be a warning to avoid surprises.
         @JsonSchema.Pattern("ignored")
         val doubleAnnotationDataClass: AnnotatedDataClass = AnnotatedDataClass("dataclass"),
     )
+
+    @Test
+    fun validation() {
+        myGlobalJson.jsonFormatValidator(Container()) {
+            it::basic.validateOrThrow()
+            it.basic::value.validateOrThrow()
+            it::annotatedValueClass.validateOrThrow()
+            it.annotatedValueClass::value.validateOrThrow()
+            it::doubleAnnotationValueClass.validateOrThrow()
+            it.doubleAnnotationValueClass::value.validateOrThrow()
+            it::annotatedDataClass.validateOrThrow()
+            it.annotatedDataClass::value.validateOrThrow()
+            // Non-sense to validate a Pattern on a class, as it will check against the serialized version.
+            //it::doubleAnnotationDataClass.validateOrThrow()
+            it.doubleAnnotationDataClass::value.validateOrThrow()
+        }
+    }
 
     @Test
     fun checkInheritance() {
