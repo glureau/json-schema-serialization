@@ -12,34 +12,14 @@ import kotlinx.serialization.encoding.Encoder
 import kotlinx.serialization.json.Json
 import kotlinx.serialization.modules.SerializersModule
 import kotlinx.serialization.modules.plus
+import shared.FakeBigDecimal
+import shared.FakeBigDecimalSerializer
 import kotlin.jvm.JvmInline
 import kotlin.random.Random
 import kotlin.test.Test
 import kotlin.test.assertEquals
 
 class CustomSerializerTest {
-    class FakeBigDecimalSerializer : KSerializer<FakeBigDecimal> {
-        override val descriptor: SerialDescriptor = PrimitiveSerialDescriptor("Decimal", PrimitiveKind.STRING)
-
-        override fun serialize(encoder: Encoder, value: FakeBigDecimal) {
-            encoder.encodeString(value.encodedString())
-        }
-
-        override fun deserialize(decoder: Decoder): FakeBigDecimal {
-            return FakeBigDecimal.fromEncodedString(decoder.decodeString())
-        }
-    }
-
-    class FakeBigDecimal(
-        val data: Array<Int> = Array(4) { Random.nextInt() }
-    ) {
-        fun encodedString() = data.joinToString()
-
-        companion object {
-            fun fromEncodedString(str: String) =
-                FakeBigDecimal(str.split(",").map { it.toInt() }.toTypedArray())
-        }
-    }
 
     @Serializable
     data class Container(@Contextual val fbd: FakeBigDecimal)

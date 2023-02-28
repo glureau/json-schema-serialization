@@ -3,6 +3,7 @@ package com.github.ricky12awesome.jss.internal
 import com.github.ricky12awesome.jss.JsonSchema
 import com.github.ricky12awesome.jss.JsonSchema.*
 import com.github.ricky12awesome.jss.JsonType
+import kotlinx.serialization.Contextual
 import kotlinx.serialization.descriptors.*
 import kotlinx.serialization.json.*
 import kotlin.reflect.KClass
@@ -295,7 +296,10 @@ internal fun Json.createJsonSchema(
             else -> targetDescriptor.capturedKClass
         }
         if (capturedKClass is KClass<*>) {
-            targetDescriptor = serializersModule.getContextual(capturedKClass as KClass<*>)!!.descriptor
+            targetDescriptor = NullableSerialDescriptor(
+                delegatedDescriptor = serializersModule.getContextual(capturedKClass as KClass<*>)!!.descriptor,
+                isNullable = serialDescriptor.isNullable || targetDescriptor.isNullable
+            )
             combinedAnnotations = targetDescriptor.annotations + combinedAnnotations
         }
     }
