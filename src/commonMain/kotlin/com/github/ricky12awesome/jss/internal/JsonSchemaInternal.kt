@@ -1,11 +1,28 @@
 package com.github.ricky12awesome.jss.internal
 
 import com.github.ricky12awesome.jss.JsonSchema
-import com.github.ricky12awesome.jss.JsonSchema.*
+import com.github.ricky12awesome.jss.JsonSchema.Description
+import com.github.ricky12awesome.jss.JsonSchema.FloatRange
+import com.github.ricky12awesome.jss.JsonSchema.Format
+import com.github.ricky12awesome.jss.JsonSchema.Pattern
+import com.github.ricky12awesome.jss.JsonSchema.StringEnum
 import com.github.ricky12awesome.jss.JsonType
-import kotlinx.serialization.Contextual
-import kotlinx.serialization.descriptors.*
-import kotlinx.serialization.json.*
+import kotlinx.serialization.descriptors.PolymorphicKind
+import kotlinx.serialization.descriptors.PrimitiveKind
+import kotlinx.serialization.descriptors.SerialDescriptor
+import kotlinx.serialization.descriptors.SerialKind
+import kotlinx.serialization.descriptors.StructureKind
+import kotlinx.serialization.descriptors.capturedKClass
+import kotlinx.serialization.descriptors.elementDescriptors
+import kotlinx.serialization.descriptors.elementNames
+import kotlinx.serialization.descriptors.getPolymorphicDescriptors
+import kotlinx.serialization.json.Json
+import kotlinx.serialization.json.JsonArray
+import kotlinx.serialization.json.JsonElement
+import kotlinx.serialization.json.JsonObject
+import kotlinx.serialization.json.JsonPrimitive
+import kotlinx.serialization.json.buildJsonArray
+import kotlinx.serialization.json.jsonArray
 import kotlin.reflect.KClass
 
 @PublishedApi
@@ -150,6 +167,8 @@ internal fun Json.jsonSchemaObjectSealed(
                 exposeClassDiscriminator = exposeClassDiscriminator
             )
             var prop = schema.getOrElse("properties") { JsonObject(emptyMap()) }
+            val requ = schema.getOrElse("required") { null }?.jsonArray?.toMutableList()
+                ?: mutableListOf()
             if (prop is JsonObject) {
                 prop = JsonObject(
                     mutableMapOf<String, JsonElement>(
@@ -157,9 +176,10 @@ internal fun Json.jsonSchemaObjectSealed(
                             it["const"] = descriptor.serialName.removeSuffix("?")
                         }) + prop
                 )
+                requ.add(0, JsonPrimitive(configuration.classDiscriminator))
             }
 
-            anyOf += JsonObject(schema + mapOf("properties" to prop))
+            anyOf += JsonObject(schema + mapOf("properties" to prop, "required" to JsonArray(requ)))
         }
 
     return serialDescriptor.jsonSchemaElement(

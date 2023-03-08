@@ -102,7 +102,10 @@ class PolymorphismParentTest {
                                   "classDiscriminator": {
                                     "const": "PolymorphismParentTest.GrandParent.GrandParent3"
                                   }
-                                }
+                                },
+                                "required": [
+                                  "classDiscriminator"
+                                ]
                               },
                               {
                                 "additionalProperties": false,
@@ -123,6 +126,7 @@ class PolymorphismParentTest {
                                   }
                                 },
                                 "required": [
+                                  "classDiscriminator",
                                   "name",
                                   "childrenNames"
                                 ]
@@ -155,6 +159,7 @@ class PolymorphismParentTest {
                                   }
                                 },
                                 "required": [
+                                  "classDiscriminator",
                                   "name",
                                   "children"
                                 ]
@@ -166,7 +171,10 @@ class PolymorphismParentTest {
                                   "classDiscriminator": {
                                     "const": "PolymorphismParentTest.Parent.Parent3"
                                   }
-                                }
+                                },
+                                "required": [
+                                  "classDiscriminator"
+                                ]
                               }
                             ],
                             "required": [
@@ -176,6 +184,7 @@ class PolymorphismParentTest {
                         }
                       },
                       "required": [
+                        "classDiscriminator",
                         "name",
                         "children"
                       ]
@@ -213,7 +222,10 @@ class PolymorphismParentTest {
                                   "classDiscriminator": {
                                     "const": "PolymorphismParentTest.GrandParent.GrandParent3"
                                   }
-                                }
+                                },
+                                "required": [
+                                  "classDiscriminator"
+                                ]
                               },
                               {
                                 "additionalProperties": false,
@@ -234,6 +246,7 @@ class PolymorphismParentTest {
                                   }
                                 },
                                 "required": [
+                                  "classDiscriminator",
                                   "name",
                                   "childrenNames"
                                 ]
@@ -266,6 +279,7 @@ class PolymorphismParentTest {
                                   }
                                 },
                                 "required": [
+                                  "classDiscriminator",
                                   "name",
                                   "children"
                                 ]
@@ -277,7 +291,10 @@ class PolymorphismParentTest {
                                   "classDiscriminator": {
                                     "const": "PolymorphismParentTest.Parent.Parent3"
                                   }
-                                }
+                                },
+                                "required": [
+                                  "classDiscriminator"
+                                ]
                               }
                             ],
                             "required": [
@@ -287,6 +304,7 @@ class PolymorphismParentTest {
                         }
                       },
                       "required": [
+                        "classDiscriminator",
                         "name",
                         "children"
                       ]

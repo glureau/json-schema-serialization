@@ -154,7 +154,10 @@ class PolymorphismColorTest {
                             "classDiscriminator": {
                               "const": "HEX"
                             }
-                          }
+                          },
+                          "required": [
+                            "classDiscriminator"
+                          ]
                         },
                         {
                           "additionalProperties": false,
@@ -180,6 +183,7 @@ class PolymorphismColorTest {
                             }
                           },
                           "required": [
+                            "classDiscriminator",
                             "h",
                             "s",
                             "l"
@@ -209,6 +213,7 @@ class PolymorphismColorTest {
                             }
                           },
                           "required": [
+                            "classDiscriminator",
                             "h",
                             "s",
                             "v"
@@ -238,6 +243,7 @@ class PolymorphismColorTest {
                             }
                           },
                           "required": [
+                            "classDiscriminator",
                             "r",
                             "g",
                             "b"
@@ -309,6 +315,7 @@ class PolymorphismColorTest {
                         }
                       },
                       "required": [
+                        "classDiscriminator",
                         "h",
                         "s",
                         "l"
@@ -338,6 +345,7 @@ class PolymorphismColorTest {
                         }
                       },
                       "required": [
+                        "classDiscriminator",
                         "h",
                         "s",
                         "v"

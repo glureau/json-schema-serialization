@@ -25,7 +25,6 @@ class SealedClassTest {
     fun check() {
         println(myGlobalJson.encodeToSchema(Container.Sealed.serializer(), false))
         assertEquals(
-            myGlobalJson.encodeToSchema(Container.Sealed.serializer(), false),
             """
                 {
                   "${"$"}schema": "http://json-schema.org/draft-07/schema",
@@ -52,6 +51,7 @@ class SealedClassTest {
                         }
                       },
                       "required": [
+                        "classDiscriminator",
                         "name"
                       ]
                     },
@@ -62,14 +62,18 @@ class SealedClassTest {
                         "classDiscriminator": {
                           "const": "Implem2"
                         }
-                      }
+                      },
+                      "required": [
+                        "classDiscriminator"
+                      ]
                     }
                   ],
                   "required": [
                     "classDiscriminator"
                   ]
                 }
-            """.trimIndent()
+            """.trimIndent(),
+            myGlobalJson.encodeToSchema(Container.Sealed.serializer(), false)
         )
     }
 
@@ -108,6 +112,7 @@ class SealedClassTest {
                             }
                           },
                           "required": [
+                            "classDiscriminator",
                             "name"
                           ]
                         },
@@ -118,7 +123,10 @@ class SealedClassTest {
                             "classDiscriminator": {
                               "const": "Implem2"
                             }
-                          }
+                          },
+                          "required": [
+                            "classDiscriminator"
+                          ]
                         }
                       ],
                       "required": [
