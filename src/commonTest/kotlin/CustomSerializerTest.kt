@@ -1,21 +1,14 @@
 import com.github.ricky12awesome.jss.encodeToSchema
 import com.github.ricky12awesome.jss.myGlobalJson
 import kotlinx.serialization.Contextual
-import kotlinx.serialization.KSerializer
 import kotlinx.serialization.Serializable
-import kotlinx.serialization.descriptors.PrimitiveKind
-import kotlinx.serialization.descriptors.PrimitiveSerialDescriptor
-import kotlinx.serialization.descriptors.SerialDescriptor
 import kotlinx.serialization.encodeToString
-import kotlinx.serialization.encoding.Decoder
-import kotlinx.serialization.encoding.Encoder
 import kotlinx.serialization.json.Json
 import kotlinx.serialization.modules.SerializersModule
 import kotlinx.serialization.modules.plus
 import shared.FakeBigDecimal
 import shared.FakeBigDecimalSerializer
 import kotlin.jvm.JvmInline
-import kotlin.random.Random
 import kotlin.test.Test
 import kotlin.test.assertEquals
 
@@ -32,7 +25,6 @@ class CustomSerializerTest {
 
     @Test
     fun check() {
-        println(json.encodeToSchema(Container.serializer(), false))
         assertEquals(
             json.encodeToSchema(Container.serializer(), false), """
             {

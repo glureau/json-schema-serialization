@@ -1,5 +1,6 @@
 package com.github.ricky12awesome.jss.internal
 
+import com.github.ricky12awesome.jss.InternalStringEnumSerialDescriptor
 import com.github.ricky12awesome.jss.JsonSchema
 import com.github.ricky12awesome.jss.JsonSchema.Description
 import com.github.ricky12awesome.jss.JsonSchema.FloatRange
@@ -228,7 +229,9 @@ internal fun SerialDescriptor.jsonSchemaString(
 ): JsonObject {
     return jsonSchemaElement(annotations, extra = {
         val pattern = annotations.lastOfInstance<Pattern>()?.pattern ?: ""
-        val enum = annotations.lastOfInstance<StringEnum>()?.values ?: arrayOf()
+        val enum = annotations.lastOfInstance<StringEnum>()?.values
+            ?: (this as? InternalStringEnumSerialDescriptor)?.possibleValues
+            ?: arrayOf()
         val format = annotations.lastOfInstance<Format>()?.format
 
         if (pattern.isNotEmpty()) {
